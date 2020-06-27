@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
         <style>
             .red{
                 color: #ff0000;
@@ -11,31 +12,64 @@
             }
             p{transition: color 1d;
             }
+			.ecran{}
         </style>
     </head>
-    <body><header>
-        <h1>Description de la cite</h1>
-      </header>
-        <div>
-            <p class="paragraph" id="descriptionCitePage">Insérer la description ici</p>
+    <body>
+    
+    <!-- **********ECRAN DESCRIPTION DE LA CITÉ*************-->
+    <section class="section">
+        <div class="ecran" id="ecran_description_cite" hidden>
+            <header>
+             <h1>Description de la cite</h1>
+            </header>
+            <table class="table is-bordered">
+                <tr>
+                    <td>Nom de la cité:</td>
+                    <td><span class="paragraph" id="descriptionCitePage">Insérer la description ici</span></td>
+                </tr>
+                <tr>
+                    <td>Dirigeant:</td>
+                    <td><span class="paragraph" id="consulCite">Insérer le nom du gouverneur</span></td>
+                </tr>
+                <tr>
+                    <td>Tour:</td>
+                    <td><span class="paragraph" id="tourinfo">Numéro du tour</span></td>
+                </tr>
+            </table>
+
+            <form action="#" id="formchoix">
+                <div class="select">
+                    <select name="actionchoix" id="actionchoix">
+                        <option value="fete">Faire la fête!</option>
+                        <option value="commerce">Faire du commerce!</option>
+                    </select>
+                </div>
+            <input class="button is-success" type="button" id="btnActionChoix" value="Envoyer">
+            </form>
+         </div>
+    </section>
+<!-- **********ECRAN CRÉATION DE LA CITÉ*************-->
+<section class="section">
+        <div class="ecran" id="ecran_creation_cite">
+            <h1 class="title">Choisissez les valeurs de votre cité</h1>
+            <form id="form_creation_cite">
+                <div class="columns">
+                    <div class="column is-3">
+                        Entrez le nom de votre cité: <input class="input" type="text" id="txt_nom_cite"><br><br>
+                    </div>
+                </div>
+                Choisissez le type de gouvernement: <br>
+               <div class="select">
+                    <select id="select_type_gouv"></select>
+               </div> 
+               <br><br>
+                <input class="button is-success" type="button" id="btn_creation_cite" value="Créer la cité">
+            </form>
         </div>
-        <div>
-            <p class="paragraph" id="consulCite">Insérer le nom du gouverneur</p>
-        </div>
-        <div>
-            <p class="paragraph" id="tourinfo">Numéro du tour</p>
-        </div>
 
-
-        <form action="#" id="formchoix">
-            <select name="actionchoix" id="actionchoix">
-                <option value="fete">Faire la fête!</option>
-                <option value="commerce">Faire du commerce!</option>
-            </select>
-            <input type="Submit" value="Envoyer">
-        </form>
-
-
+</section>
+    
         <script type="text/javascript" src="test.js"> </script>
     </body>
 
