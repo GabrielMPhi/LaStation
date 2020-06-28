@@ -1,7 +1,8 @@
 //VARIABLES GLOBALES
-var liste_type_gouv = ["monarchie", "republique"];
-let nomsDeLaCite = ["Montreal", "Laval", "Candiac"]
-nomsPersonnages = ["Catherine", "Bernard", "Rapunzel", "Sophia", "Martin", "Gabriel", "Mathieu", "Arthur", "Rieke", "Christina", "Christian"]
+var liste_type_gouv = ["monarchie", "republique", "république marchande", "théocratie", "lotocratie", "ploutocratie", "Gabrielocratie"];
+let nomsDeLaCite = ["Montreal", "Laval", "Candiac", "Paris", "Montpellier"]
+var prenomsPersonnages = ["Catherine", "Bernard", "Rapunzel", "Sophia", "Martin", "Gabriel", "Mathieu", "Arthur", "Rieke", "Christina", "Christian", "Simon", "Geralt", "Anne-Sophie", "Anne-Marie", "Alexanre"]
+var momsFamillePersonnages = ["Monette", "Ducharme", "Carel", "Rideout", "Delorme", "Picard", "Janeway", "Pratt", "Séguin", "Gagné", "Turpin", "Bouras", "De Rivia", "Côté"]
 let tour = 1
 var cite_joueur;
 var cite_ordi;
@@ -50,7 +51,8 @@ class Cite {
 }
 
 function choisir_nom_personnage(){
-  return nomsPersonnages[Math.floor(Math.random() * nomsPersonnages.length)]
+  var nomPersonnageFinal = prenomsPersonnages[Math.floor(Math.random() * prenomsPersonnages.length)] + " " +momsFamillePersonnages[Math.floor(Math.random() * momsFamillePersonnages.length)]
+  return nomPersonnageFinal
 }
 
 /*CRÉATION DE LA PAGE*/
@@ -82,12 +84,23 @@ function charger_description_cite(ecran_de_depart){
 }
 
 
+/*Écran de création de la cité*/
+
+document.getElementById("btn_creation_cite").addEventListener('click', function (e){
+  var nom_cite = document.getElementById("txt_nom_cite").value
+  var regime_choisi = document.getElementById("select_type_gouv").value
+  cite_joueur = new Cite(nom_cite, regime_choisi);
+  console.log("on a créé une cité! = "+cite_joueur);
+  charger_description_cite("ecran_creation_cite");
+});
+
 
 /*Écran de description de la cité*/
-  //garde la description
 function afficherDescription() {
     document.getElementById('descriptionCitePage').textContent = cite_joueur.nom;
     document.getElementById('consulCite').textContent = cite_joueur.dirigeant;
+    document.getElementById('richesseInfo').textContent = cite_joueur.richesse;
+    document.getElementById('tourinfo').textContent = tour
   }
 
 
@@ -100,13 +113,13 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
     case "fete":
       alert("C'est la fête et la danse!");
       tour++
-      Cite.richesse--
-      Cite.moral++
+      cite_joueur.richesse--
+      cite_joueur.moral++
     break;
   case "commerce":
     tour++
-    Cite.richesse--
-    Cite.moral--
+    cite_joueur.richesse++
+    cite_joueur.moral--
       alert("C'est jour de marché!");
     break;
   default:
@@ -115,25 +128,10 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
     } 
   console.log(e)
   console.log(tour)
-  console.log(Cite.richesse)
-  console.log(Cite.moral)
-  document.getElementById('tourinfo').textContent = tour
-  keepDescription()
+  console.log(cite_joueur.richesse)
+  console.log(cite_joueur.moral)
+  afficherDescription();
   })
-
-
-/*Écran de création de la cité*/
-
-document.getElementById("btn_creation_cite").addEventListener('click', function (e){
-  var nom_cite = document.getElementById("txt_nom_cite").value
-  var regime_choisi = document.getElementById("select_type_gouv").value
-  cite_joueur = new Cite(nom_cite, regime_choisi);
-  console.log("on a créé une cité! = "+cite_joueur);
-  charger_description_cite("ecran_creation_cite");
-});
-
-
-
 
 
 
