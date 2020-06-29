@@ -153,7 +153,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
     case "fete":
       alert("C'est la fête et la danse!");
       station_joueur.richesse--
-      station_joueur.moral = parseInt(station_joueur.moral + (Math.floor(Math.random() * 4) - 2), 10)
+      station_joueur.moral = parseInt(station_joueur.moral + (Math.floor(Math.random() * 4) - 1), 10)
       station_joueur.energie--
     break;
   case "commerce":
@@ -176,7 +176,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
   })
 
   document.querySelector('#btnActionChoixInfluence').addEventListener('click', function (e){
-    var choixInfluence = document.querySelector('#actionChoix').selectedOptions[0].value
+    var choixInfluence = document.querySelector('#actionChoixInfluence').selectedOptions[0].value
     console.log(choixInfluence)
     switch(choixInfluence) {
       case "favoriserPeuple":
@@ -184,6 +184,13 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
         station_joueur.richesse--;
         station_joueur.moral++;
         station_joueur.energie--;
+      break;
+      case "exileHabitant":
+        alert(station_joueur.dirigeant + " exile un habitant et confisque sa propriété!");
+        station_joueur.richesse++;
+        station_joueur.moral--;
+        station_joueur.energie++;
+        station_joueur.population--;
       break;
     default:
         alert("Ok!");
@@ -208,11 +215,13 @@ function verifierFinPartie(){
     alert("Le moral descend, car une part de la population n'a pas accès à du logement.");
     station_joueur.population++;
   }
-  if (station_joueur.regime == "Lotocratie"){
+  if (station_joueur.regime == "Lotocratie" && tour == 5 || tour == 10){
     alert("Il y a un nouveau tirage au sort pour le gouvernement de la station.")
     var nouveauNomDirigeant = choisir_nom_personnage()
-    alert(nouveauNomDirigeant + " est maintenant à la tête de la station.")
     station_joueur.dirigeant = nouveauNomDirigeant
+    document.getElementById('consulStation').textContent = station_joueur.dirigeant;
+    document.getElementById('consulStation2').textContent = station_joueur.dirigeant;
+    alert(nouveauNomDirigeant + " est maintenant à la tête de la station.")
   }
 
 
