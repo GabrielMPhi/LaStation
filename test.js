@@ -1,20 +1,26 @@
 //VARIABLES GLOBALES
-var liste_type_gouv = ["monarchie", "republique", "république marchande", "théocratie", "lotocratie", "ploutocratie", "Gabrielocratie"];
-let nomsDeLaCite = ["Montreal", "Laval", "Candiac", "Paris", "Montpellier"]
-var prenomsPersonnages = ["Catherine", "Bernard", "Rapunzel", "Sophia", "Martin", "Gabriel", "Mathieu", "Arthur", "Rieke", "Christina", "Christian", "Simon", "Geralt", "Anne-Sophie", "Anne-Marie", "Alexanre"]
-var momsFamillePersonnages = ["Monette", "Ducharme", "Carel", "Rideout", "Delorme", "Picard", "Janeway", "Pratt", "Séguin", "Gagné", "Turpin", "Bouras", "De Rivia", "Côté"]
+var liste_type_gouv = ["Lotocratie", "République", "République marchande", "Autocratie", "Monarchie", "Théocratie", "Ploutocratie", "Gabrielocratie"];
+let nomsDeLastation = ["Montreal", "Laval", "Candiac", "Paris", "Montpellier", "DS7"]
+var prenomsPersonnages = ["Catherine", "Bernard", "Rapunzel", "Sophia", "Martin", "Gabriel", "Mathieu", "Morgane", "Arthur", "Rieke", "Julia", "Thomas", "Christina", "Christian", "Simon", "Geralt", "Anne-Sophie", "Anne-Marie", "Alexandre"]
+var momsFamillePersonnages = ["Monette", "Ducharme", "Carel", "Dax", "Rideout", "Delorme", "Picard", "Sisko", "Janeway", "Pratte", "Séguin", "Gagné", "Turpin", "Bouras", "De Rivia", "Côté"]
 let tour = 1
-var cite_joueur;
-var cite_ordi;
+var station_joueur;
+var station_ordi;
 
-class Cite {
+
+class station {
 
   constructor(nom, regime){
     this._nom = nom;
     this._regime = regime;
     this._dirigeant = choisir_nom_personnage();
+    this._population = parseInt((Math.floor(Math.random() * 5) + 14), 10)
+    this._capacitePopulation = parseInt((Math.floor(Math.random() * 5) + 20), 10)
     this._richesse = 10;
     this._moral = 10;
+    this._energie = 10;
+    this._ressources = 10;
+    this._integrite = 10;
   }
 
   get nom() {
@@ -35,6 +41,18 @@ class Cite {
   set dirigeant (dirigeant){
     this._dirigeant= dirigeant;
   }
+  get population(){
+    return this._population;
+  }
+  set population (population){
+    this._population = population;
+  }
+  get capacitePopulation(){
+    return this._capacitePopulation;
+  }
+  set capacitePopulation (capacitePopulation){
+    this._capacitePopulation = capacitePopulation;
+  }
   get richesse(){
     return this._richesse;
   }
@@ -47,7 +65,24 @@ class Cite {
   set moral(moral){
     this._moral = moral;
   }
-
+  get energie() {
+    return this._energie
+  }
+  set energie(energie){
+    this._energie = energie
+  }
+  get ressources() {
+    return this._ressources
+  }
+  set ressources(ressources){
+    this._ressources = ressources
+  }
+  get integrite() {
+    return this._ressources
+  }
+  set integrite(integrite){
+    this._integrite = integrite
+  }
 }
 
 function choisir_nom_personnage(){
@@ -78,84 +113,107 @@ function changeScreen(ecranDepart, ecranArrivee){
 	document.getElementById(ecranArrivee).removeAttribute('hidden');
 }
 
-function charger_description_cite(ecran_de_depart){
+function charger_description_station(ecran_de_depart){
   afficherDescription();
-  changeScreen(ecran_de_depart, "ecran_description_cite");
+  changeScreen(ecran_de_depart, "ecran_description_station");
 }
 
 
-/*Écran de création de la cité*/
+/*Écran de création de la station*/
 
-document.getElementById("btn_creation_cite").addEventListener('click', function (e){
-  var nom_cite = document.getElementById("txt_nom_cite").value
+document.getElementById("btn_creation_station").addEventListener('click', function (e){
+  var nom_station = document.getElementById("txt_nom_station").value
   var regime_choisi = document.getElementById("select_type_gouv").value
-  cite_joueur = new Cite(nom_cite, regime_choisi);
-  console.log("on a créé une cité! = "+cite_joueur);
-  charger_description_cite("ecran_creation_cite");
+  station_joueur = new station(nom_station, regime_choisi);
+  console.log("on a créé une station! = "+station_joueur);
+  charger_description_station("ecran_creation_station");
 });
 
 
-/*Écran de description de la cité*/
+/*Écran de description de la station*/
 function afficherDescription() {
-    document.getElementById('descriptionCitePage').textContent = cite_joueur.nom;
-    document.getElementById('consulCite').textContent = cite_joueur.dirigeant;
-    document.getElementById('richesseInfo').textContent = cite_joueur.richesse;
-    document.getElementById('tourinfo').textContent = tour
+    document.getElementById('tourInfo').textContent = tour;
+    document.getElementById('nomStationPage').textContent = station_joueur.nom;
+    document.getElementById('consulStation').textContent = station_joueur.dirigeant;
+    document.getElementById('consulStation2').textContent = station_joueur.dirigeant;
+    document.getElementById('richesseInfo').textContent = station_joueur.richesse;
+    document.getElementById('typeGouvernementStationPage').textContent = station_joueur.regime;
+    document.getElementById('moralInfo').textContent = station_joueur.moral;
+    document.getElementById('energieInfo').textContent = station_joueur.energie;
+    document.getElementById('ressourcesInfo').textContent = station_joueur.ressources;
+    document.getElementById('populationInfo').textContent = station_joueur.population;
+    document.getElementById('integriteInfo').textContent = station_joueur.integrite;
+    document.getElementById('capacitePopulationInfo').textContent = station_joueur.capacitePopulation;
   }
 
-
-
-document.getElementById('tourinfo').textContent = tour;
 document.querySelector('#btnActionChoix').addEventListener('click', function (e){
-  var choix = document.querySelector('#actionchoix').selectedOptions[0].value
+  var choix = document.querySelector('#actionChoix').selectedOptions[0].value
   console.log(choix)
   switch(choix) {
     case "fete":
       alert("C'est la fête et la danse!");
-      tour++
-      cite_joueur.richesse--
-      cite_joueur.moral++
+      station_joueur.richesse--
+      station_joueur.moral = parseInt(station_joueur.moral + (Math.floor(Math.random() * 4) - 2), 10)
+      station_joueur.energie--
     break;
   case "commerce":
-    tour++
-    cite_joueur.richesse++
-    cite_joueur.moral--
-      alert("C'est jour de marché!");
+    station_joueur.richesse++
+    station_joueur.moral--
+      alert("C'est jour de marché sur " + station_joueur.nom);
+    break;
+  case "calculs":
+    station_joueur.richesse++
+    station_joueur.moral--
+      alert("Les ordinateurs de " + station_joueur.nom + " s'occupent à faire des calculs importants et insipides.");
     break;
   default:
       alert("Ok!");
       tour ++
     } 
   console.log(e)
-  console.log(tour)
-  console.log(cite_joueur.richesse)
-  console.log(cite_joueur.moral)
   afficherDescription();
+  verifierFinPartie();
   })
 
+  document.querySelector('#btnActionChoixInfluence').addEventListener('click', function (e){
+    var choixInfluence = document.querySelector('#actionChoix').selectedOptions[0].value
+    console.log(choixInfluence)
+    switch(choixInfluence) {
+      case "favoriserPeuple":
+        alert("Le peuple s'en fou un peu!");
+        station_joueur.richesse--;
+        station_joueur.moral++;
+        station_joueur.energie--;
+      break;
+    default:
+        alert("Ok!");
+      } 
+    console.log(e)
+    afficherDescription();
+    verifierFinPartie();
+    })
 
-
-	
-	
-  /*
-class Partie {
-
-  constructor(){
-    this.tour = 1
-    this.etat = true
+function verifierFinPartie(){
+  tour ++
+  if (station_joueur.richesse <= 0 || station_joueur.moral <= 0 || station_joueur.energie <= 0) {
+    alert("Vous avez perdu! " + station_joueur.dirigeant + " a guidé la station pendant " + tour + " cycles." );
+    location.reload(); 
+  }
+  if (station_joueur.capacitePopulation <= station_joueur.population ) {
+    alert("Le moral descend, car une part de la population n'a pas accès à du logement.");
+    station_joueur.moral--;
   }
 
-  get tour() {
-    return this.tour
+  if (station_joueur.moral >= 15 ) {
+    alert("Le moral descend, car une part de la population n'a pas accès à du logement.");
+    station_joueur.population++;
+  }
+  if (station_joueur.regime == "Lotocratie"){
+    alert("Il y a un nouveau tirage au sort pour le gouvernement de la station.")
+    var nouveauNomDirigeant = choisir_nom_personnage()
+    alert(nouveauNomDirigeant + " est maintenant à la tête de la station.")
+    station_joueur.dirigeant = nouveauNomDirigeant
   }
 
-
-
-  while (this.etat === true) {
-
-  }
 
 }
-*/
-
-

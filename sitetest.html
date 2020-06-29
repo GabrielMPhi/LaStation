@@ -2,14 +2,8 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/bulmaswatch/darkly/bulmaswatch.min.css">
         <style>
-            .red{
-                color: #ff0000;
-            }
-            .blue{
-                color: #1BC0F7;
-            }
             p{transition: color 1d;
             }
 			.ecran{}
@@ -17,53 +11,95 @@
     </head>
     <body>
     
-    <!-- **********ECRAN DESCRIPTION DE LA CITÉ*************-->
+    <!-- **********ECRAN DESCRIPTION DE LA station*************-->
     <section class="section">
-        <div class="ecran" id="ecran_description_cite" hidden>
+        <div class="ecran" id="ecran_description_station" hidden>
             <header>
-                <h1 class="title">Description de la cite</h1>
+                <h1 class="title">Description de la station</h1>
              
             </header>
             <table class="table is-bordered">
                 <tr>
-                    <td>Nom de la cité:</td>
-                    <td><span class="paragraph" id="descriptionCitePage">Insérer la description ici</span></td>
+                    <td>Nom de la station:</td>
+                    <td><span class="paragraph" id="nomStationPage">Insérer le nom de la station ici</span></td>
+                </tr>
+                <tr>
+                    <td>Régime:</td>
+                    <td><span class="paragraph" id="typeGouvernementStationPage">Insérer le type de gouvernement</span></td>
                 </tr>
                 <tr>
                     <td>Dirigeant:</td>
-                    <td><span class="paragraph" id="consulCite">Insérer le nom du gouverneur</span></td>
+                    <td><span class="paragraph" id="consulStation">Insérer le nom du gouverneur</span></td>
                 </tr>
                 <tr>
                     <td>Tour:</td>
-                    <td><span class="paragraph" id="tourinfo">Numéro du tour</span></td>
+                    <td><span class="paragraph" id="tourInfo">Numéro du tour</span></td>
                 </tr>
                 <tr>
-                    <td>Richesse:</td>
-                    <td><span class="paragraph" id="richesseInfo">Numéro du tour</span></td>
+                    <td>Population de la station & capacité:</td>
+                    <td><span class="paragraph" id="populationInfo">Population de la station / </span><span class="paragraph"> / </span><span class="paragraph" id="capacitePopulationInfo">Capacité </span></td>
+                </tr>
+                <tr>
+                    <td>Richesse des habitants:</td>
+                    <td><span class="paragraph" id="richesseInfo">Richesse de la station</span></td>
+                </tr>
+                <tr>
+                    <td>Moral des habitants:</td>
+                    <td><span class="paragraph" id="moralInfo">Énergie de la station</span></td>
+                </tr>
+                <tr>
+                    <td>Énergie de la station:</td>
+                    <td><span class="paragraph" id="energieInfo">Énergie de la station</span></td>
+                </tr>
+                <tr>
+                    <td>Ressources de la station:</td>
+                    <td><span class="paragraph" id="ressourcesInfo">Ressources de la station</span></td>
+                </tr>
+                <tr>
+                    <td>Intégrité de la station:</td>
+                    <td><span class="paragraph" id="integriteInfo">Intégrité de la station</span></td>
+                </tr>
+                <tr>
+                    <td>Concentrer l'énergie pour :</td>
+                    <td><form action="#" id="formchoix">
+                        <div class="select">
+                            <select name="actionChoix" id="actionChoix">
+                                <option value="fete">Faire la fête!</option>
+                                <option value="commerce">Faire du commerce!</option>
+                                <option value="calculs">Faire des calculs!</option>
+                            </select>
+                        </div>
+                    <input class="button is-success" type="button" id="btnActionChoix" value="Envoyer">
+                    </form></td>
+                </tr>
+                <tr>
+                    <td><span class="paragraph">Influencer </span><span class="paragraph" id="consulStation2">Insérer le nom du dirigeant</span></td>
+                    <td><form action="#" id="formchoix">
+                        <div class="select">
+                            <select name="actionchoixInfluence" id="actionchoixInfluence">
+                                <option value="favoriserPeuple">Favoriser le peuple!</option>
+                            </select>
+                        </div>
+                    <input class="button is-success" type="button" id="btnActionChoixInfluence" value="Envoyer">
+                    </form></td>
                 </tr>
             </table>
-
-            <form action="#" id="formchoix">
-                <div class="select">
-                    <select name="actionchoix" id="actionchoix">
-                        <option value="fete">Faire la fête!</option>
-                        <option value="commerce">Faire du commerce!</option>
-                    </select>
-                </div>
-            <input class="button is-success" type="button" id="btnActionChoix" value="Envoyer">
-            </form>
+            
          </div>
     </section>
-<!-- **********ECRAN CRÉATION DE LA CITÉ*************-->
-<section class="section">
-        <div class="ecran" id="ecran_creation_cite">
-            <h1 class="title">Choisissez les valeurs de votre cité</h1>
-            <span>Cité est un jeu où vous incarnez l'esprit d'une citée et allez la suivre durant des années. Pour commencer, il faut créer cette citée. </span>>
 
-            <form id="form_creation_cite">
+
+    <!-- **********ECRAN CRÉATION DE LA STATION*************-->
+<section class="section">
+        <div class="ecran" id="ecran_creation_station">
+            <h1 class="title">Choisissez les valeurs de votre station</h1>
+            <span>Station est un jeu où vous incarnez l'intelligence artificielle qui guide une station spatiale au fin fond de l'Univers.
+                Pour commencer, il faut choisir le nom et le type d'organisation structurant la communauté spatiale. </span>
+
+            <form id="form_creation_station">
                 <div class="columns">
                     <div class="column is-3">
-                        Entrez le nom de votre cité: <input class="input" type="text" id="txt_nom_cite"><br><br>
+                        Entrez le nom de votre station: <input class="input" type="text" id="txt_nom_station"><br><br>
                     </div>
                 </div>
                 Choisissez le type de gouvernement: <br>
@@ -71,7 +107,7 @@
                     <select id="select_type_gouv"></select>
                </div> 
                <br><br>
-                <input class="button is-success" type="button" id="btn_creation_cite" value="Créer la cité">
+                <input class="button is-success" type="button" id="btn_creation_station" value="Créer la station">
             </form>
         </div>
 
