@@ -1,13 +1,16 @@
 //VARIABLES GLOBALES
-var liste_type_gouv = ["Lotocratie", "République", "République marchande", "Autocratie", "Monarchie", "Théocratie", "Ploutocratie", "Gabrielocratie", "Épistocratie", "Kakistocratie"];
+var liste_type_gouv = ["Lottocratie", "République", "République marchande", "Autocratie", "Monarchie", "Théocratie", "Ploutocratie", "Gabrielocratie", "Épistocratie", "Kakistocratie", "Communisme", "Idiocratie"];
 let nomsDeLastation = ["Montréal", "Laval", "Candiac", "Paris", "Montpellier", "DS9", "DS7", "Terre", "Ahuntsic", "Villeray"]
-var prenomsPersonnagesHomme = ["Bernard", "Martin", "Gabriel", "Mathieu", "Arthur", "Thomas", "Christian", "Simon", "Geralt", "Alexandre", "Étienne"]
+var prenomsPersonnagesHomme = ["Bernard", "Martin", "Gabriel", "Mathieu", "Arthur", "Thomas", "Christian", "Simon", "Geralt", "Alexandre", "Étienne", "François"]
 var prenomsPersonnagesFemme = ["Catherine", "Rapunzel", "Sophia", "Morgane", "Rieke", "Julia", "Linda", "Christina", "Anne-Sophie", "Anne-Marie", "Marie-Pier", "Marie", "Anne", "Anna"]
 var prenomsPersonnagesTotal = [].concat(prenomsPersonnagesHomme, prenomsPersonnagesFemme);
 var momsFamillePersonnages = ["Monette", "Ducharme", "Carel", "Dax", "Rideout", "Delorme", "Picard", "Sisko", "Janeway", "Pratte", "Séguin", "Gagné", "Turpin", "Bouras", "De Rivia", "Côté", "Gingras"]
 var listIdeology = ["Républicanisme", "Anarchisme", "Autoritarisme", "Ludisme", "Gabrielisme", "Scientisme", "Féminisme", "Turpinisme", "Chaotisme", "Monarchisme", "Bernardisme", "Socialisme", "Libéralisme", "Capitalisme", "Scientisme", "Conspirationisme", "Rawlsisme", "Anarco-capitalisme", "Historicisme", "Lavalisme", "Municipalisme", "Vedge", "Amour", "N'importe quoi", "Apathie"]
 var listeGenre = ["Homme", "Femme", "Fluide", "Homme", "Femme", "Homme", "Femme", "Non-binaire" ,"Autre"]
-listeTitresDirigeant = ["Capitaine", "Commandant", "Consul", "Guide", "Président", "Général", "Professeur", "Dude", "Tsé, lui-là", "Philosophe", "Politicien", "Délégué", "Vendu", "Maître", "WTF?"]
+var listeTitresDirigeant = ["Capitaine", "Commandant", "Consul", "Guide", "Président", "Général", "Professeur", "Dude", "Tsé, lui-là", "Philosophe", "Politicien", "Délégué", "Vendu", "Maître", "WTF?"]
+let nomsDeSecteursListe = [""]
+let ressourcesTypeList = ["Gold Pressed Latinum", "Livres de philo", "Deuterium", "Awesomeness"]
+let listOfLawInPlace = [""]
 let tour = 1
 var station_joueur;
 var station_ordi;
@@ -33,6 +36,7 @@ class Station {
     this._chaos = 5;
     this._liberte = 10;
     this._energie = 10;
+    this._connaissance = 1;
     this._ressources = 10;
     this._integrite = 10;
     this._randomNobody = [];
@@ -103,6 +107,12 @@ class Station {
   }
   set energie(energie){
     this._energie = energie
+  }
+  get connaissance() {
+    return this._connaissance
+  }
+  set connaissance(connaissance){
+    this._connaissance = connaissance
   }
   get ressources() {
     return this._ressources
@@ -275,6 +285,7 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
 
 /*Écran de description de la station*/
 function afficherDescription() {
+    document.getElementById('ecranDescriptionStationTitrePrincipal').textContent = "Description de la station " + station_joueur.nom 
     document.getElementById('tourInfo').textContent = tour;
     document.getElementById('nomStationPage').textContent = station_joueur.nom;
     document.getElementById('dirigeantStationTitre').textContent = station_joueur.dirigeant.titre;
@@ -286,10 +297,12 @@ function afficherDescription() {
     document.getElementById('ordreStationInfo').textContent = station_joueur.ordre;
     document.getElementById('chaosStationInfo').textContent = station_joueur.chaos;
     document.getElementById('energieInfo').textContent = station_joueur.energie;
+    document.getElementById('connaissanceDataBaseInfo').textContent = station_joueur.connaissance;
     document.getElementById('ressourcesInfo').textContent = station_joueur.ressources;
     document.getElementById('populationInfo').textContent = station_joueur.population;
     document.getElementById('integriteInfo').textContent = station_joueur.integrite;
     document.getElementById('capacitePopulationInfo').textContent = station_joueur.capacitePopulation;
+
   }
 
   document.getElementById("btnInfoDirigeant").addEventListener('click', function (e){

@@ -15,10 +15,13 @@
     <section class="section">
         <div class="ecran" id="ecran_description_station" hidden>
             <header>
-                <h1 class="title">Description de la station</h1>
+                <h1 class="title" id="ecranDescriptionStationTitrePrincipal">Description de la station</h1>
              
             </header>
-            <table class="table is-bordered">
+            <table class="table is-bordered is-hoverable">
+                <thead>
+                    <h2 class="subtitle">L'intérieur de la station</h2>
+                </thead>
                 <tr>
                     <td>Nom de la station:</td>
                     <td><span class="paragraph" id="nomStationPage">Insérer le nom de la station ici</span></td>
@@ -50,15 +53,34 @@
                     <td>Moral des habitants:</td>
                     <td><span class="paragraph" id="moralInfo">Énergie de la station</span></td>
                 </tr>
-                
                 <tr>
                     <td>Ordre & Chaos de la station :</td>
                     <td><span class="paragraph" id="ordreStationInfo">Ordre de la station / </span><span class="paragraph"> / </span><span class="paragraph" id="chaosStationInfo">Chaos de la Station </span></td>
                 </tr>
+                <tr>
+                    <td><span class="paragraph">Influencer </span><span class="paragraph" id="consulStation2">Insérer le nom du dirigeant</span></td>
+                    <td><form action="#" id="formchoix">
+                        <div class="select">
+                            <select name="actionChoixInfluence" id="actionChoixInfluence">
+                                <option value="favoriserPeuple">Favoriser le peuple!</option>
+                                <option value="exileHabitant">Engendrer du conflit!</option>
+                            </select>
+                        </div>
+                    <input class="button is-success" type="button" id="btnActionChoixInfluence" value="Envoyer">
+                    </form></td>
+                </tr>
+
+                </table>
+                <table class="table is-bordered is-hoverable">
+                    <h2 class="subtitle">L'intelligence Artificielle gouvernante</h2>
 
                 <tr>
                     <td>Énergie de la station:</td>
                     <td><span class="paragraph" id="energieInfo">Énergie de la station</span></td>
+                </tr>
+                <tr>
+                    <td>Connaissance dans la base de donnée de la station:</td>
+                    <td><span class="paragraph" id="connaissanceDataBaseInfo">Connaissance dans la base de donnée de la station</span></td>
                 </tr>
                 <tr>
                     <td>Ressources de la station:</td>
@@ -82,18 +104,6 @@
                             </select>
                         </div>
                     <input class="button is-success" type="button" id="btnActionChoix" value="Envoyer">
-                    </form></td>
-                </tr>
-                <tr>
-                    <td><span class="paragraph">Influencer </span><span class="paragraph" id="consulStation2">Insérer le nom du dirigeant</span></td>
-                    <td><form action="#" id="formchoix">
-                        <div class="select">
-                            <select name="actionChoixInfluence" id="actionChoixInfluence">
-                                <option value="favoriserPeuple">Favoriser le peuple!</option>
-                                <option value="exileHabitant">Engendrer du conflit!</option>
-                            </select>
-                        </div>
-                    <input class="button is-success" type="button" id="btnActionChoixInfluence" value="Envoyer">
                     </form></td>
                 </tr>
             </table>
