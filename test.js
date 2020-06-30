@@ -1,23 +1,28 @@
 //VARIABLES GLOBALES
 var liste_type_gouv = ["Lotocratie", "République", "République marchande", "Autocratie", "Monarchie", "Théocratie", "Ploutocratie", "Gabrielocratie"];
 let nomsDeLastation = ["Montreal", "Laval", "Candiac", "Paris", "Montpellier", "DS7"]
-var prenomsPersonnages = ["Catherine", "Bernard", "Rapunzel", "Sophia", "Martin", "Gabriel", "Mathieu", "Morgane", "Arthur", "Rieke", "Julia", "Thomas", "Christina", "Christian", "Simon", "Geralt", "Anne-Sophie", "Anne-Marie", "Alexandre"]
+var prenomsPersonnagesHomme = ["Bernard", "Martin", "Gabriel", "Mathieu", "Arthur", "Thomas", "Christian", "Simon", "Geralt", "Alexandre"]
+var prenomsPersonnagesFemme = ["Catherine", "Rapunzel", "Sophia", "Morgane", "Rieke", "Julia", "Christina", "Anne-Sophie", "Anne-Marie"]
+var prenomsPersonnagesTotal = [].concat(prenomsPersonnagesHomme, prenomsPersonnagesFemme);
 var momsFamillePersonnages = ["Monette", "Ducharme", "Carel", "Dax", "Rideout", "Delorme", "Picard", "Sisko", "Janeway", "Pratte", "Séguin", "Gagné", "Turpin", "Bouras", "De Rivia", "Côté"]
 let tour = 1
 var station_joueur;
 var station_ordi;
 
 
-class station {
+class Station {
 
   constructor(nom, regime){
     this._nom = nom;
     this._regime = regime;
-    this._dirigeant = choisir_nom_personnage();
+    this._dirigeant = new Personnage();
     this._population = parseInt((Math.floor(Math.random() * 5) + 14), 10)
     this._capacitePopulation = parseInt((Math.floor(Math.random() * 5) + 20), 10)
     this._richesse = 10;
     this._moral = 10;
+    this._ordre = 5;
+    this._chaos = 5;
+    this._liberte = 10;
     this._energie = 10;
     this._ressources = 10;
     this._integrite = 10;
@@ -65,6 +70,24 @@ class station {
   set moral(moral){
     this._moral = moral;
   }
+  get ordre(){
+    return this._ordre;
+  }
+  set ordre(ordre){
+    this._ordre = ordre;
+  }
+  get chaos(){
+    return this._chaos;
+  }
+  set chaos(chaos){
+    this._chaos = chaos;
+  }
+  get liberte(){
+    return this._liberte;
+  }
+  set liberte(liberte){
+    this._liberte = liberte;
+  }
   get energie() {
     return this._energie
   }
@@ -85,8 +108,67 @@ class station {
   }
 }
 
+class Personnage {
+
+  constructor(){
+    this._genre = choiceGender ();
+    this._nom = choisir_nom_personnage();
+    this._ideologie = choiceIdeology ();
+    this._height = parseInt((Math.floor(Math.random() * 70) + 145), 10);
+    this._age = parseInt((Math.floor(Math.random() * 20) + 18), 10)
+  }
+  get genre() {
+    return this._genre
+  }
+  set genre(genre){
+    this._genre = genre
+  }
+    get nom() {
+    return this._nom
+  }
+  set nom(nom){
+    this._nom = nom
+  }
+  get ideologie() {
+    return this._ideologie
+  }
+  set ideologie(ideologie){
+    this._ideologie = ideologie
+  }
+  get height() {
+    return this._height
+  }
+  set height(height){
+    this._height = height
+  }  get age() {
+    return this._age
+  }
+  set age(age){
+    this._age = age
+  }
+
+}
+/*FONCTIONS CRÉATION DES PERSONNAGES*/
+function choiceGender (){
+  var listeGenre = ["Homme", "Femme", "Fluide", "Homme", "Femme", "Homme", "Femme", "Non-binaire" ,"Autre"]
+  var choixGenre = listeGenre[Math.floor(Math.random() * listeGenre.length)]
+  return choixGenre
+}
+
+function choiceIdeology (){
+  var listIdeology = ["Républicanisme", "Anarchisme", "Autoritarisme", "Ludisme", "Gabrielisme", "Turpinisme", "Chaotisme", "Monarchisme", "Bernardisme", "Socialisme", "Libéralisme", "Capitalisme"]
+  var choiceIdeology = listIdeology[Math.floor(Math.random() * listIdeology.length)]
+  return choiceIdeology
+}
+
 function choisir_nom_personnage(){
-  var nomPersonnageFinal = prenomsPersonnages[Math.floor(Math.random() * prenomsPersonnages.length)] + " " +momsFamillePersonnages[Math.floor(Math.random() * momsFamillePersonnages.length)]
+  if (this.genre == "Homme") {
+    var nomPersonnageFinal = prenomsPersonnagesHomme[Math.floor(Math.random() * prenomsPersonnagesHomme.length)] + " " +momsFamillePersonnages[Math.floor(Math.random() * momsFamillePersonnages.length)]
+  } else if (this.genre == "Femme"){
+    var nomPersonnageFinal = prenomsPersonnagesFemme[Math.floor(Math.random() * prenomsPersonnagesFemme.length)] + " " +momsFamillePersonnages[Math.floor(Math.random() * momsFamillePersonnages.length)]
+  } else {
+    var nomPersonnageFinal = prenomsPersonnagesTotal[Math.floor(Math.random() * prenomsPersonnagesTotal.length)] + " " +momsFamillePersonnages[Math.floor(Math.random() * momsFamillePersonnages.length)]
+  }
   return nomPersonnageFinal
 }
 
@@ -124,7 +206,10 @@ function charger_description_station(ecran_de_depart){
 document.getElementById("btn_creation_station").addEventListener('click', function (e){
   var nom_station = document.getElementById("txt_nom_station").value
   var regime_choisi = document.getElementById("select_type_gouv").value
-  station_joueur = new station(nom_station, regime_choisi);
+  if (nom_station == ""){
+    nom_station = "DS7"
+  }
+  station_joueur = new Station(nom_station, regime_choisi);
   console.log("on a créé une station! = "+station_joueur);
   charger_description_station("ecran_creation_station");
 });
@@ -134,8 +219,8 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
 function afficherDescription() {
     document.getElementById('tourInfo').textContent = tour;
     document.getElementById('nomStationPage').textContent = station_joueur.nom;
-    document.getElementById('consulStation').textContent = station_joueur.dirigeant;
-    document.getElementById('consulStation2').textContent = station_joueur.dirigeant;
+    document.getElementById('consulStation').textContent = station_joueur.dirigeant.nom;
+    document.getElementById('consulStation2').textContent = station_joueur.dirigeant.nom;
     document.getElementById('richesseInfo').textContent = station_joueur.richesse;
     document.getElementById('typeGouvernementStationPage').textContent = station_joueur.regime;
     document.getElementById('moralInfo').textContent = station_joueur.moral;
@@ -145,6 +230,14 @@ function afficherDescription() {
     document.getElementById('integriteInfo').textContent = station_joueur.integrite;
     document.getElementById('capacitePopulationInfo').textContent = station_joueur.capacitePopulation;
   }
+
+  document.getElementById("btnInfoDirigeant").addEventListener('click', function (e){
+    alert(station_joueur.dirigeant.nom + " est la personne qui dirige la station."+ 
+      "\r\n" + "Son idéologie : " + station_joueur.dirigeant.ideologie +
+      "\r\n" + station_joueur.dirigeant.height + "cm." +
+      "\r\n" + "Son genre : " + station_joueur.dirigeant.genre)
+  });
+
 
 document.querySelector('#btnActionChoix').addEventListener('click', function (e){
   var choix = document.querySelector('#actionChoix').selectedOptions[0].value
@@ -196,6 +289,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
         alert("Ok!");
       } 
     console.log(e)
+    console.log(station_joueur.dirigeant.nom)
     afficherDescription();
     verifierFinPartie();
     })
@@ -217,11 +311,10 @@ function verifierFinPartie(){
   }
   if (station_joueur.regime == "Lotocratie" && tour == 5 || tour == 10){
     alert("Il y a un nouveau tirage au sort pour le gouvernement de la station.")
-    var nouveauNomDirigeant = choisir_nom_personnage()
-    station_joueur.dirigeant = nouveauNomDirigeant
-    document.getElementById('consulStation').textContent = station_joueur.dirigeant;
-    document.getElementById('consulStation2').textContent = station_joueur.dirigeant;
-    alert(nouveauNomDirigeant + " est maintenant à la tête de la station.")
+    station_joueur.dirigeant = new Personnage();
+    document.getElementById('consulStation').textContent = station_joueur.dirigeant.nom;
+    document.getElementById('consulStation2').textContent = station_joueur.dirigeant.nom;
+    alert(station_joueur.dirigeant.nom + " est maintenant à la tête de la station.");
   }
 
 
