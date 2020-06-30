@@ -1,11 +1,11 @@
 //VARIABLES GLOBALES
-var liste_type_gouv = ["Lotocratie", "République", "République marchande", "Autocratie", "Monarchie", "Théocratie", "Ploutocratie", "Gabrielocratie"];
+var liste_type_gouv = ["Lotocratie", "République", "République marchande", "Autocratie", "Monarchie", "Théocratie", "Ploutocratie", "Gabrielocratie", "Épistocratie", "Kakistocratie"];
 let nomsDeLastation = ["Montréal", "Laval", "Candiac", "Paris", "Montpellier", "DS9", "DS7", "Terre", "Ahuntsic", "Villeray"]
 var prenomsPersonnagesHomme = ["Bernard", "Martin", "Gabriel", "Mathieu", "Arthur", "Thomas", "Christian", "Simon", "Geralt", "Alexandre", "Étienne"]
 var prenomsPersonnagesFemme = ["Catherine", "Rapunzel", "Sophia", "Morgane", "Rieke", "Julia", "Christina", "Anne-Sophie", "Anne-Marie", "Marie-Pier", "Marie", "Anne", "Anna"]
 var prenomsPersonnagesTotal = [].concat(prenomsPersonnagesHomme, prenomsPersonnagesFemme);
 var momsFamillePersonnages = ["Monette", "Ducharme", "Carel", "Dax", "Rideout", "Delorme", "Picard", "Sisko", "Janeway", "Pratte", "Séguin", "Gagné", "Turpin", "Bouras", "De Rivia", "Côté", "Gingras"]
-var listIdeology = ["Républicanisme", "Anarchisme", "Autoritarisme", "Ludisme", "Gabrielisme", "Turpinisme", "Chaotisme", "Monarchisme", "Bernardisme", "Socialisme", "Libéralisme", "Capitalisme", "Scientisme", "Conspirationisme", "Rawlsisme", "Anarco-capitalisme", "Historicisme", "Lavalisme", "Municipalisme", "Vedge", "Amour", "N'importe quoi", "Apathie"]
+var listIdeology = ["Républicanisme", "Anarchisme", "Autoritarisme", "Ludisme", "Gabrielisme", "Scientisme", "Turpinisme", "Chaotisme", "Monarchisme", "Bernardisme", "Socialisme", "Libéralisme", "Capitalisme", "Scientisme", "Conspirationisme", "Rawlsisme", "Anarco-capitalisme", "Historicisme", "Lavalisme", "Municipalisme", "Vedge", "Amour", "N'importe quoi", "Apathie"]
 var listeGenre = ["Homme", "Femme", "Fluide", "Homme", "Femme", "Homme", "Femme", "Non-binaire" ,"Autre"]
 listeTitresDirigeant = ["Capitaine", "Commandant", "Consul", "Guide", "Président", "Général", "Professeur", "Dude", "Tsé, lui-là", "Philosophe", "Politicien", "Délégué", "Vendu", "Maître", "WTF?"]
 let tour = 1
@@ -29,6 +29,7 @@ class Station {
     this._energie = 10;
     this._ressources = 10;
     this._integrite = 10;
+    this._randomNobody = [];
   }
 
   get nom() {
@@ -104,11 +105,18 @@ class Station {
     this._ressources = ressources
   }
   get integrite() {
-    return this._ressources
+    return this._integrite
   }
   set integrite(integrite){
     this._integrite = integrite
   }
+  get randomNobody() {
+    return this._randomNobody
+  }
+  set randomNobody(randomNobody){
+    this._randomNobody = randomNobody
+  }
+
 }
 
 class Personnage {
@@ -119,7 +127,7 @@ class Personnage {
     var nom = momsFamillePersonnages[Math.floor(Math.random() * momsFamillePersonnages.length)]
     
     this._genre = genre;
-    this._titre = listeTitresDirigeant[Math.floor(Math.random() * listeTitresDirigeant.length)]
+    this._titre = "";
     this._prenom = prenom;
     this._nom = nom
     this._nomComplet = prenom + " " + nom
@@ -128,6 +136,7 @@ class Personnage {
     this._age = parseInt((Math.floor(Math.random() * 20) + 18), 10)
     this._origine = nomsDeLastation[Math.floor(Math.random() * nomsDeLastation.length)]
   }
+
   get genre() {
     return this._genre
   }
@@ -181,6 +190,11 @@ class Personnage {
   }
   set origine(origine){
     this._origine = origine
+  }
+
+  gagneUnTitre = function (){
+    var nouveauTitre = listeTitresDirigeant[Math.floor(Math.random() * listeTitresDirigeant.length)]
+    this.titre = nouveauTitre
   }
 
 }
@@ -245,6 +259,11 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
   }
   station_joueur = new Station(nom_station, regime_choisi);
   console.log("on a créé une station! = "+station_joueur);
+  station_joueur.dirigeant.gagneUnTitre();
+  var nobodyUn = new Personnage();
+  var nododyDeux = new Personnage();
+  station_joueur.randomNobody = nobodyUn
+  console.log("Nobody = " +station_joueur.randomNobody.nomComplet)
   charger_description_station("ecran_creation_station");
   console.log(station_joueur.dirigeant.nomComplet)
 });
@@ -284,6 +303,16 @@ function afficherDescription() {
     " " + "À ce titre, l'unité de temps centrale est l'année, le cycle.")
   });
 
+  document.getElementById("btnInfoPopulationListNobody").addEventListener('click', function (e){
+    alert(station_joueur.randomNobody.titre + " " + station_joueur.randomNobody.nomComplet + " est un random nobody de la station."+ 
+    "\r\n" + "Son idéologie : " + station_joueur.randomNobody.ideologie +
+    "\r\n" + station_joueur.randomNobody.height + "cm." +
+    "\r\n" + "Son genre : " + station_joueur.randomNobody.genre +
+    "\r\n" + "Son origine : " + station_joueur.randomNobody.origine
+
+    )
+  });
+
 
 document.querySelector('#btnActionChoix').addEventListener('click', function (e){
   var choix = document.querySelector('#actionChoix').selectedOptions[0].value
@@ -309,7 +338,11 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
     station_joueur.integrite++
     station_joueur.energie = station_joueur.energie - 3
     station_joueur.ressources--
-      alert("Les ordinateurs de " + station_joueur.nom + " s'occupent à faire des calculs importants et insipides.");
+      alert("Vos systèmes se mobilisent pour améliorer la structure de la station et la population, incluant " + station_joueur.randomNobody.nomComplet + ", se déploit construire de nouvelles instalations.");
+    break;
+  case "pause":
+    alert("Une pause bien méritée pour recharger les batteries et faire les mises-à-jour.");
+    station_joueur.energie = station_joueur.energie + 4;
     break;
   default:
       alert("Ok!");
