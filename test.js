@@ -5,9 +5,9 @@ var prenomsPersonnagesHomme = ["Bernard", "Martin", "Gabriel", "Mathieu", "Arthu
 var prenomsPersonnagesFemme = ["Catherine", "Rapunzel", "Sophia", "Morgane", "Rieke", "Julia", "Christina", "Anne-Sophie", "Anne-Marie", "Marie-Pier", "Marie", "Anne", "Anna"]
 var prenomsPersonnagesTotal = [].concat(prenomsPersonnagesHomme, prenomsPersonnagesFemme);
 var momsFamillePersonnages = ["Monette", "Ducharme", "Carel", "Dax", "Rideout", "Delorme", "Picard", "Sisko", "Janeway", "Pratte", "Séguin", "Gagné", "Turpin", "Bouras", "De Rivia", "Côté", "Gingras"]
-var listIdeology = ["Républicanisme", "Anarchisme", "Autoritarisme", "Ludisme", "Gabrielisme", "Turpinisme", "Chaotisme", "Monarchisme", "Bernardisme", "Socialisme", "Libéralisme", "Capitalisme", , "Rawlsisme", "Anarco-capitalisme", "Historicisme", "Lavalisme", "Municipalisme", "Vedge"]
+var listIdeology = ["Républicanisme", "Anarchisme", "Autoritarisme", "Ludisme", "Gabrielisme", "Turpinisme", "Chaotisme", "Monarchisme", "Bernardisme", "Socialisme", "Libéralisme", "Capitalisme", "Scientisme", "Conspirationisme", "Rawlsisme", "Anarco-capitalisme", "Historicisme", "Lavalisme", "Municipalisme", "Vedge", "Amour", "N'importe quoi", "Apathie"]
 var listeGenre = ["Homme", "Femme", "Fluide", "Homme", "Femme", "Homme", "Femme", "Non-binaire" ,"Autre"]
-listeTitresDirigeant = ["Capitaine", "Commandant", "Consul", "Guide", "Président", "Général", "Professeur", "Dude", "Tsé, lui-là"]
+listeTitresDirigeant = ["Capitaine", "Commandant", "Consul", "Guide", "Président", "Général", "Professeur", "Dude", "Tsé, lui-là", "Philosophe", "Politicien", "Délégué", "Vendu", "Maître", "WTF?"]
 let tour = 1
 var station_joueur;
 var station_ordi;
@@ -254,6 +254,7 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
 function afficherDescription() {
     document.getElementById('tourInfo').textContent = tour;
     document.getElementById('nomStationPage').textContent = station_joueur.nom;
+    document.getElementById('dirigeantStationTitre').textContent = station_joueur.dirigeant.titre;
     document.getElementById('consulStation').textContent = station_joueur.dirigeant.nomComplet;
     document.getElementById('consulStation2').textContent = station_joueur.dirigeant.nomComplet;
     document.getElementById('richesseInfo').textContent = station_joueur.richesse;
@@ -348,7 +349,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
 function verifierFinPartie(){
   tour ++
   if (station_joueur.richesse <= 0 || station_joueur.moral <= 0 || station_joueur.energie <= 0 || station_joueur.integrite <=0 ) {
-    alert("Vous avez perdu! " + station_joueur.dirigeant + " a guidé la station pendant " + tour + " cycles." );
+    alert("Vous avez perdu! " + station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet + " a guidé la station pendant " + tour + " cycles." );
     location.reload(); 
   }
   if (station_joueur.capacitePopulation <= station_joueur.population ) {
