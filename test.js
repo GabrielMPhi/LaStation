@@ -2,15 +2,21 @@
 var liste_type_gouv = ["Lotocratie", "République", "République marchande", "Autocratie", "Monarchie", "Théocratie", "Ploutocratie", "Gabrielocratie", "Épistocratie", "Kakistocratie"];
 let nomsDeLastation = ["Montréal", "Laval", "Candiac", "Paris", "Montpellier", "DS9", "DS7", "Terre", "Ahuntsic", "Villeray"]
 var prenomsPersonnagesHomme = ["Bernard", "Martin", "Gabriel", "Mathieu", "Arthur", "Thomas", "Christian", "Simon", "Geralt", "Alexandre", "Étienne"]
-var prenomsPersonnagesFemme = ["Catherine", "Rapunzel", "Sophia", "Morgane", "Rieke", "Julia", "Christina", "Anne-Sophie", "Anne-Marie", "Marie-Pier", "Marie", "Anne", "Anna"]
+var prenomsPersonnagesFemme = ["Catherine", "Rapunzel", "Sophia", "Morgane", "Rieke", "Julia", "Linda", "Christina", "Anne-Sophie", "Anne-Marie", "Marie-Pier", "Marie", "Anne", "Anna"]
 var prenomsPersonnagesTotal = [].concat(prenomsPersonnagesHomme, prenomsPersonnagesFemme);
 var momsFamillePersonnages = ["Monette", "Ducharme", "Carel", "Dax", "Rideout", "Delorme", "Picard", "Sisko", "Janeway", "Pratte", "Séguin", "Gagné", "Turpin", "Bouras", "De Rivia", "Côté", "Gingras"]
-var listIdeology = ["Républicanisme", "Anarchisme", "Autoritarisme", "Ludisme", "Gabrielisme", "Scientisme", "Turpinisme", "Chaotisme", "Monarchisme", "Bernardisme", "Socialisme", "Libéralisme", "Capitalisme", "Scientisme", "Conspirationisme", "Rawlsisme", "Anarco-capitalisme", "Historicisme", "Lavalisme", "Municipalisme", "Vedge", "Amour", "N'importe quoi", "Apathie"]
+var listIdeology = ["Républicanisme", "Anarchisme", "Autoritarisme", "Ludisme", "Gabrielisme", "Scientisme", "Féminisme", "Turpinisme", "Chaotisme", "Monarchisme", "Bernardisme", "Socialisme", "Libéralisme", "Capitalisme", "Scientisme", "Conspirationisme", "Rawlsisme", "Anarco-capitalisme", "Historicisme", "Lavalisme", "Municipalisme", "Vedge", "Amour", "N'importe quoi", "Apathie"]
 var listeGenre = ["Homme", "Femme", "Fluide", "Homme", "Femme", "Homme", "Femme", "Non-binaire" ,"Autre"]
 listeTitresDirigeant = ["Capitaine", "Commandant", "Consul", "Guide", "Président", "Général", "Professeur", "Dude", "Tsé, lui-là", "Philosophe", "Politicien", "Délégué", "Vendu", "Maître", "WTF?"]
 let tour = 1
 var station_joueur;
 var station_ordi;
+
+class Sector {
+
+
+}
+
 
 
 class Station {
@@ -263,9 +269,7 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
   var nobodyUn = new Personnage();
   var nododyDeux = new Personnage();
   station_joueur.randomNobody = nobodyUn
-  console.log("Nobody = " +station_joueur.randomNobody.nomComplet)
   charger_description_station("ecran_creation_station");
-  console.log(station_joueur.dirigeant.nomComplet)
 });
 
 
@@ -313,7 +317,7 @@ function afficherDescription() {
     )
   });
 
-
+// ACTIONS ET ÉVÉNEMENTS
 document.querySelector('#btnActionChoix').addEventListener('click', function (e){
   var choix = document.querySelector('#actionChoix').selectedOptions[0].value
   console.log(choix)
@@ -350,6 +354,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
     } 
   console.log(e)
   afficherDescription();
+  evenementFinTour()
   verifierFinPartie();
   })
 
@@ -374,8 +379,8 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
         alert("Ok!");
       } 
     console.log(e)
-    console.log(station_joueur.dirigeant.nomComplet)
     afficherDescription();
+    evenementFinTour()
     verifierFinPartie();
     })
 
@@ -407,6 +412,15 @@ function verifierFinPartie(){
     document.getElementById('consulStation2').textContent = station_joueur.dirigeant.nomComplet;
     alert(station_joueur.dirigeant.nomComplet + " est maintenant à la tête de la station.");
   }
-
-
 }
+
+function evenementFinTour(){
+  var evenementsList = ["visiteur"]
+  var evenementQuiArrive = evenementsList[Math.floor(Math.random() * evenementsList.length)]
+  switch(evenementQuiArrive){
+    case "visiteur":
+    console.log("VISITE DUN VISITEUR")
+    break;
+  }
+}
+
