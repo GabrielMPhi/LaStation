@@ -35,10 +35,13 @@ class Station {
     this._ordre = 5;
     this._chaos = 5;
     this._liberte = 10;
+    this._securite = 10;
     this._energie = 10;
+    this._influenceCulturelle = 10;
     this._connaissance = 1;
     this._ressources = 10;
     this._integrite = 10;
+    this._cybersecurite = 10;
     this._randomNobody = [];
   }
 
@@ -102,11 +105,23 @@ class Station {
   set liberte(liberte){
     this._liberte = liberte;
   }
+  get securite() {
+    return this._securite
+  }
+  set securite(securite){
+    this._securite = securite
+  }
   get energie() {
     return this._energie
   }
   set energie(energie){
     this._energie = energie
+  }
+  get influenceCulturelle() {
+    return this._influenceCulturelle
+  }
+  set influenceCulturelle(influenceCulturelle){
+    this._influenceCulturelle = influenceCulturelle
   }
   get connaissance() {
     return this._connaissance
@@ -125,6 +140,12 @@ class Station {
   }
   set integrite(integrite){
     this._integrite = integrite
+  }
+  get cybersecurite() {
+    return this._cybersecurite
+  }
+  set cybersecurite(cybersecurite){
+    this._cybersecurite = cybersecurite
   }
   get randomNobody() {
     return this._randomNobody
@@ -147,6 +168,8 @@ class Personnage {
     this._prenom = prenom;
     this._nom = nom
     this._nomComplet = prenom + " " + nom
+    this._influence = parseInt((Math.floor(Math.random() * 10) + 5), 10)
+    this._charisme = parseInt((Math.floor(Math.random() * 10) + 5), 10)
     this._ideologie = choiceIdeology ();
     this._height = parseInt((Math.floor(Math.random() * 70) + 145), 10);
     this._age = parseInt((Math.floor(Math.random() * 20) + 18), 10)
@@ -182,6 +205,18 @@ class Personnage {
   }
   set nomComplet(nomComplet){
     this._nom = nomComplet
+  }
+  get influence() {
+    return this._influence
+  }
+  set influence(influence){
+    this._influence = influence
+  }  
+  get charisme() {
+    return this._charisme
+  }
+  set charisme(charisme){
+    this._charisme = charisme
   }
   get ideologie() {
     return this._ideologie
@@ -291,24 +326,26 @@ function afficherDescription() {
     document.getElementById('dirigeantStationTitre').textContent = station_joueur.dirigeant.titre;
     document.getElementById('consulStation').textContent = station_joueur.dirigeant.nomComplet;
     document.getElementById('consulStation2').textContent = station_joueur.dirigeant.nomComplet;
-    document.getElementById('richesseInfo').textContent = station_joueur.richesse;
+    document.getElementById('richesseStationInfo').textContent = station_joueur.richesse;
     document.getElementById('typeGouvernementStationPage').textContent = station_joueur.regime;
-    document.getElementById('moralInfo').textContent = station_joueur.moral;
+    document.getElementById('moralStationInfo').textContent = station_joueur.moral;
     document.getElementById('ordreStationInfo').textContent = station_joueur.ordre;
     document.getElementById('chaosStationInfo').textContent = station_joueur.chaos;
-    document.getElementById('energieInfo').textContent = station_joueur.energie;
+    document.getElementById('liberteStationInfo').textContent = station_joueur.liberte;
+    document.getElementById('securiteStationInfo').textContent = station_joueur.liberte;
+    document.getElementById('energieStationInfo').textContent = station_joueur.energie;
     document.getElementById('connaissanceDataBaseInfo').textContent = station_joueur.connaissance;
-    document.getElementById('ressourcesInfo').textContent = station_joueur.ressources;
-    document.getElementById('populationInfo').textContent = station_joueur.population;
-    document.getElementById('integriteInfo').textContent = station_joueur.integrite;
-    document.getElementById('capacitePopulationInfo').textContent = station_joueur.capacitePopulation;
-
+    document.getElementById('ressourcesStationInfo').textContent = station_joueur.ressources;
+    document.getElementById('populationStationInfo').textContent = station_joueur.population;
+    document.getElementById('integriteStationInfo').textContent = station_joueur.integrite;
+    document.getElementById('cybersecuriteStationInfo').textContent = station_joueur.cybersecurite;
+    document.getElementById('capacitePopulationStationInfo').textContent = station_joueur.capacitePopulation;
   }
 
   document.getElementById("btnInfoDirigeant").addEventListener('click', function (e){
     alert(station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet + " est la personne qui dirige la station."+ 
       "\r\n" + "Son idéologie : " + station_joueur.dirigeant.ideologie +
-      "\r\n" + station_joueur.dirigeant.height + "cm." +
+      "\r\n" + "Sa taille : " + station_joueur.dirigeant.height + " cm." +
       "\r\n" + "Son genre : " + station_joueur.dirigeant.genre +
       "\r\n" + "Son origine : " + station_joueur.dirigeant.origine
 
