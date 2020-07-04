@@ -10,7 +10,7 @@ var listeGenre = ["Homme", "Femme", "Fluide", "Homme", "Femme", "Homme", "Femme"
 var listeTitresDirigeant = ["Capitaine", "Commandant", "Consul", "Guide", "Président", "Général", "Professeur", "Dude", "Tsé, lui-là", "Philosophe", "Politicien", "Délégué", "Vendu", "Maître", "WTF?"]
 let nomsDeSecteursListe = [""]
 let ressourcesTypeList = ["Gold Pressed Latinum", "Livres de philo", "Deuterium", "Awesomeness"]
-let listeTypesSectionsStation = ["Arboretum", ]
+let listeTypesSectionsStation = ["Arboretum", "Bibliothèque"]
 let listOfLawInPlace = [""]
 let tour = 1
 var station_joueur;
@@ -455,18 +455,22 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
     alert("Il y a un débat entre " + participantA.nomComplet + " et " + participantB.nomComplet)
     if (participantA.ideologie == "Républicanisme" && participantB.ideologie != "Républicanisme") {
       alert(participantA.nomComplet + " a gagné!")
+      var gagnantDebatPhilo = participantA.nomComplet
       station_joueur.moral++;
     } else if (participantB.ideologie == "Républicanisme" && participantA.ideologie != "Républicanisme"){
       alert(participantB.nomComplet + " a gagné!")
+      var gagnantDebatPhilo = participantB.nomComplet
       station_joueur.moral++;
     } else if (participantB.ideologie == "Gabrielisme" && participantA.ideologie != "Gabrielisme" && participantA.ideologie != "Républicanisme" ){
       alert(participantB.nomComplet + " a gagné!")
+      var gagnantDebatPhilo = participantB.nomComplet
       station_joueur.moral++;
     } else {
       alert("Égalité. Confusion. Étrangeté.")
+      gagnantDebatPhilo = "Il n'y a pas de gagnant."
     }
     alert("Le peuple s'en fou un peu!");
-
+    return gagnantDebatPhilo
   }
 
 
@@ -541,7 +545,7 @@ btnExitEvent.addEventListener('click', () => {
 
 
 function evenementFinTour(){
-  var evenementsList = ["visiteur"]
+  var evenementsList = ["visiteur", "rien", "debatphilo"]
   var evenementQuiArrive = evenementsList[Math.floor(Math.random() * evenementsList.length)]
   var textEffetsEvenement = ""
   var textDeEvenement = ""
@@ -569,6 +573,11 @@ function evenementFinTour(){
       textDeEvenement = station_joueur.randomNobody[0].nomComplet + " se tourne les pouces. Il y a une romance entre " + station_joueur.randomNobody[0].nomComplet + " et " + station_joueur.randomNobody[1].nomComplet + "."
       textDeEvenement2 = "C'est bien plaisant."
       textEffetsEvenement = "Rien de spécial."
+      break;
+    case "debatphilo":
+      textDeEvenement = "Il y a eu un débat."
+      textEffetsEvenement = debatPhilo(station_joueur.dirigeant, station_joueur.randomNobody[Math.floor(Math.random() * station_joueur.randomNobody.length)])
+      console.log(textEffetsEvenement)
       break;
   }
   chargerVersEvenement("ecran_description_station");
