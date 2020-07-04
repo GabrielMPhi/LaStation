@@ -5,11 +5,12 @@ var prenomsPersonnagesHomme = ["Bernard", "Martin", "Gabriel", "Mathieu", "Arthu
 var prenomsPersonnagesFemme = ["Catherine", "Rapunzel", "Sophia", "Morgane", "Rieke", "Julia", "Linda", "Christina", "Anne-Sophie", "Anne-Marie", "Marie-Pier", "Marie", "Anne", "Anna"]
 var prenomsPersonnagesTotal = [].concat(prenomsPersonnagesHomme, prenomsPersonnagesFemme);
 var momsFamillePersonnages = ["Monette", "Ducharme", "Carel", "Dax", "Rideout", "Delorme", "Picard", "Sisko", "Janeway", "Pratte", "Séguin", "Gagné", "Turpin", "Bouras", "De Rivia", "Côté", "Gingras"]
-var listIdeology = ["Républicanisme", "Anarchisme", "Autoritarisme", "Ludisme", "Gabrielisme", "Scientisme", "Féminisme", "Turpinisme", "Chaotisme", "Monarchisme", "Bernardisme", "Socialisme", "Libéralisme", "Capitalisme", "Scientisme", "Conspirationisme", "Rawlsisme", "Anarco-capitalisme", "Historicisme", "Lavalisme", "Municipalisme", "Vedge", "Amour", "N'importe quoi", "Apathie"]
+var listIdeology = ["Républicanisme", "Anarchisme", "Autoritarisme", "Ludisme", "Gabrielisme", "Scientisme", "Féminisme", "Turpinisme", "Chaotisme", "Monarchisme", "Bernardisme", "Socialisme", "Libéralisme", "Capitalisme", "Conspirationisme", "Rawlsisme", "Anarco-capitalisme", "Lavalisme", "Municipalisme", "Vedge", "Apathie"]
 var listeGenre = ["Homme", "Femme", "Fluide", "Homme", "Femme", "Homme", "Femme", "Non-binaire" ,"Autre"]
 var listeTitresDirigeant = ["Capitaine", "Commandant", "Consul", "Guide", "Président", "Général", "Professeur", "Dude", "Tsé, lui-là", "Philosophe", "Politicien", "Délégué", "Vendu", "Maître", "WTF?"]
 let nomsDeSecteursListe = [""]
 let ressourcesTypeList = ["Gold Pressed Latinum", "Livres de philo", "Deuterium", "Awesomeness"]
+let listeTypesSectionsStation = ["Arboretum", ]
 let listOfLawInPlace = [""]
 let tour = 1
 var station_joueur;
@@ -19,7 +20,6 @@ class Sector {
 
 
 }
-
 
 
 class Station {
@@ -42,6 +42,7 @@ class Station {
     this._ressources = 10;
     this._integrite = 10;
     this._cybersecurite = 10;
+    this._sections = new Section();
     this._randomNobody = [];
   }
 
@@ -147,6 +148,12 @@ class Station {
   set cybersecurite(cybersecurite){
     this._cybersecurite = cybersecurite
   }
+  get sections() {
+    return this._sections
+  }
+  set sections(sections){
+    this._sections = sections
+  }
   get randomNobody() {
     return this._randomNobody
   }
@@ -155,6 +162,23 @@ class Station {
   }
 
 }
+
+class Section{
+
+  constructor(type = listeTypesSectionsStation[Math.floor(Math.random() * listeTypesSectionsStation.length)]){
+    this._type = type
+  }
+  
+    get type() {
+      return this._type
+    }
+    set type(type){
+      this._type = type
+    }
+
+}
+
+
 
 class Personnage {
 
@@ -204,7 +228,7 @@ class Personnage {
     return this._nomComplet
   }
   set nomComplet(nomComplet){
-    this._nom = nomComplet
+    this._nomComplet = nomComplet
   }
   get influence() {
     return this._influence
@@ -271,6 +295,18 @@ function choisir_prenom_personnage(genre){
   return prenomPersonnageFinal
 }
 
+// FUNCTION vérification si un personnage existe
+
+function verificationExistencePersonnage(nomComplet){
+  // est-ce que la valeur qui arrive est égale à une valeur dans l'array (station_joueur.randomNobody)
+  // faire un loop entre les objets de l'array : station_joueur.randomNobody[incluant un truc du genre station_joueur.randomNobody.length]
+  // si le nom 
+  // return true or false
+}
+
+
+
+
 /*CRÉATION DE LA PAGE*/
 window.onload = function(){
   generer_listeHTML_gouvernements(liste_type_gouv);
@@ -299,6 +335,10 @@ function charger_description_station(ecran_de_depart){
   changeScreen(ecran_de_depart, "ecran_description_station");
 }
 
+function chargerVersEvenement(ecran_de_depart){
+  changeScreen(ecran_de_depart, "ecranEvenementsStation");
+}
+
 
 /*Écran de création de la station*/
 
@@ -312,8 +352,10 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
   console.log("on a créé une station! = "+station_joueur);
   station_joueur.dirigeant.gagneUnTitre();
   var nobodyUn = new Personnage();
-  var nododyDeux = new Personnage();
-  station_joueur.randomNobody = nobodyUn
+  var nobodyDeux = new Personnage();
+  var nobodyTrois = new Personnage();
+  station_joueur.randomNobody.push(nobodyUn, nobodyDeux, nobodyTrois)
+  console.log(station_joueur)
   charger_description_station("ecran_creation_station");
 });
 
@@ -358,11 +400,12 @@ function afficherDescription() {
   });
 
   document.getElementById("btnInfoPopulationListNobody").addEventListener('click', function (e){
-    alert(station_joueur.randomNobody.titre + " " + station_joueur.randomNobody.nomComplet + " est un random nobody de la station."+ 
-    "\r\n" + "Son idéologie : " + station_joueur.randomNobody.ideologie +
-    "\r\n" + station_joueur.randomNobody.height + "cm." +
-    "\r\n" + "Son genre : " + station_joueur.randomNobody.genre +
-    "\r\n" + "Son origine : " + station_joueur.randomNobody.origine
+    var randomDude = Math.floor(Math.random() * station_joueur.randomNobody.length)
+    alert(station_joueur.randomNobody[randomDude].titre + " " + station_joueur.randomNobody[randomDude].nomComplet + " est un random nobody de la station."+ 
+    "\r\n" + "Son idéologie : " + station_joueur.randomNobody[randomDude].ideologie +
+    "\r\n" + station_joueur.randomNobody[randomDude].height + "cm." +
+    "\r\n" + "Son genre : " + station_joueur.randomNobody[randomDude].genre +
+    "\r\n" + "Son origine : " + station_joueur.randomNobody[randomDude].origine
 
     )
   });
@@ -392,7 +435,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
     station_joueur.integrite++
     station_joueur.energie = station_joueur.energie - 3
     station_joueur.ressources--
-      alert("Vos systèmes se mobilisent pour améliorer la structure de la station et la population, incluant " + station_joueur.randomNobody.nomComplet + ", se déploit construire de nouvelles instalations.");
+      alert("Vos systèmes se mobilisent pour améliorer la structure de la station et la population, incluant " + station_joueur.randomNobody[0].nomComplet + ", se déploit construire de nouvelles instalations.");
     break;
   case "pause":
     alert("Une pause bien méritée pour recharger les batteries et faire les mises-à-jour.");
@@ -408,10 +451,35 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
   verifierFinPartie();
   })
 
+  function debatPhilo(participantA, participantB){
+    alert("Il y a un débat entre " + participantA.nomComplet + " et " + participantB.nomComplet)
+    if (participantA.ideologie == "Républicanisme" && participantB.ideologie != "Républicanisme") {
+      alert(participantA.nomComplet + " a gagné!")
+      station_joueur.moral++;
+    } else if (participantB.ideologie == "Républicanisme" && participantA.ideologie != "Républicanisme"){
+      alert(participantB.nomComplet + " a gagné!")
+      station_joueur.moral++;
+    } else if (participantB.ideologie == "Gabrielisme" && participantA.ideologie != "Gabrielisme" && participantA.ideologie != "Républicanisme" ){
+      alert(participantB.nomComplet + " a gagné!")
+      station_joueur.moral++;
+    } else {
+      alert("Égalité. Confusion. Étrangeté.")
+    }
+    alert("Le peuple s'en fou un peu!");
+
+  }
+
+
+
   document.querySelector('#btnActionChoixInfluence').addEventListener('click', function (e){
     var choixInfluence = document.querySelector('#actionChoixInfluence').selectedOptions[0].value
     console.log(choixInfluence)
     switch(choixInfluence) {
+      case "organiserDebatPhilo":
+        debatPhilo(station_joueur.randomNobody[0],station_joueur.dirigeant)
+        station_joueur.moral++;
+        station_joueur.chaos++;
+      break;      
       case "favoriserPeuple":
         alert("Le peuple s'en fou un peu!");
         station_joueur.richesse--;
@@ -450,7 +518,6 @@ function verifierFinPartie(){
     station_joueur.ressources--;
     station_joueur.moral++;
   }
-
   if (station_joueur.moral >= 15 ) {
     alert("Le moral descend, car une part de la population n'a pas accès à du logement.");
     station_joueur.population++;
@@ -464,13 +531,53 @@ function verifierFinPartie(){
   }
 }
 
+// Événements
+
+const btnExitEvent = document.querySelector('#btnExitEvent');
+btnExitEvent.addEventListener('click', () => {
+  document.getElementById("textofevent2").setAttribute('hidden', 'hidden')
+  charger_description_station("ecranEvenementsStation");
+});
+
+
 function evenementFinTour(){
   var evenementsList = ["visiteur"]
   var evenementQuiArrive = evenementsList[Math.floor(Math.random() * evenementsList.length)]
+  var textEffetsEvenement = ""
+  var textDeEvenement = ""
+  var textDeEvenement2 = ""
   switch(evenementQuiArrive){
     case "visiteur":
-    console.log("VISITE DUN VISITEUR")
+      console.log("VISITE DUN VISITEUR");
+      var visiteurNobody = new Personnage ();
+      var textDeEvenement = "Il y a eu un visiteur du nom de " + visiteurNobody.nomComplet + "."
+      if (visiteurNobody.genre == "femme" && visiteurNobody.nomComplet == "Catherine Côté"){
+        visiteurNobody.height = visiteurNobody.height + 15
+        var textDeEvenement2 = visiteurNobody.nomComplet + " va joindre " + station_joueur.nom + "."
+        textEffetsEvenement = visiteurNobody.nomComplet + " devient menbre de la station!" 
+        break;
+
+      } else if (visiteurNobody.nomComplet == "Bernard Ducharme"){
+
+      } else {
+        textEffetsEvenement = "Rien de spécial. " + visiteurNobody.nomComplet + " retourne sur son chemin."
+      }
+      
     break;
+    case "rien":
+      console.log("RIEN");
+      textDeEvenement = station_joueur.randomNobody[0].nomComplet + " se tourne les pouces. Il y a une romance entre " + station_joueur.randomNobody[0].nomComplet + " et " + station_joueur.randomNobody[1].nomComplet + "."
+      textDeEvenement2 = "C'est bien plaisant."
+      textEffetsEvenement = "Rien de spécial."
+      break;
   }
+  chargerVersEvenement("ecran_description_station");
+  if (textDeEvenement2 != ""){
+    document.getElementById("textofevent2").removeAttribute('hidden');
+  }
+  document.getElementById('textEffetsEvenement').textContent = textEffetsEvenement
+  document.getElementById('textofevent').textContent = textDeEvenement
+  document.getElementById('textofevent2').textContent = textDeEvenement2
 }
+
 

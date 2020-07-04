@@ -70,6 +70,7 @@
                     <td><form action="#" id="formchoix">
                         <div class="select">
                             <select name="actionChoixInfluence" id="actionChoixInfluence">
+                                <option value="organiserDebatPhilo">Organiser un débat philosophique!</option>
                                 <option value="favoriserPeuple">Favoriser le peuple!</option>
                                 <option value="exileHabitant">Engendrer du conflit!</option>
                             </select>
@@ -158,6 +159,33 @@
 
 </section>
     
+ <!-- **********ECRAN ÉVÉNEMENTS*************-->
+<section class="section">
+        <div class="ecran" id="ecranEvenementsStation" hidden>
+            <header>
+                <h1 class="title">Description des événements</h1>
+                <h2 class="subtitle">Événements et effets</h2>
+             
+            </header>
+            <table class="table is-bordered is-hoverable">
+                <thead>
+                    <tr>
+                      <th>Description</th>
+                      <th>Effets</th>
+                    </tr>
+                  </thead>
+                
+                <tr>
+                    <td><span class="paragraph" id="textofevent">Le texte de l'événement</span> <span class="paragraph" id="textofevent2" hidden>Le texte de l'événement</span></td>
+                    <td><span class="paragraph" id="textEffetsEvenement">Effets de l'événement</span></td>
+                </tr>
+                <tr>
+                    <td><button id="btnExitEvent">Revenir à la station</button></td>
+                </tr>
+                </table>
+        </div>
+
+</section>
         <script type="text/javascript" src="test.js"> </script>
     </body>
 
