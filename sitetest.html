@@ -164,12 +164,12 @@
 
 </section>
     
- <!-- **********ECRAN ÉVÉNEMENTS*************-->
+ <!-- **********ECRAN RÉSULTATS DES CHOIX & ÉVÉNEMENTS*************-->
 <section class="section">
-        <div class="ecran" id="ecranEvenementsStation" hidden>
+        <div class="ecran" id="ecranChoixEtEvenementsStation" hidden>
             <header>
                 <h1 class="title">Description des événements</h1>
-                <h2 class="subtitle">Événements et effets</h2>
+                <h2 class="subtitle">Résultats des choix</h2>
              
             </header>
             <table class="table is-bordered is-hoverable">
@@ -181,13 +181,34 @@
                   </thead>
                 
                 <tr>
-                    <td><span class="paragraph" id="textofevent">Le texte de l'événement</span> <span class="paragraph" id="textofevent2" hidden>Le texte de l'événement</span></td>
-                    <td><span class="paragraph" id="textEffetsEvenement">Effets de l'événement</span></td>
+                    <td><span class="paragraph" id="textOfChoiceInfluence">Le texte du choix d'influence</span></td>
+                    <td><span class="paragraph" id="textEffectsOfChoiceInfluence">Effets des choix d'influence</span></td>
                 </tr>
                 <tr>
-                    <td><button id="btnExitEvent">Revenir à la station</button></td>
+                    <td><span class="paragraph" id="textOfChoice">Le texte du choix</span></td>
+                    <td><span class="paragraph" id="textEffectsOfChoice1">Effets des choix</span></td>
                 </tr>
                 </table>
+                <header>
+                    <h2 class="subtitle">Événements et effets</h2>
+                 
+                </header>
+                <table class="table is-bordered is-hoverable">
+                    <thead>
+                        <tr>
+                          <th>Description</th>
+                          <th>Effets</th>
+                        </tr>
+                      </thead>
+                    
+                    <tr>
+                        <td><span class="paragraph" id="textofevent">Le texte de l'événement</span> <span class="paragraph" id="textofevent2" hidden>Le texte de l'événement</span></td>
+                        <td><span class="paragraph" id="textEffetsEvenement">Les événements du cycle</span></td>
+                    </tr>
+                    <tr>
+                        <td><button id="btnExitEvent">Revenir à la station</button></td>
+                    </tr>
+                    </table>
         </div>
 
 </section>

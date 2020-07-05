@@ -298,12 +298,17 @@ function choisir_prenom_personnage(genre){
 // FUNCTION vérification si un personnage existe
 
 function verificationExistencePersonnage(nomComplet){
-  // est-ce que la valeur qui arrive est égale à une valeur dans l'array (station_joueur.randomNobody)
-  // faire un loop entre les objets de l'array : station_joueur.randomNobody[incluant un truc du genre station_joueur.randomNobody.length]
-  // si le nom 
-  // return true or false
+  for (var i = 0; i < station_joueur.randomNobody.length; i++){
+    var persoExisteDeja = false
+    if (nomComplet == station_joueur.randomNobody[i].nomComplet){
+      persoExisteDeja = true
+      break; 
+    } else {
+      persoExisteDeja = false
+    }
 }
-
+return persoExisteDeja
+}
 
 
 
@@ -336,7 +341,7 @@ function charger_description_station(ecran_de_depart){
 }
 
 function chargerVersEvenement(ecran_de_depart){
-  changeScreen(ecran_de_depart, "ecranEvenementsStation");
+  changeScreen(ecran_de_depart, "ecranChoixEtEvenementsStation");
 }
 
 
@@ -406,11 +411,17 @@ function afficherDescription() {
     "\r\n" + station_joueur.randomNobody[randomDude].height + "cm." +
     "\r\n" + "Son genre : " + station_joueur.randomNobody[randomDude].genre +
     "\r\n" + "Son origine : " + station_joueur.randomNobody[randomDude].origine
-
     )
   });
 
 // ACTIONS ET ÉVÉNEMENTS
+function afficherChoixEtEvenements() {
+  document.getElementById('textOfChoiceInfluence').textContent = textOfChoiceInfluence;
+  document.getElementById('textEffectsOfChoiceInfluence').textContent = textEffectsOfChoiceInfluence;
+  document.getElementById('textOfChoice').textContent = textOfChoice;
+  document.getElementById('textEffectsOfChoice1').textContent = textEffectsOfChoice1;
+}
+
 document.querySelector('#btnActionChoix').addEventListener('click', function (e){
   var choix = document.querySelector('#actionChoix').selectedOptions[0].value
   var choixInfluence = document.querySelector('#actionChoixInfluence').selectedOptions[0].value
@@ -420,12 +431,16 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
   console.log(choixInfluence)
     switch(choixInfluence) {
       case "organiserDebatPhilo":
-        debatPhilo(station_joueur.randomNobody[0],station_joueur.dirigeant)
+        var debateurPhiloA = station_joueur.randomNobody[Math.floor(Math.random() * station_joueur.randomNobody.length)]
+        var debateurPhiloB = station_joueur.dirigeant
+        textOfChoiceInfluence = "Il y a un débat philosophique entre " + debateurPhiloA.nomComplet + " et " + debateurPhiloB.titre + " " + debateurPhiloB.nomComplet + "!"
+        textEffectsOfChoiceInfluence = debatPhilo(debateurPhiloA,debateurPhiloB)
         station_joueur.moral++;
         station_joueur.chaos++;
       break;      
       case "favoriserPeuple":
-        alert("Le peuple s'en fou un peu!");
+        textOfChoiceInfluence = "Vous tenez de favoriser le peuple."
+        textEffectsOfChoiceInfluence = "Le peuple s'en fou un peu! Mais la richesse et le moral augmente de 1 tandis que vous dépensez 1 d'énergie.";
         station_joueur.richesse--;
         station_joueur.moral++;
         station_joueur.energie--;
@@ -444,7 +459,8 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
 /// Choix énergie  
   switch(choix) {
     case "fete":
-      alert("C'est la fête et la danse!");
+      textOfChoice = "Vous organisez une fête."  
+      textEffectsOfChoice1 = "C'est la fête et la danse!";
       station_joueur.richesse--
       station_joueur.moral = parseInt(station_joueur.moral + (Math.floor(Math.random() * 4) - 1), 10)
       station_joueur.energie--
@@ -476,6 +492,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
 
 
   console.log(e)
+  afficherChoixEtEvenements()
   afficherDescription();
   evenementFinTour()
   verifierFinPartie();
@@ -483,24 +500,18 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
 
 
   function debatPhilo(participantA, participantB){
-    alert("Il y a un débat entre " + participantA.nomComplet + " et " + participantB.nomComplet)
     if (participantA.ideologie == "Républicanisme" && participantB.ideologie != "Républicanisme") {
-      alert(participantA.nomComplet + " a gagné!")
       var gagnantDebatPhilo = participantA.nomComplet
       station_joueur.moral++;
     } else if (participantB.ideologie == "Républicanisme" && participantA.ideologie != "Républicanisme"){
-      alert(participantB.nomComplet + " a gagné!")
       var gagnantDebatPhilo = participantB.nomComplet
       station_joueur.moral++;
     } else if (participantB.ideologie == "Gabrielisme" && participantA.ideologie != "Gabrielisme" && participantA.ideologie != "Républicanisme" ){
-      alert(participantB.nomComplet + " a gagné!")
       var gagnantDebatPhilo = participantB.nomComplet
       station_joueur.moral++;
     } else {
-      alert("Égalité. Confusion. Étrangeté.")
-      gagnantDebatPhilo = "Il n'y a pas de gagnant."
+      gagnantDebatPhilo = "Il n'y a pas de gagnant. Il n'y a que de la confusion, du chaos et de l'étrangeté."
     }
-    alert("Le peuple s'en fou un peu!");
     return gagnantDebatPhilo
   }
 
@@ -539,7 +550,7 @@ function verifierFinPartie(){
 const btnExitEvent = document.querySelector('#btnExitEvent');
 btnExitEvent.addEventListener('click', () => {
   document.getElementById("textofevent2").setAttribute('hidden', 'hidden')
-  charger_description_station("ecranEvenementsStation");
+  charger_description_station("ecranChoixEtEvenementsStation");
 });
 
 
@@ -553,6 +564,11 @@ function evenementFinTour(){
     case "visiteur":
       console.log("VISITE DUN VISITEUR");
       var visiteurNobody = new Personnage ();
+      var visiteurExisteDeja = false
+      visiteurExisteDeja = verificationExistencePersonnage(visiteurNobody);
+      if (visiteurExisteDeja == true){
+        visiteurNobody = new Personnage ();
+      }
       var textDeEvenement = "Il y a eu un visiteur du nom de " + visiteurNobody.nomComplet + "."
       if (visiteurNobody.genre == "femme" && visiteurNobody.nomComplet == "Catherine Côté"){
         visiteurNobody.height = visiteurNobody.height + 15
@@ -574,9 +590,12 @@ function evenementFinTour(){
       textEffetsEvenement = "Rien de spécial."
       break;
     case "debatphilo":
-      textDeEvenement = "Il y a eu un débat."
-      textEffetsEvenement = debatPhilo(station_joueur.dirigeant, station_joueur.randomNobody[Math.floor(Math.random() * station_joueur.randomNobody.length)])
-      console.log(textEffetsEvenement)
+      var debateurPhiloA = station_joueur.randomNobody[Math.floor(Math.random() * station_joueur.randomNobody.length)]
+      var debateurPhiloB = station_joueur.dirigeant
+      textDeEvenement = "Il y a un débat philosophique entre " + debateurPhiloA.nomComplet + " et " + debateurPhiloB.titre + " " + debateurPhiloB.nomComplet + "!"
+      textEffetsEvenement = debatPhilo(debateurPhiloA,debateurPhiloB)
+      station_joueur.moral++;
+      station_joueur.chaos++;
       break;
   }
   chargerVersEvenement("ecran_description_station");
