@@ -413,7 +413,35 @@ function afficherDescription() {
 // ACTIONS ET ÉVÉNEMENTS
 document.querySelector('#btnActionChoix').addEventListener('click', function (e){
   var choix = document.querySelector('#actionChoix').selectedOptions[0].value
+  var choixInfluence = document.querySelector('#actionChoixInfluence').selectedOptions[0].value
   console.log(choix)
+  
+  /// choix influence
+  console.log(choixInfluence)
+    switch(choixInfluence) {
+      case "organiserDebatPhilo":
+        debatPhilo(station_joueur.randomNobody[0],station_joueur.dirigeant)
+        station_joueur.moral++;
+        station_joueur.chaos++;
+      break;      
+      case "favoriserPeuple":
+        alert("Le peuple s'en fou un peu!");
+        station_joueur.richesse--;
+        station_joueur.moral++;
+        station_joueur.energie--;
+      break;
+      case "exileHabitant":
+        alert(station_joueur.dirigeant.nomComplet + " exile un habitant et confisque sa propriété!");
+        station_joueur.richesse++;
+        station_joueur.moral--;
+        station_joueur.energie++;
+        station_joueur.population--;
+      break;
+    default:
+        alert("Ok!");
+      }
+
+/// Choix énergie  
   switch(choix) {
     case "fete":
       alert("C'est la fête et la danse!");
@@ -445,11 +473,14 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
       alert("Ok!");
       tour ++
     } 
+
+
   console.log(e)
   afficherDescription();
   evenementFinTour()
   verifierFinPartie();
   })
+
 
   function debatPhilo(participantA, participantB){
     alert("Il y a un débat entre " + participantA.nomComplet + " et " + participantB.nomComplet)
@@ -473,38 +504,6 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
     return gagnantDebatPhilo
   }
 
-
-
-  document.querySelector('#btnActionChoixInfluence').addEventListener('click', function (e){
-    var choixInfluence = document.querySelector('#actionChoixInfluence').selectedOptions[0].value
-    console.log(choixInfluence)
-    switch(choixInfluence) {
-      case "organiserDebatPhilo":
-        debatPhilo(station_joueur.randomNobody[0],station_joueur.dirigeant)
-        station_joueur.moral++;
-        station_joueur.chaos++;
-      break;      
-      case "favoriserPeuple":
-        alert("Le peuple s'en fou un peu!");
-        station_joueur.richesse--;
-        station_joueur.moral++;
-        station_joueur.energie--;
-      break;
-      case "exileHabitant":
-        alert(station_joueur.dirigeant.nomComplet + " exile un habitant et confisque sa propriété!");
-        station_joueur.richesse++;
-        station_joueur.moral--;
-        station_joueur.energie++;
-        station_joueur.population--;
-      break;
-    default:
-        alert("Ok!");
-      } 
-    console.log(e)
-    afficherDescription();
-    evenementFinTour()
-    verifierFinPartie();
-    })
 
 function verifierFinPartie(){
   tour ++
