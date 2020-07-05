@@ -6,4 +6,4 @@ L'idée est de simuler la vie sur une station spatiale. Le joueur incarne l'inte
 
 ## Inspirations
 
-Le jeu est inspiré de nombreuses sources : Europa Universalis IV, Victoria 2, Stellaris, Crusader Kings, Ploutocracy, etc...
+Le jeu est inspiré de nombreuses sources : Europa Universalis IV, Victoria 2, Stellaris, Crusader Kings, Ploutocracy, etc... Évidemment, à une échelle minuscule et dans des proportions biens plus humble, mais le projet, l'idéal reste lié à ces jeux qui laissent beaucoup d'espace à la simulation autant qu'à la jouabilité.
