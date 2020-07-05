@@ -369,7 +369,8 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
   var nobodyUn = new Personnage();
   var nobodyDeux = new Personnage();
   var nobodyTrois = new Personnage();
-  station_joueur.randomNobody.push(nobodyUn, nobodyDeux, nobodyTrois)
+  var nobodyQuatre = new Personnage();
+  station_joueur.randomNobody.push(nobodyUn, nobodyDeux, nobodyTrois, nobodyQuatre)
   console.log(station_joueur)
   charger_description_station("ecran_creation_station");
 });
@@ -433,7 +434,7 @@ btnExitInfo.addEventListener('click', () => {
       "\r\n", "Son idéologie : ", station_joueur.randomNobody[i].ideologie,
       "\r\n", station_joueur.randomNobody[i].height + "cm.",
       "\r\n", "Son genre : ", station_joueur.randomNobody[i].genre,
-      "\r\n", "Son origine : ", station_joueur.randomNobody[i].origine
+      "\r\n", "Son origine : ", station_joueur.randomNobody[i].origine, "\n\n"
       )}
       console.log(textInfo)
     document.getElementById('textOfInfo').textContent = textInfo
@@ -632,6 +633,7 @@ function evenementFinTour(){
   if (textDeEvenement2 != ""){
     document.getElementById("textofevent2").removeAttribute('hidden');
   }
+
   document.getElementById('textEffetsEvenement').textContent = textEffetsEvenement
   document.getElementById('textofevent').textContent = textDeEvenement
   document.getElementById('textofevent2').textContent = textDeEvenement2
