@@ -194,6 +194,7 @@ class Personnage {
     this._nomComplet = prenom + " " + nom
     this._influence = parseInt((Math.floor(Math.random() * 10) + 5), 10)
     this._charisme = parseInt((Math.floor(Math.random() * 10) + 5), 10)
+    this._connaissance = parseInt((Math.floor(Math.random() * 10) + 5), 10)
     this._ideologie = choiceIdeology ();
     this._height = parseInt((Math.floor(Math.random() * 70) + 145), 10);
     this._age = parseInt((Math.floor(Math.random() * 20) + 18), 10)
@@ -241,6 +242,12 @@ class Personnage {
   }
   set charisme(charisme){
     this._charisme = charisme
+  }
+  get connaissance() {
+    return this._connaissance
+  }
+  set connaissance(connaissance){
+    this._connaissance = connaissance
   }
   get ideologie() {
     return this._ideologie
@@ -344,6 +351,9 @@ function chargerVersEvenement(ecran_de_depart){
   changeScreen(ecran_de_depart, "ecranChoixEtEvenementsStation");
 }
 
+function chargerVersInformation(ecran_de_depart){
+  changeScreen(ecran_de_depart, "ecranInformationStation");
+}
 
 /*Écran de création de la station*/
 
@@ -388,30 +398,45 @@ function afficherDescription() {
     document.getElementById('cybersecuriteStationInfo').textContent = station_joueur.cybersecurite;
     document.getElementById('capacitePopulationStationInfo').textContent = station_joueur.capacitePopulation;
   }
+// BOUTONS INFO
+
+const btnExitInfo = document.querySelector('#btnExitInfo');
+btnExitInfo.addEventListener('click', () => {
+  charger_description_station("ecranInformationStation");
+});
 
   document.getElementById("btnInfoDirigeant").addEventListener('click', function (e){
-    alert(station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet + " est la personne qui dirige la station."+ 
-      "\r\n" + "Son idéologie : " + station_joueur.dirigeant.ideologie +
-      "\r\n" + "Sa taille : " + station_joueur.dirigeant.height + " cm." +
-      "\r\n" + "Son genre : " + station_joueur.dirigeant.genre +
-      "\r\n" + "Son origine : " + station_joueur.dirigeant.origine
-
-      )
+    chargerVersInformation("ecran_description_station")
+    var textInfo = station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet + " est la personne qui dirige la station."+ 
+    "\r\n" + "Son idéologie : " + station_joueur.dirigeant.ideologie +
+    "\r\n" + "Sa taille : " + station_joueur.dirigeant.height + " cm." +
+    "\r\n" + "Son genre : " + station_joueur.dirigeant.genre +
+    "\r\n" + "Son origine : " + station_joueur.dirigeant.origine
+    document.getElementById('textOfInfo').textContent = textInfo
+      
   });
 
   document.getElementById("btnInfoTour").addEventListener('click', function (e){
-    alert("De la perspective d'une intelligence artificelle, le temps passe à la fois rapidement et lentement. Elle peut réagir très rapidement comme considérer les choses dans le temps long." + 
-    " " + "À ce titre, l'unité de temps centrale est l'année, le cycle.")
+    chargerVersInformation("ecran_description_station")
+    var textInfo = "De la perspective d'une intelligence artificelle, le temps passe à la fois rapidement et lentement. Elle peut réagir très rapidement comme considérer les choses dans le temps long." + 
+    " " + "À ce titre, l'unité de temps centrale est l'année, le cycle."
+    document.getElementById('textOfInfo').textContent = textInfo
+  
   });
 
   document.getElementById("btnInfoPopulationListNobody").addEventListener('click', function (e){
-    var randomDude = Math.floor(Math.random() * station_joueur.randomNobody.length)
-    alert(station_joueur.randomNobody[randomDude].titre + " " + station_joueur.randomNobody[randomDude].nomComplet + " est un random nobody de la station."+ 
-    "\r\n" + "Son idéologie : " + station_joueur.randomNobody[randomDude].ideologie +
-    "\r\n" + station_joueur.randomNobody[randomDude].height + "cm." +
-    "\r\n" + "Son genre : " + station_joueur.randomNobody[randomDude].genre +
-    "\r\n" + "Son origine : " + station_joueur.randomNobody[randomDude].origine
-    )
+    chargerVersInformation("ecran_description_station")
+    var textInfo = ""
+    console.log(textInfo)
+    for (var i = 0; i < station_joueur.randomNobody.length; i++){
+      textInfo = textInfo.concat(station_joueur.randomNobody[i].titre, " ", station_joueur.randomNobody[i].nomComplet, " est un random nobody de la station.", 
+      "\r\n", "Son idéologie : ", station_joueur.randomNobody[i].ideologie,
+      "\r\n", station_joueur.randomNobody[i].height + "cm.",
+      "\r\n", "Son genre : ", station_joueur.randomNobody[i].genre,
+      "\r\n", "Son origine : ", station_joueur.randomNobody[i].origine
+      )}
+      console.log(textInfo)
+    document.getElementById('textOfInfo').textContent = textInfo
   });
 
 // ACTIONS ET ÉVÉNEMENTS
@@ -572,12 +597,17 @@ function evenementFinTour(){
       var textDeEvenement = "Il y a eu un visiteur du nom de " + visiteurNobody.nomComplet + "."
       if (visiteurNobody.genre == "femme" && visiteurNobody.nomComplet == "Catherine Côté"){
         visiteurNobody.height = visiteurNobody.height + 15
-        var textDeEvenement2 = visiteurNobody.nomComplet + " va joindre " + station_joueur.nom + "."
-        textEffetsEvenement = visiteurNobody.nomComplet + " devient menbre de la station!" 
+        textDeEvenement2 = visiteurNobody.nomComplet + " va joindre " + station_joueur.nom + "."
+        textEffetsEvenement = visiteurNobody.nomComplet + " devient menbre de la station!"
+        station_joueur.population++
+        // station_joueur.randomNobody.push(visiteurNobody) 
+        // Est-ce qu'il faudrait créer une autre variable pour s'assurer que si un autre visiteurNobody visite, il s'ajoute et n'écrase pas l'ancien?
         break;
 
       } else if (visiteurNobody.nomComplet == "Bernard Ducharme"){
-
+        textDeEvenement2 = visiteurNobody.nomComplet + " va joindre " + station_joueur.nom + "."
+        textEffetsEvenement = visiteurNobody.nomComplet + " devient menbre de la station!"
+        station_joueur.population++
       } else {
         textEffetsEvenement = "Rien de spécial. " + visiteurNobody.nomComplet + " retourne sur son chemin."
       }
