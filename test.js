@@ -16,6 +16,11 @@ let tour = 1
 var station_joueur;
 var station_ordi;
 
+class RegimePolitique {
+
+
+}
+
 class Sector {
 
 
@@ -366,11 +371,7 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
   station_joueur = new Station(nom_station, regime_choisi);
   console.log("on a créé une station! = "+station_joueur);
   station_joueur.dirigeant.gagneUnTitre();
-  var nobodyUn = new Personnage();
-  var nobodyDeux = new Personnage();
-  var nobodyTrois = new Personnage();
-  var nobodyQuatre = new Personnage();
-  station_joueur.randomNobody.push(nobodyUn, nobodyDeux, nobodyTrois, nobodyQuatre)
+  station_joueur.randomNobody.push(new Personnage(), new Personnage(), new Personnage(), new Personnage(), new Personnage(), new Personnage())
   console.log(station_joueur)
   charger_description_station("ecran_creation_station");
 });
@@ -472,14 +473,13 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
         station_joueur.energie--;
       break;
       case "exileHabitant":
-        alert(station_joueur.dirigeant.nomComplet + " exile un habitant et confisque sa propriété!");
+        textOfChoiceInfluence = "Expulsion d'un habitant pour de faux prétextes."
+        textEffectsOfChoiceInfluence = station_joueur.dirigeant.nomComplet + " exile un habitant et confisque sa propriété!"
         station_joueur.richesse++;
         station_joueur.moral--;
         station_joueur.energie++;
         station_joueur.population--;
       break;
-    default:
-        alert("Ok!");
       }
 
 /// Choix énergie  
@@ -492,28 +492,29 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
       station_joueur.energie--
     break;
   case "commerce":
+      textOfChoice = "C'est jour de marché sur " + station_joueur.nom  
+      textEffectsOfChoice1 = "La station s'enrichit un peu."
+  
     station_joueur.richesse++
     station_joueur.moral--
-      alert("C'est jour de marché sur " + station_joueur.nom);
     break;
   case "calculs":
-    station_joueur.richesse++
-    station_joueur.moral--
-      alert("Les ordinateurs de " + station_joueur.nom + " s'occupent à faire des calculs importants et insipides.");
+    station_joueur.energie--
+    textOfChoice = "Les ordinateurs de " + station_joueur.nom + " s'occupent à faire des calculs importants et insipides." 
+    textEffectsOfChoice1 = "La station développe de nouvelles connaissances."
     break;
   case "ameliorerIntegrite":
     station_joueur.integrite++
     station_joueur.energie = station_joueur.energie - 3
     station_joueur.ressources--
-      alert("Vos systèmes se mobilisent pour améliorer la structure de la station et la population, incluant " + station_joueur.randomNobody[0].nomComplet + ", se déploit construire de nouvelles instalations.");
+    textOfChoice = "Vos systèmes se mobilisent pour améliorer la structure de la station et la population, incluant " + station_joueur.randomNobody[0].nomComplet + ", se déploit construire de nouvelles instalations.";
+    textEffectsOfChoice1 = "L'intégrité de la station s'améliore."
     break;
   case "pause":
-    alert("Une pause bien méritée pour recharger les batteries et faire les mises-à-jour.");
+    textOfChoice = "Une pause bien méritée pour recharger les batteries et faire les mises-à-jour.";
+    textEffectsOfChoice1 = "La station emmagazine de l'énergie."
     station_joueur.energie = station_joueur.energie + 4;
     break;
-  default:
-      alert("Ok!");
-      tour ++
     } 
 
 
@@ -638,5 +639,3 @@ function evenementFinTour(){
   document.getElementById('textofevent').textContent = textDeEvenement
   document.getElementById('textofevent2').textContent = textDeEvenement2
 }
-
-
