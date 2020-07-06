@@ -480,24 +480,34 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
         station_joueur.energie++;
         station_joueur.population--;
       break;
+      case "festivalPhiloPolitique":
+        textOfChoiceInfluence = "Sur l'ensemble des ordinateurs et des réseaux sociaux s'organise un immense festival de la philosophie politique."
+        textEffectsOfChoiceInfluence = "Une grande fête en faveur de la pensée politique et éthique! Un très bon moyen de ganger le jeu."
+        station_joueur.richesse++;
+        station_joueur.moral++;
+        station_joueur.energie++;
+        station_joueur.population--;
+        station_joueur.influenceCulturelle++;
+        station_joueur.connaissance++;
+      break;
+      case "fete":
+        textOfChoice = "Vous organisez une fête."  
+        textEffectsOfChoice1 = "C'est la fête et la danse!";
+        station_joueur.richesse--
+        station_joueur.moral = parseInt(station_joueur.moral + (Math.floor(Math.random() * 4) - 1), 10)
+        station_joueur.energie--
+      break;
+    case "commerce":
+        textOfChoice = "C'est jour de marché sur " + station_joueur.nom  
+        textEffectsOfChoice1 = "La station s'enrichit un peu."
+    
+      station_joueur.richesse++
+      station_joueur.moral--
+      break;
       }
 
 /// Choix énergie  
   switch(choix) {
-    case "fete":
-      textOfChoice = "Vous organisez une fête."  
-      textEffectsOfChoice1 = "C'est la fête et la danse!";
-      station_joueur.richesse--
-      station_joueur.moral = parseInt(station_joueur.moral + (Math.floor(Math.random() * 4) - 1), 10)
-      station_joueur.energie--
-    break;
-  case "commerce":
-      textOfChoice = "C'est jour de marché sur " + station_joueur.nom  
-      textEffectsOfChoice1 = "La station s'enrichit un peu."
-  
-    station_joueur.richesse++
-    station_joueur.moral--
-    break;
   case "calculs":
     station_joueur.energie--
     textOfChoice = "Les ordinateurs de " + station_joueur.nom + " s'occupent à faire des calculs importants et insipides." 
@@ -582,7 +592,7 @@ btnExitEvent.addEventListener('click', () => {
 
 
 function evenementFinTour(){
-  var evenementsList = ["visiteur", "rien", "debatphilo"]
+  var evenementsList = ["visiteur", "rien", "debatphilo", "commerceFerengi", "sageVulcain"]
   var evenementQuiArrive = evenementsList[Math.floor(Math.random() * evenementsList.length)]
   var textEffetsEvenement = ""
   var textDeEvenement = ""
@@ -610,11 +620,33 @@ function evenementFinTour(){
         textDeEvenement2 = visiteurNobody.nomComplet + " va joindre " + station_joueur.nom + "."
         textEffetsEvenement = visiteurNobody.nomComplet + " devient menbre de la station!"
         station_joueur.population++
+        station_joueur.connaissance = station_joueur.connaissance + 3
+        // station_joueur.randomNobody.push(visiteurNobody) 
+        // Est-ce qu'il faudrait créer une autre variable pour s'assurer que si un autre visiteurNobody visite, il s'ajoute et n'écrase pas l'ancien?
+      } else if (visiteurNobody.nomComplet == "Gabriel Monette"){
+        textDeEvenement2 = visiteurNobody.nomComplet + " va joindre " + station_joueur.nom + "."
+        textEffetsEvenement = visiteurNobody.nomComplet + " devient menbre de la station!"
+        station_joueur.population++
+        station_joueur.connaissance = station_joueur.connaissance + 3
+        // station_joueur.randomNobody.push(visiteurNobody) 
+        // Est-ce qu'il faudrait créer une autre variable pour s'assurer que si un autre visiteurNobody visite, il s'ajoute et n'écrase pas l'ancien?
       } else {
         textEffetsEvenement = "Rien de spécial. " + visiteurNobody.nomComplet + " retourne sur son chemin."
       }
       
     break;
+    case "commerceFerengi":
+      textDeEvenement = "Commerce avec un marchand Ferengi"
+      textDeEvenement2 = "C'est bien enrichissant."
+      textEffetsEvenement = "Plus de Gold Pressed Latinum."
+      station_joueur.richesse++
+      break;
+    case "sageVulcain":
+      textDeEvenement = "Visite d'un sage savant vulcain."
+      textDeEvenement2 = "C'est bien instructif."
+      textEffetsEvenement = "Plus de connaissance et de logique."
+      station_joueur.connaissance++;
+      break;
     case "rien":
       console.log("RIEN");
       textDeEvenement = station_joueur.randomNobody[0].nomComplet + " se tourne les pouces. Il y a une romance entre " + station_joueur.randomNobody[0].nomComplet + " et " + station_joueur.randomNobody[1].nomComplet + "."
