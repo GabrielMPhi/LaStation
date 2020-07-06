@@ -491,15 +491,15 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
         station_joueur.connaissance++;
       break;
       case "fete":
-        textOfChoice = "Vous organisez une fête."  
-        textEffectsOfChoice1 = "C'est la fête et la danse!";
+        textOfChoiceInfluence = "Vous organisez une fête."  
+        textEffectsOfChoiceInfluence = "C'est la fête et la danse!";
         station_joueur.richesse--
         station_joueur.moral = parseInt(station_joueur.moral + (Math.floor(Math.random() * 4) - 1), 10)
         station_joueur.energie--
       break;
     case "commerce":
-        textOfChoice = "C'est jour de marché sur " + station_joueur.nom  
-        textEffectsOfChoice1 = "La station s'enrichit un peu."
+      textOfChoiceInfluence = "C'est jour de marché sur " + station_joueur.nom  
+      textEffectsOfChoiceInfluence = "La station s'enrichit un peu."
     
       station_joueur.richesse++
       station_joueur.moral--
