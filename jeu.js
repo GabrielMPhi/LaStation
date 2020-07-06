@@ -1,6 +1,6 @@
 //VARIABLES GLOBALES
 var liste_type_gouv = ["Lottocratie", "République", "République marchande", "Autocratie", "Monarchie", "Théocratie", "Ploutocratie", "Gabrielocratie", "Épistocratie", "Kakistocratie", "Communisme", "Idiocratie"];
-let nomsDeLastation = ["Montréal", "Laval", "Candiac", "Paris", "Montpellier", "DS9", "DS7", "Terre", "Ahuntsic", "Villeray"]
+let nomsDeLastation = ["Montréal", "Laval", "Candiac", "Paris", "Montpellier", "DS9", "DS7", "Terre", "Ahuntsic", "Villeray", "Saturne", "Jupiter", "Lune", "Europe", "Le lointain"]
 var prenomsPersonnagesHomme = ["Bernard", "Martin", "Gabriel", "Mathieu", "Arthur", "Thomas", "Christian", "Simon", "Geralt", "Alexandre", "Étienne", "François"]
 var prenomsPersonnagesFemme = ["Catherine", "Rapunzel", "Sophia", "Morgane", "Rieke", "Julia", "Linda", "Christina", "Anne-Sophie", "Anne-Marie", "Marie-Pier", "Marie", "Anne", "Anna"]
 var prenomsPersonnagesTotal = [].concat(prenomsPersonnagesHomme, prenomsPersonnagesFemme);
@@ -371,7 +371,10 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
   station_joueur = new Station(nom_station, regime_choisi);
   console.log("on a créé une station! = "+station_joueur);
   station_joueur.dirigeant.gagneUnTitre();
-  station_joueur.randomNobody.push(new Personnage(), new Personnage(), new Personnage(), new Personnage(), new Personnage(), new Personnage())
+  var startingNumberOfNobody = station_joueur.population;
+  for (var i = 0; i < startingNumberOfNobody; i++){
+    station_joueur.randomNobody.push(new Personnage())
+    };
   console.log(station_joueur)
   charger_description_station("ecran_creation_station");
 });
@@ -410,11 +413,11 @@ btnExitInfo.addEventListener('click', () => {
   document.getElementById("btnInfoDirigeant").addEventListener('click', function (e){
     chargerVersInformation("ecran_description_station")
     var textInfo = station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet + " est la personne qui dirige la station."+ 
-    "\r\n" + "Son idéologie : " + station_joueur.dirigeant.ideologie +
-    "\r\n" + "Sa taille : " + station_joueur.dirigeant.height + " cm." +
-    "\r\n" + "Son genre : " + station_joueur.dirigeant.genre +
-    "\r\n" + "Son origine : " + station_joueur.dirigeant.origine
-    document.getElementById('textOfInfo').textContent = textInfo
+    "<br>" + "Son idéologie : " + station_joueur.dirigeant.ideologie +
+    "<br>" + "Sa taille : " + station_joueur.dirigeant.height + " cm." +
+    "<br>" + "Son genre : " + station_joueur.dirigeant.genre +
+    "<br>" + "Son origine : " + station_joueur.dirigeant.origine
+    document.getElementById('textOfInfo').innerHTML = textInfo
       
   });
 
@@ -431,14 +434,14 @@ btnExitInfo.addEventListener('click', () => {
     var textInfo = ""
     console.log(textInfo)
     for (var i = 0; i < station_joueur.randomNobody.length; i++){
-      textInfo = textInfo.concat(station_joueur.randomNobody[i].titre, " ", station_joueur.randomNobody[i].nomComplet, " est un random nobody de la station.", 
-      "\r\n", "Son idéologie : ", station_joueur.randomNobody[i].ideologie,
-      "\r\n", station_joueur.randomNobody[i].height + "cm.",
-      "\r\n", "Son genre : ", station_joueur.randomNobody[i].genre,
-      "\r\n", "Son origine : ", station_joueur.randomNobody[i].origine, "\n\n"
+      textInfo = textInfo.concat("<b>", station_joueur.randomNobody[i].titre, " ", station_joueur.randomNobody[i].nomComplet, "</b> est un random nobody de la station.", 
+      "<br>", "Son idéologie : ", station_joueur.randomNobody[i].ideologie,
+      "<br>", station_joueur.randomNobody[i].height + "cm.",
+      "<br>", "Son genre : ", station_joueur.randomNobody[i].genre,
+      "<br>", "Son origine : ", station_joueur.randomNobody[i].origine, "<br><br>"
       )}
       console.log(textInfo)
-    document.getElementById('textOfInfo').textContent = textInfo
+    document.getElementById('textOfInfo').innerHTML = textInfo
   });
 
 // ACTIONS ET ÉVÉNEMENTS
