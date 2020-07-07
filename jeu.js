@@ -1,17 +1,23 @@
 //VARIABLES GLOBALES
-var liste_type_gouv = ["Lottocratie", "République", "République marchande", "Autocratie", "Monarchie", "Théocratie", "Ploutocratie", "Gabrielocratie", "Épistocratie", "Kakistocratie", "Communisme", "Idiocratie"];
-let nomsDeLastation = ["Montréal", "Laval", "Candiac", "Paris", "Montpellier", "DS9", "DS7", "Terre", "Ahuntsic", "Villeray", "Saturne", "Jupiter", "Lune", "Europe", "Le lointain"]
+//variables personnages
 var prenomsPersonnagesHomme = ["Bernard", "Martin", "Gabriel", "Mathieu", "Arthur", "Thomas", "Christian", "Simon", "Geralt", "Alexandre", "Étienne", "François"]
-var prenomsPersonnagesFemme = ["Catherine", "Rapunzel", "Sophia", "Morgane", "Rieke", "Julia", "Linda", "Christina", "Anne-Sophie", "Anne-Marie", "Marie-Pier", "Marie", "Anne", "Anna"]
+var prenomsPersonnagesFemme = ["Catherine", "Florence", "Sophia", "Morgane", "Rieke", "Julia", "Linda", "Christina", "Anne-Sophie", "Anne-Marie", "Marie-Pier", "Marie", "Anne", "Anna", "Rapunzel", "Éloise"]
 var prenomsPersonnagesTotal = [].concat(prenomsPersonnagesHomme, prenomsPersonnagesFemme);
 var momsFamillePersonnages = ["Monette", "Ducharme", "Carel", "Dax", "Rideout", "Delorme", "Picard", "Sisko", "Janeway", "Pratte", "Séguin", "Gagné", "Turpin", "Bouras", "De Rivia", "Côté", "Gingras"]
 var listIdeology = ["Républicanisme", "Anarchisme", "Autoritarisme", "Ludisme", "Gabrielisme", "Scientisme", "Féminisme", "Turpinisme", "Chaotisme", "Monarchisme", "Bernardisme", "Socialisme", "Libéralisme", "Capitalisme", "Conspirationisme", "Rawlsisme", "Anarco-capitalisme", "Lavalisme", "Municipalisme", "Vedge", "Apathie"]
 var listeGenre = ["Homme", "Femme", "Fluide", "Homme", "Femme", "Homme", "Femme", "Non-binaire"]
 var listeTitresDirigeant = ["Capitaine", "Commandant", "Consul", "Guide", "Président", "Général", "Professeur", "Dude", "Tsé, lui-là", "Philosophe", "Politicien", "Délégué", "Vendu", "Maître", "WTF?"]
+var listeNomPhilosophe = ["Aristote", "Platon", "Machiavel", "Pettit", "Rousseau", "Hume", "Hobbes", "Spinoza", "Diderot", "Woolstonecraft", "Davis", "Nussbaum", "Anderson"]
+
+//variables station
+var liste_type_gouv = ["Lottocratie", "République", "République marchande", "Autocratie", "Monarchie", "Théocratie", "Ploutocratie", "Gabrielocratie", "Épistocratie", "Kakistocratie", "Communisme", "Idiocratie"];
+let nomsDeLastation = ["Montréal", "Laval", "Candiac", "Paris", "Montpellier", "DS9", "DS7", "Terre", "Ahuntsic", "Villeray", "Saturne", "Jupiter", "Lune", "Europe", "Le lointain"]
 let nomsDeSecteursListe = [""]
 let ressourcesTypeList = ["Gold Pressed Latinum", "Livres de philo", "Deuterium", "Awesomeness"]
 let listeTypesSectionsStation = ["Arboretum", "Bibliothèque"]
 let listOfLawInPlace = [""]
+
+// variables gameplay
 let tour = 1
 var station_joueur;
 var station_ordi;
@@ -196,7 +202,8 @@ class Personnage {
     this._titre = "";
     this._prenom = prenom;
     this._nom = nom
-    this._nomComplet = prenom + " " + nom
+    this._moral = parseInt((Math.floor(Math.random() * 10) + 5), 10)
+    this._richesse = parseInt((Math.floor(Math.random() * 10) + 5), 10)
     this._influence = parseInt((Math.floor(Math.random() * 10) + 5), 10)
     this._charisme = parseInt((Math.floor(Math.random() * 10) + 5), 10)
     this._connaissance = parseInt((Math.floor(Math.random() * 10) + 5), 10)
@@ -230,12 +237,18 @@ class Personnage {
   set nom(nom){
     this._nom = nom
   }
-  get nomComplet() {
-    return this._nomComplet
+  get moral() {
+    return this._moral
   }
-  set nomComplet(nomComplet){
-    this._nomComplet = nomComplet
+  set moral(moral){
+    this._moral = moral
+  }  
+  get richesse() {
+    return this._richesse
   }
+  set richesse(richesse){
+    this._richesse = richesse
+  }  
   get influence() {
     return this._influence
   }
@@ -282,6 +295,10 @@ class Personnage {
   gagneUnTitre = function (){
     var nouveauTitre = listeTitresDirigeant[Math.floor(Math.random() * listeTitresDirigeant.length)]
     this.titre = nouveauTitre
+  }
+
+  nomComplet = function (){
+    return this._prenom + " " + this._nom
   }
 
 }
@@ -376,6 +393,7 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
     station_joueur.randomNobody.push(new Personnage())
     };
   console.log(station_joueur)
+  console.log(station_joueur.randomNobody[0])
   charger_description_station("ecran_creation_station");
 });
 
@@ -386,8 +404,8 @@ function afficherDescription() {
     document.getElementById('tourInfo').textContent = tour;
     document.getElementById('nomStationPage').textContent = station_joueur.nom;
     document.getElementById('dirigeantStationTitre').textContent = station_joueur.dirigeant.titre;
-    document.getElementById('consulStation').textContent = station_joueur.dirigeant.nomComplet;
-    document.getElementById('consulStation2').textContent = station_joueur.dirigeant.nomComplet;
+    document.getElementById('consulStation').textContent = station_joueur.dirigeant.nomComplet();
+    document.getElementById('consulStation2').textContent = station_joueur.dirigeant.nomComplet();
     document.getElementById('richesseStationInfo').textContent = station_joueur.richesse;
     document.getElementById('typeGouvernementStationPage').textContent = station_joueur.regime;
     document.getElementById('moralStationInfo').textContent = station_joueur.moral;
@@ -412,7 +430,7 @@ btnExitInfo.addEventListener('click', () => {
 
   document.getElementById("btnInfoDirigeant").addEventListener('click', function (e){
     chargerVersInformation("ecran_description_station")
-    var textInfo = station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet + " est la personne qui dirige la station."+ 
+    var textInfo = station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet() + " est la personne qui dirige la station."+ 
     "<br>" + "Son idéologie : " + station_joueur.dirigeant.ideologie +
     "<br>" + "Sa taille : " + station_joueur.dirigeant.height + " cm." +
     "<br>" + "Son genre : " + station_joueur.dirigeant.genre +
@@ -434,7 +452,7 @@ btnExitInfo.addEventListener('click', () => {
     var textInfo = ""
     console.log(textInfo)
     for (var i = 0; i < station_joueur.randomNobody.length; i++){
-      textInfo = textInfo.concat("<b>", station_joueur.randomNobody[i].titre, " ", station_joueur.randomNobody[i].nomComplet, "</b> est un random nobody de la station.", 
+      textInfo = textInfo.concat("<b>", station_joueur.randomNobody[i].titre, " ", station_joueur.randomNobody[i].nomComplet(), "</b> est un random nobody de la station.", 
       "<br>", "Son idéologie : ", station_joueur.randomNobody[i].ideologie,
       "<br>", station_joueur.randomNobody[i].height + "cm.",
       "<br>", "Son genre : ", station_joueur.randomNobody[i].genre,
@@ -463,7 +481,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
       case "organiserDebatPhilo":
         var debateurPhiloA = station_joueur.randomNobody[Math.floor(Math.random() * station_joueur.randomNobody.length)]
         var debateurPhiloB = station_joueur.dirigeant
-        textOfChoiceInfluence = "Il y a un débat philosophique entre " + debateurPhiloA.nomComplet + " et " + debateurPhiloB.titre + " " + debateurPhiloB.nomComplet + "!"
+        textOfChoiceInfluence = "Il y a un débat philosophique entre " + debateurPhiloA.nomComplet() + " et " + debateurPhiloB.titre + " " + debateurPhiloB.nomComplet() + "!"
         textEffectsOfChoiceInfluence = debatPhilo(debateurPhiloA,debateurPhiloB)
         station_joueur.moral++;
         station_joueur.chaos++;
@@ -477,7 +495,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
       break;
       case "exileHabitant":
         textOfChoiceInfluence = "Expulsion d'un habitant pour de faux prétextes."
-        textEffectsOfChoiceInfluence = station_joueur.dirigeant.nomComplet + " exile un habitant et confisque sa propriété!"
+        textEffectsOfChoiceInfluence = station_joueur.dirigeant.nomComplet() + " exile un habitant et confisque sa propriété!"
         station_joueur.richesse++;
         station_joueur.moral--;
         station_joueur.energie++;
@@ -520,7 +538,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
     station_joueur.integrite++
     station_joueur.energie = station_joueur.energie - 3
     station_joueur.ressources--
-    textOfChoice = "Vos systèmes se mobilisent pour améliorer la structure de la station et la population, incluant " + station_joueur.randomNobody[0].nomComplet + ", se déploit construire de nouvelles instalations.";
+    textOfChoice = "Vos systèmes se mobilisent pour améliorer la structure de la station et la population, incluant " + station_joueur.randomNobody[0].nomComplet() + ", se déploient construire de nouvelles instalations.";
     textEffectsOfChoice1 = "L'intégrité de la station s'améliore."
     break;
   case "pause":
@@ -541,16 +559,17 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
 
   function debatPhilo(participantA, participantB){
     if (participantA.ideologie == "Républicanisme" && participantB.ideologie != "Républicanisme") {
-      var gagnantDebatPhilo = participantA.nomComplet
+      var gagnantDebatPhilo = participantA.nomComplet() + " a gagné!"
       station_joueur.moral++;
     } else if (participantB.ideologie == "Républicanisme" && participantA.ideologie != "Républicanisme"){
-      var gagnantDebatPhilo = participantB.nomComplet
+      var gagnantDebatPhilo = participantB.nomComplet() + " a gagné!"
       station_joueur.moral++;
     } else if (participantB.ideologie == "Gabrielisme" && participantA.ideologie != "Gabrielisme" && participantA.ideologie != "Républicanisme" ){
-      var gagnantDebatPhilo = participantB.nomComplet
+      var gagnantDebatPhilo = participantB.nomComplet() + " a gagné!"
       station_joueur.moral++;
     } else {
-      gagnantDebatPhilo = "Il n'y a pas de gagnant. Il n'y a que de la confusion, du chaos et de l'étrangeté."
+      gagnantDebatPhilo = "Il n'y a pas de gagnant. Il n'y a que de la confusion, du chaos et de l'étrangeté. " + 
+      listeNomPhilosophe[Math.floor(Math.random() * listeNomPhilosophe.length)] + " a été mobilisé dans la discussion." 
     }
     return gagnantDebatPhilo
   }
@@ -559,7 +578,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
 function verifierFinPartie(){
   tour ++
   if (station_joueur.richesse <= 0 || station_joueur.moral <= 0 || station_joueur.energie <= 0 || station_joueur.integrite <=0 ) {
-    alert("Vous avez perdu! " + station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet + " a guidé la station pendant " + tour + " cycles." );
+    alert("Vous avez perdu! " + station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet() + " a guidé la station pendant " + tour + " cycles." );
     location.reload(); 
   }
   if (station_joueur.capacitePopulation <= station_joueur.population ) {
@@ -579,9 +598,9 @@ function verifierFinPartie(){
   if (station_joueur.regime == "Lotocratie" && tour == 5 || tour == 10){
     alert("Il y a un nouveau tirage au sort pour le gouvernement de la station.")
     station_joueur.dirigeant = new Personnage();
-    document.getElementById('consulStation').textContent = station_joueur.dirigeant.nomComplet;
-    document.getElementById('consulStation2').textContent = station_joueur.dirigeant.nomComplet;
-    alert(station_joueur.dirigeant.nomComplet + " est maintenant à la tête de la station.");
+    document.getElementById('consulStation').textContent = station_joueur.dirigeant.nomComplet();
+    document.getElementById('consulStation2').textContent = station_joueur.dirigeant.nomComplet();
+    alert(station_joueur.dirigeant.nomComplet() + " est maintenant à la tête de la station.");
   }
 }
 
@@ -609,32 +628,32 @@ function evenementFinTour(){
       if (visiteurExisteDeja == true){
         visiteurNobody = new Personnage ();
       }
-      var textDeEvenement = "Il y a eu un visiteur du nom de " + visiteurNobody.nomComplet + "."
-      if (visiteurNobody.genre == "femme" && visiteurNobody.nomComplet == "Catherine Côté"){
+      var textDeEvenement = "Il y a eu un visiteur du nom de " + visiteurNobody.nomComplet() + "."
+      if (visiteurNobody.genre == "femme" && visiteurNobody.nomComplet() == "Catherine Côté"){
         visiteurNobody.height = visiteurNobody.height + 15
-        textDeEvenement2 = visiteurNobody.nomComplet + " va joindre " + station_joueur.nom + "."
-        textEffetsEvenement = visiteurNobody.nomComplet + " devient menbre de la station!"
+        textDeEvenement2 = visiteurNobody.nomComplet() + " va joindre " + station_joueur.nom + "."
+        textEffetsEvenement = visiteurNobody.nomComplet() + " devient menbre de la station!"
         station_joueur.population++
         // station_joueur.randomNobody.push(visiteurNobody) 
         // Est-ce qu'il faudrait créer une autre variable pour s'assurer que si un autre visiteurNobody visite, il s'ajoute et n'écrase pas l'ancien?
         break;
 
-      } else if (visiteurNobody.nomComplet == "Bernard Ducharme"){
-        textDeEvenement2 = visiteurNobody.nomComplet + " va joindre " + station_joueur.nom + "."
-        textEffetsEvenement = visiteurNobody.nomComplet + " devient menbre de la station!"
+      } else if (visiteurNobody.nomComplet() == "Bernard Ducharme"){
+        textDeEvenement2 = visiteurNobody.nomComplet() + " va joindre " + station_joueur.nom + "."
+        textEffetsEvenement = visiteurNobody.nomComplet() + " devient menbre de la station!"
         station_joueur.population++
         station_joueur.connaissance = station_joueur.connaissance + 3
         // station_joueur.randomNobody.push(visiteurNobody) 
         // Est-ce qu'il faudrait créer une autre variable pour s'assurer que si un autre visiteurNobody visite, il s'ajoute et n'écrase pas l'ancien?
-      } else if (visiteurNobody.nomComplet == "Gabriel Monette"){
-        textDeEvenement2 = visiteurNobody.nomComplet + " va joindre " + station_joueur.nom + "."
-        textEffetsEvenement = visiteurNobody.nomComplet + " devient menbre de la station!"
+      } else if (visiteurNobody.nomComplet() == "Gabriel Monette"){
+        textDeEvenement2 = visiteurNobody.nomComplet() + " va joindre " + station_joueur.nom + "."
+        textEffetsEvenement = visiteurNobody.nomComplet() + " devient menbre de la station!"
         station_joueur.population++
         station_joueur.connaissance = station_joueur.connaissance + 3
         // station_joueur.randomNobody.push(visiteurNobody) 
         // Est-ce qu'il faudrait créer une autre variable pour s'assurer que si un autre visiteurNobody visite, il s'ajoute et n'écrase pas l'ancien?
       } else {
-        textEffetsEvenement = "Rien de spécial. " + visiteurNobody.nomComplet + " retourne sur son chemin."
+        textEffetsEvenement = "Rien de spécial. " + visiteurNobody.nomComplet() + " retourne sur son chemin."
       }
       
     break;
@@ -652,14 +671,14 @@ function evenementFinTour(){
       break;
     case "rien":
       console.log("RIEN");
-      textDeEvenement = station_joueur.randomNobody[0].nomComplet + " se tourne les pouces. Il y a une romance entre " + station_joueur.randomNobody[0].nomComplet + " et " + station_joueur.randomNobody[1].nomComplet + "."
+      textDeEvenement = station_joueur.randomNobody[0].nomComplet() + " se tourne les pouces. Il y a une romance entre " + station_joueur.randomNobody[0].nomComplet() + " et " + station_joueur.randomNobody[1].nomComplet() + "."
       textDeEvenement2 = "C'est bien plaisant."
       textEffetsEvenement = "Rien de spécial."
       break;
     case "debatphilo":
       var debateurPhiloA = station_joueur.randomNobody[Math.floor(Math.random() * station_joueur.randomNobody.length)]
       var debateurPhiloB = station_joueur.dirigeant
-      textDeEvenement = "Il y a un débat philosophique entre " + debateurPhiloA.nomComplet + " et " + debateurPhiloB.titre + " " + debateurPhiloB.nomComplet + "!"
+      textDeEvenement = "Il y a un débat philosophique entre " + debateurPhiloA.nomComplet() + " et " + debateurPhiloB.titre + " " + debateurPhiloB.nomComplet() + "!"
       textEffetsEvenement = debatPhilo(debateurPhiloA,debateurPhiloB)
       station_joueur.moral++;
       station_joueur.chaos++;
