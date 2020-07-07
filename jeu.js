@@ -54,6 +54,8 @@ class Station {
     this._cybersecurite = 10;
     this._sections = new Section();
     this._randomNobody = [];
+    this._nobodies_en_mission = [];
+
   }
 
   get nom() {
@@ -452,17 +454,46 @@ btnExitInfo.addEventListener('click', () => {
     var textInfo = ""
     console.log(textInfo)
     for (var i = 0; i < station_joueur.randomNobody.length; i++){
-      textInfo = textInfo.concat("<b>", station_joueur.randomNobody[i].titre, " ", station_joueur.randomNobody[i].nomComplet(), "</b> est un random nobody de la station.", 
+      let new_row = document.createElement("tr");
+      new_row.id = "personnage"+i;
+      let first_cell = document.createElement("td");
+      first_cell.innerHTML = textInfo.concat("<b>", station_joueur.randomNobody[i].titre, " ", station_joueur.randomNobody[i].nomComplet, "</b> est un random nobody de la station.", 
       "<br>", "Son idéologie : ", station_joueur.randomNobody[i].ideologie,
       "<br>", station_joueur.randomNobody[i].height + "cm.",
       "<br>", "Son genre : ", station_joueur.randomNobody[i].genre,
-      "<br>", "Son origine : ", station_joueur.randomNobody[i].origine, "<br><br>"
-      )}
-      console.log(textInfo)
-    document.getElementById('textOfInfo').innerHTML = textInfo
+      "<br>", "Son origine : ", station_joueur.randomNobody[i].origine, "<br><br>");
+      new_row.appendChild(first_cell); 
+      let second_cell = document.createElement("td");
+      second_cell.id = "second_cell_no"+i; 
+      if(station_joueur.randomNobody[i].ideologie == "Chaotisme"){
+        let aventurier = station_joueur.randomNobody[i];
+        let button = document.createElement("input"); 
+        button.id = "btnMission_no"+i;
+        button.type = "button"; 
+        button.class= "button is-small is-warning";
+        button.value= "partir en mission";
+        button.addEventListener("click", () => {
+          partir_en_mission(aventurier, second_cell.id, button.id); 
+        }); 
+        second_cell.appendChild(button); 
+      //  second_cell.innerHTML = "<input type='button' class='button is-small is-danger' value='partir en mission' onclick='partir_en_mission("+aventurier+")'><br>";
+      }
+      new_row.appendChild(second_cell);
+      document.getElementById("liste_population").appendChild(new_row);
+      
+    }
   });
 
 // ACTIONS ET ÉVÉNEMENTS
+function partir_en_mission(nobody, cell_id, button_id){
+  document.getElementById(button_id).remove
+  station_joueur.nobodies_en_mission.push(nobody); 
+  let index = station_joueur.randomNobody.indexOf(nobody); 
+  station_joueur.randomNobody.splice(index, 1);
+  document.getElementById(cell_id).innerHTML =  nobody.nomComplet +" est parti en mission sur un coup de tête. Il mourra probablement, ou reviendra avec des ressources et couvert de gloire";
+   
+}
+
 function afficherChoixEtEvenements() {
   document.getElementById('textOfChoiceInfluence').textContent = textOfChoiceInfluence;
   document.getElementById('textEffectsOfChoiceInfluence').textContent = textEffectsOfChoiceInfluence;
