@@ -39,7 +39,6 @@ class Station {
     this._nom = nom;
     this._regime = regime;
     this._dirigeant = new Personnage();
-    this._population = parseInt((Math.floor(Math.random() * 5) + 14), 10)
     this._capacitePopulation = parseInt((Math.floor(Math.random() * 5) + 20), 10)
     this._richesse = 10;
     this._moral = 10;
@@ -74,12 +73,6 @@ class Station {
   }
   set dirigeant (dirigeant){
     this._dirigeant= dirigeant;
-  }
-  get population(){
-    return this._population;
-  }
-  set population (population){
-    this._population = population;
   }
   get capacitePopulation(){
     return this._capacitePopulation;
@@ -171,6 +164,13 @@ class Station {
   set randomNobody(randomNobody){
     this._randomNobody = randomNobody
   }
+
+  population = function (){
+    var totalCalculPopulation = this._randomNobody.length
+    return totalCalculPopulation
+  }
+
+
 
 }
 
@@ -329,7 +329,7 @@ function choisir_prenom_personnage(genre){
 function verificationExistencePersonnage(nomComplet){
   for (var i = 0; i < station_joueur.randomNobody.length; i++){
     var persoExisteDeja = false
-    if (nomComplet == station_joueur.randomNobody[i].nomComplet){
+    if (nomComplet.nom == station_joueur.randomNobody[i].nom && nomComplet.prenom == station_joueur.randomNobody[i].prenom){
       persoExisteDeja = true
       break; 
     } else {
@@ -388,7 +388,7 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
   station_joueur = new Station(nom_station, regime_choisi);
   console.log("on a créé une station! = "+station_joueur);
   station_joueur.dirigeant.gagneUnTitre();
-  var startingNumberOfNobody = station_joueur.population;
+  var startingNumberOfNobody = Math.floor(Math.random() * 20);
   for (var i = 0; i < startingNumberOfNobody; i++){
     station_joueur.randomNobody.push(new Personnage())
     };
@@ -416,7 +416,7 @@ function afficherDescription() {
     document.getElementById('energieStationInfo').textContent = station_joueur.energie;
     document.getElementById('connaissanceDataBaseInfo').textContent = station_joueur.connaissance;
     document.getElementById('ressourcesStationInfo').textContent = station_joueur.ressources;
-    document.getElementById('populationStationInfo').textContent = station_joueur.population;
+    document.getElementById('populationStationInfo').textContent = station_joueur.population();
     document.getElementById('integriteStationInfo').textContent = station_joueur.integrite;
     document.getElementById('cybersecuriteStationInfo').textContent = station_joueur.cybersecurite;
     document.getElementById('capacitePopulationStationInfo').textContent = station_joueur.capacitePopulation;
@@ -482,7 +482,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
         var debateurPhiloA = station_joueur.randomNobody[Math.floor(Math.random() * station_joueur.randomNobody.length)]
         var debateurPhiloB = station_joueur.dirigeant
         textOfChoiceInfluence = "Il y a un débat philosophique entre " + debateurPhiloA.nomComplet() + " et " + debateurPhiloB.titre + " " + debateurPhiloB.nomComplet() + "!"
-        textEffectsOfChoiceInfluence = debatPhilo(debateurPhiloA,debateurPhiloB)
+        textEffectsOfChoiceInfluence = debatPhilo(debateurPhiloA, debateurPhiloB)
         station_joueur.moral++;
         station_joueur.chaos++;
       break;      
@@ -499,7 +499,6 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
         station_joueur.richesse++;
         station_joueur.moral--;
         station_joueur.energie++;
-        station_joueur.population--;
       break;
       case "festivalPhiloPolitique":
         textOfChoiceInfluence = "Sur l'ensemble des ordinateurs et des réseaux sociaux s'organise un immense festival de la philosophie politique."
@@ -507,7 +506,6 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
         station_joueur.richesse++;
         station_joueur.moral++;
         station_joueur.energie++;
-        station_joueur.population--;
         station_joueur.influenceCulturelle++;
         station_joueur.connaissance++;
       break;
@@ -581,19 +579,17 @@ function verifierFinPartie(){
     alert("Vous avez perdu! " + station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet() + " a guidé la station pendant " + tour + " cycles." );
     location.reload(); 
   }
-  if (station_joueur.capacitePopulation <= station_joueur.population ) {
+  if (station_joueur.capacitePopulation <= station_joueur.population() ) {
     alert("Le moral descend, car une part de la population n'a pas accès à du logement.");
     station_joueur.moral--;
   }
   if (station_joueur.ressources >= station_joueur.population ) {
     alert("Le moral descend, car une part de la population n'a pas accès à du logement.");
-    station_joueur.population++;
     station_joueur.ressources--;
     station_joueur.moral++;
   }
   if (station_joueur.moral >= 15 ) {
     alert("Le moral descend, car une part de la population n'a pas accès à du logement.");
-    station_joueur.population++;
   }
   if (station_joueur.regime == "Lotocratie" && tour == 5 || tour == 10){
     alert("Il y a un nouveau tirage au sort pour le gouvernement de la station.")
@@ -626,31 +622,29 @@ function evenementFinTour(){
       var visiteurExisteDeja = false
       visiteurExisteDeja = verificationExistencePersonnage(visiteurNobody);
       if (visiteurExisteDeja == true){
+        console.log("visiteur existe deja")
         visiteurNobody = new Personnage ();
       }
-      var textDeEvenement = "Il y a eu un visiteur du nom de " + visiteurNobody.nomComplet() + "."
-      if (visiteurNobody.genre == "femme" && visiteurNobody.nomComplet() == "Catherine Côté"){
+      var textDeEvenement = "La station a la visite de " + visiteurNobody.nomComplet() + "."
+      if (visiteurNobody.genre == "femme" && visiteurNobody.nom == "Côté" && visiteurNobody.prenom == "Catherine"){
         visiteurNobody.height = visiteurNobody.height + 15
         textDeEvenement2 = visiteurNobody.nomComplet() + " va joindre " + station_joueur.nom + "."
         textEffetsEvenement = visiteurNobody.nomComplet() + " devient menbre de la station!"
-        station_joueur.population++
-        // station_joueur.randomNobody.push(visiteurNobody) 
+        station_joueur.randomNobody.push(visiteurNobody) 
         // Est-ce qu'il faudrait créer une autre variable pour s'assurer que si un autre visiteurNobody visite, il s'ajoute et n'écrase pas l'ancien?
         break;
 
       } else if (visiteurNobody.nomComplet() == "Bernard Ducharme"){
         textDeEvenement2 = visiteurNobody.nomComplet() + " va joindre " + station_joueur.nom + "."
         textEffetsEvenement = visiteurNobody.nomComplet() + " devient menbre de la station!"
-        station_joueur.population++
         station_joueur.connaissance = station_joueur.connaissance + 3
-        // station_joueur.randomNobody.push(visiteurNobody) 
+        station_joueur.randomNobody.push(visiteurNobody) 
         // Est-ce qu'il faudrait créer une autre variable pour s'assurer que si un autre visiteurNobody visite, il s'ajoute et n'écrase pas l'ancien?
       } else if (visiteurNobody.nomComplet() == "Gabriel Monette"){
         textDeEvenement2 = visiteurNobody.nomComplet() + " va joindre " + station_joueur.nom + "."
         textEffetsEvenement = visiteurNobody.nomComplet() + " devient menbre de la station!"
-        station_joueur.population++
         station_joueur.connaissance = station_joueur.connaissance + 3
-        // station_joueur.randomNobody.push(visiteurNobody) 
+        station_joueur.randomNobody.push(visiteurNobody) 
         // Est-ce qu'il faudrait créer une autre variable pour s'assurer que si un autre visiteurNobody visite, il s'ajoute et n'écrase pas l'ancien?
       } else {
         textEffetsEvenement = "Rien de spécial. " + visiteurNobody.nomComplet() + " retourne sur son chemin."
