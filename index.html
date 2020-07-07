@@ -4,14 +4,14 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" href="https://unpkg.com/bulmaswatch/darkly/bulmaswatch.min.css">
         <style>
-			.ecran{}
+			
         </style>
     </head>
     <body>
     
     <!-- **********ECRAN DESCRIPTION DE LA station*************-->
     <section class="section">
-        <div class="ecran" id="ecran_description_station" hidden>
+        <div id="ecran_description_station" hidden>
             <header>
                 <h1 class="title" id="ecranDescriptionStationTitrePrincipal">Description de la station</h1>
              
@@ -135,7 +135,7 @@
 
     <!-- **********ECRAN CRÉATION DE LA STATION*************-->
 <section class="section">
-        <div class="ecran" id="ecran_creation_station">
+        <div id="ecran_creation_station">
             <h1 class="title">Choisissez les valeurs de votre station</h1>
             <span>Station est un jeu où vous incarnez l'intelligence artificielle qui guide une station spatiale au fin fond de l'Univers.
                 Pour commencer, il faut choisir le nom et le type d'organisation structurant la communauté spatiale. </span>
@@ -165,7 +165,7 @@
     
  <!-- **********ECRAN RÉSULTATS DES CHOIX & ÉVÉNEMENTS*************-->
 <section class="section">
-        <div class="ecran" id="ecranChoixEtEvenementsStation" hidden>
+        <div id="ecranChoixEtEvenementsStation" hidden>
             <header>
                 <h1 class="title">Description des événements</h1>
                 <h2 class="subtitle">Résultats des choix</h2>
@@ -214,7 +214,7 @@
 
 <!-- **********ECRAN Information sur la station*************-->
 <section class="section">
-    <div class="ecran" id="ecranInformationStation" hidden>
+    <div id="ecranInformationStation" hidden>
         <header>
             <h1 class="title">Demande d'information sur la station</h1>
          
@@ -226,22 +226,22 @@
                   <th>Effets</th>
                 </tr>
               </thead>
-            
-            <tr>
-                <td><span id="textOfInfo"></span></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td><button id="btnExitInfo">Revenir à la station</button></td>
-            </tr>    
+            <tbody id="liste_population">
+
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2"><button class="button is-primary is-small" id="btnExitInfo">Revenir à la station</button></td>
+                </tr>
+            </tfoot>
+                
         </table>
     </div>
 
 </section>
 
-
-
-        <script type="text/javascript" src="jeu.js"> </script>
+</section>
+      <script type="text/javascript" src="jeu.js"> </script>
     </body>
 
 </html>
