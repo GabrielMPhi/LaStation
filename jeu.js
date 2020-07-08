@@ -166,6 +166,12 @@ class Station {
   set randomNobody(randomNobody){
     this._randomNobody = randomNobody
   }
+  get nobodies_en_mission() {
+    return this._nobodies_en_mission
+  }
+  set nobodies_en_mission(randomNobody){
+    this._nobodies_en_mission = randomNobody
+  }
 
   population = function (){
     var totalCalculPopulation = this._randomNobody.length
@@ -213,6 +219,7 @@ class Personnage {
     this._height = parseInt((Math.floor(Math.random() * 70) + 145), 10);
     this._age = parseInt((Math.floor(Math.random() * 20) + 18), 10)
     this._origine = nomsDeLastation[Math.floor(Math.random() * nomsDeLastation.length)]
+    this._mission = "";
   }
 
   get genre() {
@@ -293,6 +300,13 @@ class Personnage {
   set origine(origine){
     this._origine = origine
   }
+  get mission() {
+    return this._origine
+  }
+  set mission(mission){
+    this._mission = mission
+  }
+
 
   gagneUnTitre = function (){
     var nouveauTitre = listeTitresDirigeant[Math.floor(Math.random() * listeTitresDirigeant.length)]
@@ -304,6 +318,15 @@ class Personnage {
   }
 
 }
+
+class Mission {
+  constructor(nature, tour_debut){
+    this.nature_de_la_mission = nature;
+    this.tour_debut = tour_debut;
+    this.duree = Math.floor(Math.random()*3+3);
+  } 
+}
+
 /*FONCTIONS CRÉATION DES PERSONNAGES*/
 function choiceGender (){
   var choixGenre = listeGenre[Math.floor(Math.random() * listeGenre.length)]
@@ -453,11 +476,12 @@ btnExitInfo.addEventListener('click', () => {
     chargerVersInformation("ecran_description_station")
     var textInfo = ""
     console.log(textInfo)
+    remove_all_children(document.getElementById('liste_population'));
     for (var i = 0; i < station_joueur.randomNobody.length; i++){
       let new_row = document.createElement("tr");
       new_row.id = "personnage"+i;
       let first_cell = document.createElement("td");
-      first_cell.innerHTML = textInfo.concat("<b>", station_joueur.randomNobody[i].titre, " ", station_joueur.randomNobody[i].nomComplet, "</b> est un random nobody de la station.", 
+      first_cell.innerHTML = textInfo.concat("<b>", station_joueur.randomNobody[i].titre, " ", station_joueur.randomNobody[i].nomComplet(), "</b> est un random nobody de la station.", 
       "<br>", "Son idéologie : ", station_joueur.randomNobody[i].ideologie,
       "<br>", station_joueur.randomNobody[i].height + "cm.",
       "<br>", "Son genre : ", station_joueur.randomNobody[i].genre,
@@ -484,13 +508,22 @@ btnExitInfo.addEventListener('click', () => {
     }
   });
 
+
+  //utilitaires
+  function remove_all_children(parent){
+    while(parent.firstChild){
+      parent.removeChild(parent.firstChild);
+    }
+  }
+
 // ACTIONS ET ÉVÉNEMENTS
 function partir_en_mission(nobody, cell_id, button_id){
   document.getElementById(button_id).remove
+  nobody.mission = new Mission("mission chaotique", tour); 
   station_joueur.nobodies_en_mission.push(nobody); 
   let index = station_joueur.randomNobody.indexOf(nobody); 
   station_joueur.randomNobody.splice(index, 1);
-  document.getElementById(cell_id).innerHTML =  nobody.nomComplet +" est parti en mission sur un coup de tête. Il mourra probablement, ou reviendra avec des ressources et couvert de gloire";
+  document.getElementById(cell_id).innerHTML =  nobody.nomComplet() +" est parti en mission sur un coup de tête. Il mourra probablement, ou reviendra avec des ressources et couvert de gloire";
    
 }
 
