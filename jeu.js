@@ -173,11 +173,11 @@ class Station {
     this._nobodies_en_mission = nobodies_en_mission
   }
 
+
   population = function (){
     var totalCalculPopulation = this._randomNobody.length
     return totalCalculPopulation
   }
-
 
 
 }
@@ -434,6 +434,9 @@ function afficherDescription() {
 const btnExitInfo = document.querySelector('#btnExitInfo');
 btnExitInfo.addEventListener('click', () => {
   charger_description_station("ecranInformationStation");
+  removeAllChildNodes(document.getElementById("liste_population"))
+  
+  
 });
 
   document.getElementById("btnInfoDirigeant").addEventListener('click', function (e){
@@ -454,6 +457,15 @@ btnExitInfo.addEventListener('click', () => {
     document.getElementById('textOfInfo').textContent = textInfo
   
   });
+
+  function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+      parent.removeChild(parent.firstChild);
+    }
+
+  }
+
+
 
   document.getElementById("btnInfoPopulationListNobody").addEventListener('click', function (e){
     chargerVersInformation("ecran_description_station")
