@@ -166,6 +166,12 @@ class Station {
   set randomNobody(randomNobody){
     this._randomNobody = randomNobody
   }
+  get nobodies_en_mission() {
+    return this._nobodies_en_mission
+  }
+  set nobodies_en_mission(nobodies_en_mission){
+    this._nobodies_en_mission = nobodies_en_mission
+  }
 
   population = function (){
     var totalCalculPopulation = this._randomNobody.length
@@ -390,7 +396,7 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
   station_joueur = new Station(nom_station, regime_choisi);
   console.log("on a créé une station! = "+station_joueur);
   station_joueur.dirigeant.gagneUnTitre();
-  var startingNumberOfNobody = Math.floor(Math.random() * 20);
+  var startingNumberOfNobody = (Math.floor(Math.random() * 15)) + 5;
   for (var i = 0; i < startingNumberOfNobody; i++){
     station_joueur.randomNobody.push(new Personnage())
     };
@@ -457,7 +463,7 @@ btnExitInfo.addEventListener('click', () => {
       let new_row = document.createElement("tr");
       new_row.id = "personnage"+i;
       let first_cell = document.createElement("td");
-      first_cell.innerHTML = textInfo.concat("<b>", station_joueur.randomNobody[i].titre, " ", station_joueur.randomNobody[i].nomComplet, "</b> est un random nobody de la station.", 
+      first_cell.innerHTML = textInfo.concat("<b>", station_joueur.randomNobody[i].titre, " ", station_joueur.randomNobody[i].nomComplet(), "</b> est un random nobody de la station.", 
       "<br>", "Son idéologie : ", station_joueur.randomNobody[i].ideologie,
       "<br>", station_joueur.randomNobody[i].height + "cm.",
       "<br>", "Son genre : ", station_joueur.randomNobody[i].genre,
@@ -465,6 +471,7 @@ btnExitInfo.addEventListener('click', () => {
       new_row.appendChild(first_cell); 
       let second_cell = document.createElement("td");
       second_cell.id = "second_cell_no"+i; 
+      
       if(station_joueur.randomNobody[i].ideologie == "Chaotisme"){
         let aventurier = station_joueur.randomNobody[i];
         let button = document.createElement("input"); 
@@ -486,11 +493,12 @@ btnExitInfo.addEventListener('click', () => {
 
 // ACTIONS ET ÉVÉNEMENTS
 function partir_en_mission(nobody, cell_id, button_id){
+  console.log(button_id + " "+ cell_id)
   document.getElementById(button_id).remove
   station_joueur.nobodies_en_mission.push(nobody); 
-  let index = station_joueur.randomNobody.indexOf(nobody); 
-  station_joueur.randomNobody.splice(index, 1);
-  document.getElementById(cell_id).innerHTML =  nobody.nomComplet +" est parti en mission sur un coup de tête. Il mourra probablement, ou reviendra avec des ressources et couvert de gloire";
+  let indexPartirEnMission = station_joueur.randomNobody.indexOf(nobody); 
+  station_joueur.randomNobody.splice(indexPartirEnMission, 1);
+  document.getElementById(cell_id).innerHTML =  nobody.nomComplet() +" est parti en mission sur un coup de tête. Il mourra probablement, ou reviendra avec des ressources et couvert de gloire";
    
 }
 
