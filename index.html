@@ -16,6 +16,7 @@
                 <h1 class="title" id="ecranDescriptionStationTitrePrincipal">Description de la station</h1>
              
             </header>
+            <progress class="progress is-info" id="tourProgressBar" value="1" max="10">45%</progress>
             <table class="table is-bordered is-hoverable">
                 <thead>
                     <h2 class="subtitle">L'intérieur de la station</h2>
@@ -27,6 +28,7 @@
                 <tr>
                     <td>Régime:</td>
                     <td><span class="paragraph" id="typeGouvernementStationPage">Insérer le type de gouvernement</span></td>
+                    <td><input class="button is-small" type="button" id="btnInfoRegime" value="Information"> </td> <!-- Pourquoi mettre une valeur "Information" -->
                 </tr>
                 <tr>
                     <td>Dirigeant:</td>
@@ -137,8 +139,12 @@
 <section class="section">
         <div id="ecran_creation_station">
             <h1 class="title">Choisissez les valeurs de votre station</h1>
-            <span>Station est un jeu où vous incarnez l'intelligence artificielle qui guide une station spatiale au fin fond de l'Univers.
-                Pour commencer, il faut choisir le nom et le type d'organisation structurant la communauté spatiale. </span>
+            <span class="box">Station est un jeu où vous incarnez l'intelligence artificielle qui guide une station spatiale au fin fond de l'Univers. 
+                Vous avez contrôle sur les systèmes de la station, son énergie autant que les réseaux de communications entre les habitations. 
+                Vous pouvez autoriser les départs et les arrivées. Le ou la dirigeante de la station est aussi très connecté à vos systèmes. 
+                Conséquemment, vous pouvez aisément l'influencer à prendre des décision.
+                Pour commencer, il faut choisir le nom et le type d'organisation structurant la communauté spatiale.  </span>
+                <progress class="progress is-small is-info" max="100">60%</progress>
 
             <form id="form_creation_station">
                 <div class="columns">
@@ -217,7 +223,6 @@
     <div id="ecranInformationStation" hidden>
         <header>
             <h1 class="title">Demande d'information sur la station</h1>
-         
         </header>
         <table class="table is-bordered is-hoverable">
             <thead>
@@ -225,8 +230,11 @@
                   <th>Description</th>
                   <th>Effets</th>
                 </tr>
+
+                <td><span class="paragraph" id="textOfInfo">Le texte de l'info</span></td>
               </thead>
-            <tbody id="liste_population">
+            
+              <tbody id="liste_population">
 
             </tbody>
             <tfoot>

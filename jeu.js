@@ -10,7 +10,7 @@ var listeTitresDirigeant = ["Capitaine", "Commandant", "Consul", "Guide", "Prés
 var listeNomPhilosophe = ["Aristote", "Platon", "Machiavel", "Pettit", "Rousseau", "Hume", "Hobbes", "Spinoza", "Diderot", "Woolstonecraft", "Davis", "Nussbaum", "Anderson"]
 
 //variables station
-var liste_type_gouv = ["Lottocratie", "République", "République marchande", "Autocratie", "Monarchie", "Théocratie", "Ploutocratie", "Gabrielocratie", "Épistocratie", "Kakistocratie", "Communisme", "Idiocratie"];
+var liste_type_gouv = ["Lottocratie", "République", "Corporation", "Autocratie", "Monarchie", "Théocratie", "Ploutocratie", "Gabrielocratie", "Épistocratie", "Kakistocratie", "Communisme", "Idiocratie"];
 let nomsDeLastation = ["Montréal", "Laval", "Candiac", "Paris", "Montpellier", "DS9", "DS7", "Terre", "Ahuntsic", "Villeray", "Saturne", "Jupiter", "Lune", "Europe", "Le lointain"]
 let nomsDeSecteursListe = [""]
 let ressourcesTypeList = ["Gold Pressed Latinum", "Livres de philo", "Deuterium", "Awesomeness"]
@@ -21,6 +21,15 @@ let listOfLawInPlace = [""]
 let tour = 1
 var station_joueur;
 var station_ordi;
+
+class Firm {
+  
+  constructor(nom){
+    this._nom = "East Sector Company";
+  }
+
+
+}
 
 class RegimePolitique {
 
@@ -408,6 +417,7 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
 
 /*Écran de description de la station*/
 function afficherDescription() {
+    document.getElementById('tourProgressBar').valeur = tour
     document.getElementById('ecranDescriptionStationTitrePrincipal').textContent = "Description de la station " + station_joueur.nom 
     document.getElementById('tourInfo').textContent = tour;
     document.getElementById('nomStationPage').textContent = station_joueur.nom;
@@ -436,8 +446,23 @@ btnExitInfo.addEventListener('click', () => {
   charger_description_station("ecranInformationStation");
   removeAllChildNodes(document.getElementById("liste_population"))
   
-  
 });
+
+document.getElementById("btnInfoRegime").addEventListener('click', function (e){
+  chargerVersInformation("ecran_description_station")
+  var textInfo = ""
+  switch (station_joueur.regime) {
+   case "République": 
+    textInfo = "Le républicanisme est un régime politique."
+  case "Lottocratie":
+    textInfo = "La lottocratie est un régime polique où le dirigeant est sélectionné au hasard."
+    default : 
+    textInfo = "Texte d'information à venir."
+   }
+
+  document.getElementById('textOfInfo').innerHTML = textInfo
+});
+
 
   document.getElementById("btnInfoDirigeant").addEventListener('click', function (e){
     chargerVersInformation("ecran_description_station")
@@ -634,7 +659,7 @@ function verifierFinPartie(){
     alert("Le moral descend, car une part de la population n'a pas accès à du logement.");
     station_joueur.moral--;
   }
-  if (station_joueur.ressources >= station_joueur.population ) {
+  if (station_joueur.ressources >= station_joueur.population() ) {
     alert("Le moral descend, car une part de la population n'a pas accès à du logement.");
     station_joueur.ressources--;
     station_joueur.moral++;
