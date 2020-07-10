@@ -94,9 +94,18 @@ class Station {
   get richesse(){
     return this._richesse;
   }
-  set richesse(richesse){
-    this._richesse = richesse;
-  }
+//set richesse(richesse){
+//    this._richesse = richesse;
+//} Je l'ai enlevé pour ne pas à affecter la richesse par erreur. 
+richesseTotale = function (){
+  console.log(this.randomNobody[1].richesse)
+  var calculTotalRichesse = 1
+  for (var i = 0; i < this.randomNobody.length; i++){
+    calculTotalRichesse = calculTotalRichesse + this.randomNobody[i].richesse
+  };
+  this._richesse = calculTotalRichesse;
+}
+
   get moral(){
     return this._moral;
   }
@@ -431,7 +440,11 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
   for (var i = 0; i < startingNumberOfNobody; i++){
     station_joueur.randomNobody.push(new Personnage())
     };
+  station_joueur.richesseTotale();
   console.log(station_joueur)
+  console.log(station_joueur.richesse)
+  station_joueur.richesse++
+  console.log(station_joueur.richesse)
   console.log(station_joueur.randomNobody[0])
   charger_description_station("ecran_creation_station");
 });
@@ -513,9 +526,7 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
     while (parent.firstChild) {
       parent.removeChild(parent.firstChild);
     }
-
   }
-
 
 
   document.getElementById("btnInfoPopulationListNobody").addEventListener('click', function (e){
@@ -530,6 +541,7 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
       "<br>", "Son idéologie : ", station_joueur.randomNobody[i].ideologie,
       "<br>", station_joueur.randomNobody[i].height + "cm.",
       "<br>", "Son genre : ", station_joueur.randomNobody[i].genre,
+      "<br>", "Sa richesse : ", station_joueur.randomNobody[i].richesse, " crédits",
       "<br>", "Son origine : ", station_joueur.randomNobody[i].origine, "<br><br>");
       new_row.appendChild(first_cell); 
       let second_cell = document.createElement("td");
@@ -676,6 +688,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
 
 
 function verifierFinPartie(){
+  station_joueur.richesseTotale()
   tour ++
   if (station_joueur.richesse <= 0 || station_joueur.moral <= 0 || station_joueur.energie <= 0 || station_joueur.integrite <=0 ) {
     alert("Vous avez perdu! " + station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet() + " a guidé la station pendant " + tour + " cycles." );
