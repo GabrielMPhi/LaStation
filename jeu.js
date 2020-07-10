@@ -58,12 +58,12 @@ class Station {
     this._energie = 10;
     this._influenceCulturelle = 10;
     this._connaissance = 1;
-    this._ressources = 10;
-    this._integrite = 10;
+    this._ressources = 20;
+    this._integrite = 20;
     this._cybersecurite = 10;
     this._sections = new Section();
     this._randomNobody = [];
-    this._nobodies_en_mission = [];
+    this._nobodiesEnMission = [];
 
   }
 
@@ -175,11 +175,11 @@ class Station {
   set randomNobody(randomNobody){
     this._randomNobody = randomNobody
   }
-  get nobodies_en_mission() {
-    return this._nobodies_en_mission
+  get nobodiesEnMission() {
+    return this._nobodiesEnMission
   }
-  set nobodies_en_mission(nobodies_en_mission){
-    this._nobodies_en_mission = nobodies_en_mission
+  set nobodiesEnMission(nobodiesEnMission){
+    this._nobodiesEnMission = nobodiesEnMission
   }
 
 
@@ -228,6 +228,7 @@ class Personnage {
     this._height = parseInt((Math.floor(Math.random() * 70) + 145), 10);
     this._age = parseInt((Math.floor(Math.random() * 20) + 18), 10)
     this._origine = nomsDeLastation[Math.floor(Math.random() * nomsDeLastation.length)]
+    this._mission = "";
   }
 
   get genre() {
@@ -308,6 +309,13 @@ class Personnage {
   set origine(origine){
     this._origine = origine
   }
+  get mission() {
+    return this._mission
+  }
+  set mission(mission){
+    this._mission = mission
+  }
+
 
   gagneUnTitre = function (){
     var nouveauTitre = listeTitresDirigeant[Math.floor(Math.random() * listeTitresDirigeant.length)]
@@ -319,6 +327,17 @@ class Personnage {
   }
 
 }
+
+class Mission {
+  constructor(nature, tourDebut){
+    this._natureDeLaMission = nature;
+    this._tourDebut = tourDebut;
+    this._duree = Math.floor(Math.random() *3 + 3);
+  }
+
+}
+
+
 /*FONCTIONS CRÉATION DES PERSONNAGES*/
 function choiceGender (){
   var choixGenre = listeGenre[Math.floor(Math.random() * listeGenre.length)]
@@ -404,6 +423,9 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
   }
   station_joueur = new Station(nom_station, regime_choisi);
   console.log("on a créé une station! = "+station_joueur);
+
+// ajouter sélection du dirigeant, une fonction peut-être?
+
   station_joueur.dirigeant.gagneUnTitre();
   var startingNumberOfNobody = (Math.floor(Math.random() * 15)) + 5;
   for (var i = 0; i < startingNumberOfNobody; i++){
@@ -454,9 +476,11 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
   switch (station_joueur.regime) {
    case "République": 
     textInfo = "Le républicanisme est un régime politique."
+    break;
   case "Lottocratie":
     textInfo = "La lottocratie est un régime polique où le dirigeant est sélectionné au hasard."
-    default : 
+    break;
+  default: 
     textInfo = "Texte d'information à venir."
    }
 
@@ -483,6 +507,8 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
   
   });
 
+
+  // utilitaires
   function removeAllChildNodes(parent) {
     while (parent.firstChild) {
       parent.removeChild(parent.firstChild);
@@ -532,7 +558,7 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
 function partir_en_mission(nobody, cell_id, button_id){
   console.log(button_id + " "+ cell_id)
   document.getElementById(button_id).remove
-  station_joueur.nobodies_en_mission.push(nobody); 
+  station_joueur.nobodiesEnMission.push(nobody); 
   let indexPartirEnMission = station_joueur.randomNobody.indexOf(nobody); 
   station_joueur.randomNobody.splice(indexPartirEnMission, 1);
   document.getElementById(cell_id).innerHTML =  nobody.nomComplet() +" est parti en mission sur un coup de tête. Il mourra probablement, ou reviendra avec des ressources et couvert de gloire";
@@ -659,13 +685,13 @@ function verifierFinPartie(){
     alert("Le moral descend, car une part de la population n'a pas accès à du logement.");
     station_joueur.moral--;
   }
-  if (station_joueur.ressources >= station_joueur.population() ) {
-    alert("Le moral descend, car une part de la population n'a pas accès à du logement.");
+  if (station_joueur.ressources <= station_joueur.population() ) {
+    alert("Le moral descend, car la station n'a pas assez de ressource pour satisfaire la population.");
     station_joueur.ressources--;
     station_joueur.moral++;
   }
-  if (station_joueur.moral >= 15 ) {
-    alert("Le moral descend, car une part de la population n'a pas accès à du logement.");
+  if (station_joueur.moral <= 5 ) {
+    alert("Le moral de la station est assez bas.");
   }
   if (station_joueur.regime == "Lotocratie" && tour == 5 || tour == 10){
     alert("Il y a un nouveau tirage au sort pour le gouvernement de la station.")
