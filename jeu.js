@@ -169,15 +169,15 @@ class Station {
   get nobodies_en_mission() {
     return this._nobodies_en_mission
   }
-  set nobodies_en_mission(randomNobody){
-    this._nobodies_en_mission = randomNobody
+  set nobodies_en_mission(nobodies_en_mission){
+    this._nobodies_en_mission = nobodies_en_mission
   }
+
 
   population = function (){
     var totalCalculPopulation = this._randomNobody.length
     return totalCalculPopulation
   }
-
 
 
 }
@@ -320,11 +320,84 @@ class Personnage {
 }
 
 class Mission {
-  constructor(nature, tour_debut){
+  constructor(nature, tour_debut, nobody){
     this.nature_de_la_mission = nature;
     this.tour_debut = tour_debut;
     this.duree = Math.floor(Math.random()*3+3);
+    this.nobody = nobody;
   } 
+
+  changmentTour(numero){
+    if(numero - this.tour_debut <= this.duree){
+      this.fait_retour_mission();
+    }
+  }
+
+  fait_retour_mission(){
+    switch(this.nobody.ideologie){
+      case "Chaotisme": this.mission_chaotique();
+        break;
+      default: break;
+    }
+  }
+  
+  get nature_de_la_mission(){
+    return this.nature_de_la_mission;
+  }
+  set nature_de_la_mission(val){
+    this.nature_de_la_mission = val;
+  }
+  get tour_debut(){
+    return this.tour_debut;
+  }
+  set tour_debut(val){
+    this.tour_debut = val;
+  }
+  get duree(){
+    return this.duree;
+  }
+  set duree(val){
+    this.duree = val;
+  }
+  get nobody(){
+    return this. nobody;
+  }
+  set nobody(val){
+    this.nobody = val;
+  }
+
+}
+
+class Tour {
+  constructor(){
+    this.numero = 1;
+    this.observateurs = []; 
+  }
+
+  augmenter = function(){
+    this.numero++
+    this.signaler();
+  }
+
+  signaler = function(){
+    this.observateurs.forEach(e => e.changmentTour(this.numero)); 
+  }
+
+  get numero(){
+    return this.numero;
+  }
+  set numero(val){
+    this.numero = val;
+  }
+
+  get observateurs(){
+    return this.observateurs;
+  }
+
+  set observateurs(val){
+    this.observateurs = val;
+  }
+
 }
 
 /*FONCTIONS CRÉATION DES PERSONNAGES*/
@@ -413,7 +486,7 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
   station_joueur = new Station(nom_station, regime_choisi);
   console.log("on a créé une station! = "+station_joueur);
   station_joueur.dirigeant.gagneUnTitre();
-  var startingNumberOfNobody = Math.floor(Math.random() * 20);
+  var startingNumberOfNobody = (Math.floor(Math.random() * 15)) + 5;
   for (var i = 0; i < startingNumberOfNobody; i++){
     station_joueur.randomNobody.push(new Personnage())
     };
@@ -451,6 +524,9 @@ function afficherDescription() {
 const btnExitInfo = document.querySelector('#btnExitInfo');
 btnExitInfo.addEventListener('click', () => {
   charger_description_station("ecranInformationStation");
+  removeAllChildNodes(document.getElementById("liste_population"))
+  
+  
 });
 
   document.getElementById("btnInfoDirigeant").addEventListener('click', function (e){
@@ -472,6 +548,15 @@ btnExitInfo.addEventListener('click', () => {
   
   });
 
+  function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+      parent.removeChild(parent.firstChild);
+    }
+
+  }
+
+
+
   document.getElementById("btnInfoPopulationListNobody").addEventListener('click', function (e){
     chargerVersInformation("ecran_description_station")
     var textInfo = ""
@@ -489,6 +574,7 @@ btnExitInfo.addEventListener('click', () => {
       new_row.appendChild(first_cell); 
       let second_cell = document.createElement("td");
       second_cell.id = "second_cell_no"+i; 
+      
       if(station_joueur.randomNobody[i].ideologie == "Chaotisme"){
         let aventurier = station_joueur.randomNobody[i];
         let button = document.createElement("input"); 
@@ -518,11 +604,12 @@ btnExitInfo.addEventListener('click', () => {
 
 // ACTIONS ET ÉVÉNEMENTS
 function partir_en_mission(nobody, cell_id, button_id){
+  console.log(button_id + " "+ cell_id)
   document.getElementById(button_id).remove
   nobody.mission = new Mission("mission chaotique", tour); 
   station_joueur.nobodies_en_mission.push(nobody); 
-  let index = station_joueur.randomNobody.indexOf(nobody); 
-  station_joueur.randomNobody.splice(index, 1);
+  let indexPartirEnMission = station_joueur.randomNobody.indexOf(nobody); 
+  station_joueur.randomNobody.splice(indexPartirEnMission, 1);
   document.getElementById(cell_id).innerHTML =  nobody.nomComplet() +" est parti en mission sur un coup de tête. Il mourra probablement, ou reviendra avec des ressources et couvert de gloire";
    
 }
