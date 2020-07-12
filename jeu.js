@@ -436,10 +436,17 @@ class Mission {
     
   }
 
+  reintegrer_la_station(nobody){
+    station_joueur.randomNobody.push(nobody);
+    let indexReintegration = station_joueur.nobodiesEnMission.indexOf(nobody); 
+    station_joueur.randomNobody.splice(indexReintegration, 1);
+}
+  
   transformation_philosophique(){
     this._nobody.ideologie = choiceIdeology();
     this._evenement_retour.textOfEvent = this._nobody.nomComplet() + " est revenu complètement transformé par son expérience lors de sa mission.";
     this._evenement_retour.textEffetsEvenement = "Son idéologie est maintenant "+this.nobody.ideologie;
+    this.reintegrer_la_station(this._nobody);
   }
 
   mort_tragique(cause_mort){
@@ -449,6 +456,7 @@ class Mission {
   retour_chaotique(){
     station_joueur.integrite--;
     station_joueur.moral--;
+    station_joueur.chaos++;
     //station_joueur.population--;
     this._evenement_retour.textOfEvent =  this._nobody.nomComplet() + "est revenu de mission... accompagné de mercenaire extraterrestres qui sèment le chaos dans la station!"
     this._evenement_retour.textEffetsEvenement = "L'intégrité de la station est affectée et le moral de la population s'en ressent."; 
@@ -460,6 +468,7 @@ class Mission {
     this._nobody.charisme++;
     this._evenement_retour.textOfEvent = this._nobody.nomComplet()+ " est revenu de mission. Il n'a rien rapporté d'utile, mais ses récits d'aventures captivent tout le monde";
     this._evenement_retour.textEffetsEvenement = "Son influence culturelle augmente beaucoup. Son influence et son charisme augmentent aussi."
+    this.reintegrer_la_station(this._nobody);
   }
 
   mission_commerciale(){
@@ -468,6 +477,7 @@ class Mission {
     this._nobody.influence +=2;
     this._evenement_retour.textOfEvent = this._nobody.nomComplet()+" est revenu de mission. Il a découvert des extraterrestres prospères et heureux de commercer avec vous."
     this._evenement_retour.textEffetsEvenement = "La richesse de la station augmente grandement. L'influence de "+this._nobody.nomComplet() + " augmente d'autant."
+    this.reintegrer_la_station(this._nobody);
   }
 
   retour_avec_ressources(){
@@ -475,6 +485,7 @@ class Mission {
     this._nobody.influence +=1;
     this._evenement_retour.textOfEvent =  this._nobody.nomComplet()+" est revenu de mission. Sa navette regorge de minerais rares glanés sur des astéroïdes croisés en chemin."
     this._evenement_retour.textEffetsEvenement = "Les ressources de la station augmentent. L'influence de "+this._nobody.nomComplet()+ "s'accroît un peu.";
+    this.reintegrer_la_station(this._nobody);
   }
   get nature_de_la_mission(){
     return this._nature_de_la_mission;
@@ -833,10 +844,7 @@ function partir_en_mission(nobody, cell_id, button_id){
    
 }
 
-function reintegrer_la_station(nobody){
-  station_joueur.randomNobody.push(nobody);
-  station_joueur.nobodiesEnMission.remove(nobody);
-}
+
 function afficherChoixEtEvenements() {
   document.getElementById('textOfChoiceInfluence').textContent = textOfChoiceInfluence;
   document.getElementById('textEffectsOfChoiceInfluence').textContent = textEffectsOfChoiceInfluence;
