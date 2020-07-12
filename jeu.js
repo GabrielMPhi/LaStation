@@ -209,6 +209,15 @@ richesseTotale = function (){
   return candidatGagnantElection
   }
 
+  changementDirigeantStation(dirigeantArrivant, dirigeantPartant) {
+    this.randomNobody.push(dirigeantPartant)
+    var dirigeantArrivantIndex = this.randomNobody.indexOf(dirigeantArrivant)
+    this.randomNobody.splice(dirigeantArrivantIndex,1)
+    this.dirigeant = dirigeantArrivant
+    this.dirigeant.titre = dirigeantPartant.titre
+    dirigeantPartant.titre = ""
+  }
+
   population = function (){
     var totalCalculPopulation = this._randomNobody.length
     return totalCalculPopulation
@@ -581,6 +590,7 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
       new_row.id = "personnage"+i;
       let first_cell = document.createElement("td");
       first_cell.innerHTML = textInfo.concat("<b>", station_joueur.randomNobody[i].titre, " ", station_joueur.randomNobody[i].nomComplet(), "</b> est un random nobody de la station.", 
+      "<br>", "Son titre : ", station_joueur.randomNobody[i].titre,
       "<br>", "Son idéologie : ", station_joueur.randomNobody[i].ideologie,
       "<br>", station_joueur.randomNobody[i].height + "cm.",
       "<br>", "Son genre : ", station_joueur.randomNobody[i].genre,
@@ -757,9 +767,10 @@ function verifierFinPartie(){
     document.getElementById('consulStation2').textContent = station_joueur.dirigeant.nomComplet();
     alert(station_joueur.dirigeant.nomComplet() + " est maintenant à la tête de la station.");
   }
-  if (station_joueur.regime == "République" && tour == 5 || tour == 10){
+  if (station_joueur.regime == "République" && tour == 2 || tour == 5 || tour == 10){
   var candidatGagnantElection = station_joueur.electionNormale()
   alert("Il y a une élection. " + candidatGagnantElection.nomComplet() + " a gagné." )
+  station_joueur.changementDirigeantStation(candidatGagnantElection, station_joueur.dirigeant);
   }
 }
 
