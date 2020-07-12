@@ -17,6 +17,34 @@
              
             </header>
             <progress class="progress is-info" id="tourProgressBar" value="1" max="10">45%</progress>
+             <!-- modal -->
+            <div id="modal_info" class=modal>
+                <div class="modal-background" id="modal_background"></div>
+                <div class="modal-content">      
+                    <header>
+                        <h1 class="title">Demande d'information sur la station</h1>
+                    </header>
+                    <table class="table is-bordered is-hoverable">
+                        <thead>
+                            <tr>
+                              <th>Description</th>
+                              <th>Effets</th>
+                            </tr>
+            
+                            <td><span class="paragraph" id="textOfInfo">Le texte de l'info</span></td>
+                          </thead>
+                        
+                          <tbody id="liste_population">
+            
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2"><button id="btn_modal_close" class = "modal-close is-large" aria-label = "close"></button></td>
+                            </tr>
+                        </tfoot>                            
+                    </table>
+                </div>             
+            </div>
             <table class="table is-bordered is-hoverable">
                 <thead>
                     <h2 class="subtitle">L'intérieur de la station</h2>
@@ -218,34 +246,7 @@
 
 </section>
 
-<!-- **********ECRAN Information sur la station*************-->
-<section class="section">
-    <div id="ecranInformationStation" hidden>
-        <header>
-            <h1 class="title">Demande d'information sur la station</h1>
-        </header>
-        <table class="table is-bordered is-hoverable">
-            <thead>
-                <tr>
-                  <th>Description</th>
-                  <th>Effets</th>
-                </tr>
 
-                <td><span class="paragraph" id="textOfInfo">Le texte de l'info</span></td>
-              </thead>
-            
-              <tbody id="liste_population">
-
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="2"><button class="button is-primary is-small" id="btnExitInfo">Revenir à la station</button></td>
-                </tr>
-            </tfoot>
-                
-        </table>
-    </div>
-</section>
       <script type="text/javascript" src="jeu.js"> </script>
     </body>
 
