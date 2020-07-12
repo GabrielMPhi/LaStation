@@ -760,11 +760,10 @@ function verifierFinPartie(){
   if (station_joueur.moral <= 5 ) {
     alert("Le moral de la station est assez bas.");
   }
-  if (station_joueur.regime == "Lotocratie" && tour == 5 || tour == 10){
+  if (station_joueur.regime == "Lottocratie" && tour == 2 || tour == 5 || tour == 10){
     alert("Il y a un nouveau tirage au sort pour le gouvernement de la station.")
-    station_joueur.dirigeant = new Personnage();
-    document.getElementById('consulStation').textContent = station_joueur.dirigeant.nomComplet();
-    document.getElementById('consulStation2').textContent = station_joueur.dirigeant.nomComplet();
+    var nouveauDirigeantTirageAuSort = station_joueur.randomNobody[Math.floor(Math.random() * station_joueur.randomNobody.length)]
+    station_joueur.changementDirigeantStation(nouveauDirigeantTirageAuSort, station_joueur.dirigeant);
     alert(station_joueur.dirigeant.nomComplet() + " est maintenant à la tête de la station.");
   }
   if (station_joueur.regime == "République" && tour == 2 || tour == 5 || tour == 10){
