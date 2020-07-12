@@ -10,7 +10,7 @@ var listeTitresDirigeant = ["Capitaine", "Commandant", "Consul", "Guide", "Prés
 var listeNomPhilosophe = ["Aristote", "Platon", "Machiavel", "Pettit", "Rousseau", "Hume", "Hobbes", "Spinoza", "Diderot", "Woolstonecraft", "Davis", "Nussbaum", "Anderson"]
 
 //variables station
-var liste_type_gouv = ["Lottocratie", "République", "République marchande", "Autocratie", "Monarchie", "Théocratie", "Ploutocratie", "Gabrielocratie", "Épistocratie", "Kakistocratie", "Communisme", "Idiocratie"];
+var liste_type_gouv = ["Lottocratie", "République", "Corporation", "Autocratie", "Monarchie", "Théocratie", "Ploutocratie", "Gabrielocratie", "Épistocratie", "Kakistocratie", "Communisme", "Idiocratie"];
 let nomsDeLastation = ["Montréal", "Laval", "Candiac", "Paris", "Montpellier", "DS9", "DS7", "Terre", "Ahuntsic", "Villeray", "Saturne", "Jupiter", "Lune", "Europe", "Le lointain"]
 let nomsDeSecteursListe = [""]
 let ressourcesTypeList = ["Gold Pressed Latinum", "Livres de philo", "Deuterium", "Awesomeness"]
@@ -21,6 +21,15 @@ let listOfLawInPlace = [""]
 let tour = 1
 var station_joueur;
 var station_ordi;
+
+class Firm {
+  
+  constructor(nom){
+    this._nom = "East Sector Company";
+  }
+
+
+}
 
 class RegimePolitique {
 
@@ -49,12 +58,12 @@ class Station {
     this._energie = 10;
     this._influenceCulturelle = 10;
     this._connaissance = 1;
-    this._ressources = 10;
-    this._integrite = 10;
+    this._ressources = 20;
+    this._integrite = 20;
     this._cybersecurite = 10;
     this._sections = new Section();
     this._randomNobody = [];
-    this._nobodies_en_mission = [];
+    this._nobodiesEnMission = [];
 
   }
 
@@ -85,9 +94,18 @@ class Station {
   get richesse(){
     return this._richesse;
   }
-  set richesse(richesse){
-    this._richesse = richesse;
-  }
+//set richesse(richesse){
+//    this._richesse = richesse;
+//} Je l'ai enlevé pour ne pas à affecter la richesse par erreur. 
+richesseTotale = function (){
+  console.log(this.randomNobody[1].richesse)
+  var calculTotalRichesse = 1
+  for (var i = 0; i < this.randomNobody.length; i++){
+    calculTotalRichesse = calculTotalRichesse + this.randomNobody[i].richesse
+  };
+  this._richesse = calculTotalRichesse;
+}
+
   get moral(){
     return this._moral;
   }
@@ -166,11 +184,11 @@ class Station {
   set randomNobody(randomNobody){
     this._randomNobody = randomNobody
   }
-  get nobodies_en_mission() {
-    return this._nobodies_en_mission
+  get nobodiesEnMission() {
+    return this._nobodiesEnMission
   }
-  set nobodies_en_mission(nobodies_en_mission){
-    this._nobodies_en_mission = nobodies_en_mission
+  set nobodiesEnMission(nobodiesEnMission){
+    this._nobodiesEnMission = nobodiesEnMission
   }
 
 
@@ -301,7 +319,11 @@ class Personnage {
     this._origine = origine
   }
   get mission() {
+<<<<<<< HEAD
     return this._origine
+=======
+    return this._mission
+>>>>>>> bernard_modal
   }
   set mission(mission){
     this._mission = mission
@@ -320,6 +342,7 @@ class Personnage {
 }
 
 class Mission {
+<<<<<<< HEAD
   constructor(nature, tour_debut, nobody){
     this.nature_de_la_mission = nature;
     this.tour_debut = tour_debut;
@@ -428,10 +451,17 @@ class Mission {
   }
   set nobody(val){
     this.nobody = val;
+=======
+  constructor(nature, tourDebut){
+    this._natureDeLaMission = nature;
+    this._tourDebut = tourDebut;
+    this._duree = Math.floor(Math.random() *3 + 3);
+>>>>>>> bernard_modal
   }
 
 }
 
+<<<<<<< HEAD
 class Tour {
   constructor(){
     this.numero = 1;
@@ -463,6 +493,8 @@ class Tour {
   }
 
 }
+=======
+>>>>>>> bernard_modal
 
 /*FONCTIONS CRÉATION DES PERSONNAGES*/
 function choiceGender (){
@@ -539,6 +571,34 @@ function chargerVersInformation(ecran_de_depart){
   changeScreen(ecran_de_depart, "ecranInformationStation");
 }
 
+//modal
+function ouvrir_modal_information(){
+  var modal = document.getElementById("modal_info");
+  modal.classList.add("is-active")
+
+}
+//fermer le modal
+document.getElementById("modal_background").onclick = function(){
+  fermer_modal();
+}
+
+document.getElementById("btn_modal_close").onclick = function() {
+  fermer_modal();
+}
+function fermer_modal(){
+  document.getElementById('textOfInfo').textContent = "";
+  removeAllChildNodes(document.getElementById("liste_population")) ;
+  var modal = document.getElementById("modal_info");
+  modal.classList.remove("is-active");
+}
+
+window.onclick = function(event) {
+  if (event.target == document.getElementById("modal_info")) {
+    var modal = document.getElementById("modal_info");
+    modal.classList.remove("is-active");
+  }
+} 
+
 /*Écran de création de la station*/
 
 document.getElementById("btn_creation_station").addEventListener('click', function (e){
@@ -549,12 +609,19 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
   }
   station_joueur = new Station(nom_station, regime_choisi);
   console.log("on a créé une station! = "+station_joueur);
+
+// ajouter sélection du dirigeant, une fonction peut-être?
+
   station_joueur.dirigeant.gagneUnTitre();
   var startingNumberOfNobody = (Math.floor(Math.random() * 15)) + 5;
   for (var i = 0; i < startingNumberOfNobody; i++){
     station_joueur.randomNobody.push(new Personnage())
     };
+  station_joueur.richesseTotale();
   console.log(station_joueur)
+  console.log(station_joueur.richesse)
+  station_joueur.richesse++
+  console.log(station_joueur.richesse)
   console.log(station_joueur.randomNobody[0])
   charger_description_station("ecran_creation_station");
 });
@@ -562,6 +629,7 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
 
 /*Écran de description de la station*/
 function afficherDescription() {
+    document.getElementById('tourProgressBar').valeur = tour
     document.getElementById('ecranDescriptionStationTitrePrincipal').textContent = "Description de la station " + station_joueur.nom 
     document.getElementById('tourInfo').textContent = tour;
     document.getElementById('nomStationPage').textContent = station_joueur.nom;
@@ -585,44 +653,59 @@ function afficherDescription() {
   }
 // BOUTONS INFO
 
-const btnExitInfo = document.querySelector('#btnExitInfo');
-btnExitInfo.addEventListener('click', () => {
-  charger_description_station("ecranInformationStation");
-  removeAllChildNodes(document.getElementById("liste_population"))
-  
-  
+
+
+
+
+document.getElementById("btnInfoRegime").addEventListener('click', function (e){ 
+ 
+  var textInfo = ""
+  switch (station_joueur.regime) {
+   case "République": 
+    textInfo = "Le républicanisme est un régime politique."
+    break;
+  case "Lottocratie":
+    textInfo = "La lottocratie est un régime polique où le dirigeant est sélectionné au hasard."
+    break;
+  default: 
+    textInfo = "Texte d'information à venir."
+   }
+
+  document.getElementById('textOfInfo').innerHTML = textInfo
+  ouvrir_modal_information();
 });
 
+
   document.getElementById("btnInfoDirigeant").addEventListener('click', function (e){
-    chargerVersInformation("ecran_description_station")
+  
     var textInfo = station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet() + " est la personne qui dirige la station."+ 
     "<br>" + "Son idéologie : " + station_joueur.dirigeant.ideologie +
     "<br>" + "Sa taille : " + station_joueur.dirigeant.height + " cm." +
     "<br>" + "Son genre : " + station_joueur.dirigeant.genre +
     "<br>" + "Son origine : " + station_joueur.dirigeant.origine
     document.getElementById('textOfInfo').innerHTML = textInfo
-      
+    ouvrir_modal_information();
   });
 
   document.getElementById("btnInfoTour").addEventListener('click', function (e){
-    chargerVersInformation("ecran_description_station")
+   
     var textInfo = "De la perspective d'une intelligence artificelle, le temps passe à la fois rapidement et lentement. Elle peut réagir très rapidement comme considérer les choses dans le temps long." + 
     " " + "À ce titre, l'unité de temps centrale est l'année, le cycle."
     document.getElementById('textOfInfo').textContent = textInfo
-  
+    ouvrir_modal_information();
   });
 
+
+  // utilitaires
   function removeAllChildNodes(parent) {
     while (parent.firstChild) {
       parent.removeChild(parent.firstChild);
     }
-
   }
 
 
-
   document.getElementById("btnInfoPopulationListNobody").addEventListener('click', function (e){
-    chargerVersInformation("ecran_description_station")
+  
     var textInfo = ""
     console.log(textInfo)
     remove_all_children(document.getElementById('liste_population'));
@@ -634,6 +717,7 @@ btnExitInfo.addEventListener('click', () => {
       "<br>", "Son idéologie : ", station_joueur.randomNobody[i].ideologie,
       "<br>", station_joueur.randomNobody[i].height + "cm.",
       "<br>", "Son genre : ", station_joueur.randomNobody[i].genre,
+      "<br>", "Sa richesse : ", station_joueur.randomNobody[i].richesse, " crédits",
       "<br>", "Son origine : ", station_joueur.randomNobody[i].origine, "<br><br>");
       new_row.appendChild(first_cell); 
       let second_cell = document.createElement("td");
@@ -654,7 +738,7 @@ btnExitInfo.addEventListener('click', () => {
       }
       new_row.appendChild(second_cell);
       document.getElementById("liste_population").appendChild(new_row);
-      
+      ouvrir_modal_information();
     }
   });
 
@@ -670,8 +754,12 @@ btnExitInfo.addEventListener('click', () => {
 function partir_en_mission(nobody, cell_id, button_id){
   console.log(button_id + " "+ cell_id)
   document.getElementById(button_id).remove
+<<<<<<< HEAD
   nobody.mission = new Mission("mission chaotique", tour); 
   station_joueur.nobodies_en_mission.push(nobody); 
+=======
+  station_joueur.nobodiesEnMission.push(nobody); 
+>>>>>>> bernard_modal
   let indexPartirEnMission = station_joueur.randomNobody.indexOf(nobody); 
   station_joueur.randomNobody.splice(indexPartirEnMission, 1);
   document.getElementById(cell_id).innerHTML =  nobody.nomComplet() +" est parti en mission sur un coup de tête. Il mourra probablement, ou reviendra avec des ressources et couvert de gloire";
@@ -793,6 +881,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
 
 ////////////ATTENTION AUX MESSAGES!!! IL FAUT LES RÉVISER
 function verifierFinPartie(){
+  station_joueur.richesseTotale()
   tour ++
   if (station_joueur.richesse <= 0 || station_joueur.moral <= 0 || station_joueur.energie <= 0 || station_joueur.integrite <=0 ) {
     alert("Vous avez perdu! " + station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet() + " a guidé la station pendant " + tour + " cycles." );
@@ -802,13 +891,13 @@ function verifierFinPartie(){
     alert("Le moral descend, car une part de la population n'a pas accès à du logement.");
     station_joueur.moral--;
   }
-  if (station_joueur.ressources >= station_joueur.population ) {
-    alert("Le moral descend, car une part de la population n'a pas accès à du logement.");
+  if (station_joueur.ressources <= station_joueur.population() ) {
+    alert("Le moral descend, car la station n'a pas assez de ressource pour satisfaire la population.");
     station_joueur.ressources--;
     station_joueur.moral++;
   }
-  if (station_joueur.moral >= 15 ) {
-    alert("Le moral descend, car une part de la population n'a pas accès à du logement.");
+  if (station_joueur.moral <= 5 ) {
+    alert("Le moral de la station est assez bas.");
   }
   if (station_joueur.regime == "Lotocratie" && tour == 5 || tour == 10){
     alert("Il y a un nouveau tirage au sort pour le gouvernement de la station.")
