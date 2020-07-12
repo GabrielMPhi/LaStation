@@ -192,6 +192,23 @@ richesseTotale = function (){
   }
 
 
+  electionNormale (){
+    var listeTemporaireCandidatsElection = []
+    var candidatGagnantElection
+    for (var i = 0; i < this.randomNobody.length; i++){
+      if (this.randomNobody[i].charisme >= 7){
+        listeTemporaireCandidatsElection.push(this.randomNobody[i]);
+      }
+    }
+      if (listeTemporaireCandidatsElection == []){
+        listeTemporaireCandidatsElection = this.randomNobody[Math.floor(Math.random() * this.randomNobody.length)]
+      } else {
+    var candidatGagnantElection = listeTemporaireCandidatsElection[Math.floor(Math.random() * listeTemporaireCandidatsElection.length)]
+      }
+    console.log(candidatGagnantElection)
+  return candidatGagnantElection
+  }
+
   population = function (){
     var totalCalculPopulation = this._randomNobody.length
     return totalCalculPopulation
@@ -541,6 +558,7 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
       "<br>", "Son idéologie : ", station_joueur.randomNobody[i].ideologie,
       "<br>", station_joueur.randomNobody[i].height + "cm.",
       "<br>", "Son genre : ", station_joueur.randomNobody[i].genre,
+      "<br>", "Son charisme : ", station_joueur.randomNobody[i].charisme,
       "<br>", "Sa richesse : ", station_joueur.randomNobody[i].richesse, " crédits",
       "<br>", "Son origine : ", station_joueur.randomNobody[i].origine, "<br><br>");
       new_row.appendChild(first_cell); 
@@ -712,6 +730,10 @@ function verifierFinPartie(){
     document.getElementById('consulStation').textContent = station_joueur.dirigeant.nomComplet();
     document.getElementById('consulStation2').textContent = station_joueur.dirigeant.nomComplet();
     alert(station_joueur.dirigeant.nomComplet() + " est maintenant à la tête de la station.");
+  }
+  if (station_joueur.regime == "République" && tour == 5 || tour == 10){
+  var candidatGagnantElection = station_joueur.electionNormale()
+  alert("Il y a une élection. " + candidatGagnantElection.nomComplet() + " a gagné." )
   }
 }
 
