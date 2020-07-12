@@ -392,39 +392,39 @@ class Mission {
 
   transformation_philosophique(){
     this.nobody.ideologie = choiceIdeology();
-    return this.nobody.nomComplet + " est revenu complètement transformé par son expérience lors de sa misison. Il est devenu "+this.nobody.ideologie;
+    return this.nobody.nomComplet() + " est revenu complètement transformé par son expérience lors de sa misison. Il est devenu "+this.nobody.ideologie;
   }
 
   mort_tragique(cause_mort){
-    return "La navette de "+this.nobody.nomComplet+" est revenue sur le pilote automatique. Grâce aux enregitrements, on apprend qu'il est mort "+cause_mort;
+    return "La navette de "+this.nobody.nomComplet()+" est revenue sur le pilote automatique. Grâce aux enregitrements, on apprend qu'il est mort "+cause_mort;
   }
 
   retour_chaotique(){
     station_joueur.integrite--;
     station_joueur.moral--;
     station_joueur.population--;
-    return this.nobody.nomComplet + "est revenu de mission... accompagné de mercenaire extraterrestres qui sèment le chaos dans la station!"
+    return this.nobody.nomComplet() + "est revenu de mission... accompagné de mercenaire extraterrestres qui sèment le chaos dans la station!"
   }
 
   recits_aventuriers(){
     this.nobody.influenceCulturelle +=3;
     this.nobody.influence++;
     this.nobody.charisme++;
-    return this.nobody.nomComplet+ " est revenu de mission. Il n'a rien rapporté d'utile, mais ses récits d'aventures captivent tout le monde";
+    return this.nobody.nomComplet()+ " est revenu de mission. Il n'a rien rapporté d'utile, mais ses récits d'aventures captivent tout le monde";
   }
   mission_commerciale(){
     station_joueur.richesse +=2;
     this.nobody.influence +=2;
-    return this.nobody.nomComplet+" est revenu de mission. Il a découvert des extraterrestres heureux de commercer avec vous."
+    return this.nobody.nomComplet()+" est revenu de mission. Il a découvert des extraterrestres heureux de commercer avec vous."
   }
 
   retour_avec_ressources(){
     station_joueur.ressources +=2;
     this.nobody.influence +=1;
-    return this.nobody.nomComplet+" est revenu de mission. Sa navette regorge de minerais rares glanés sur des astéroïdes croisés en chemin."
+    return this.nobody.nomComplet()+" est revenu de mission. Sa navette regorge de minerais rares glanés sur des astéroïdes croisés en chemin."
   }
   get nature_de_la_mission(){
-    return this.nature_de_la_mission;
+    return this.nature_de_la_mission();
   }
   set nature_de_la_mission(val){
     this.nature_de_la_mission = val;
@@ -561,7 +561,6 @@ function chargerVersInformation(ecran_de_depart){
 function ouvrir_modal_information(){
   var modal = document.getElementById("modal_info");
   modal.classList.add("is-active")
-
 }
 //fermer le modal
 document.getElementById("modal_background").onclick = function(){
@@ -571,6 +570,14 @@ document.getElementById("modal_background").onclick = function(){
 document.getElementById("btn_modal_close").onclick = function() {
   fermer_modal();
 }
+
+//fonction probablement inutile
+window.onclick = function(event) {
+  if (event.target == document.getElementById("modal_info")) {
+    fermer_modal();
+  }
+} 
+
 function fermer_modal(){
   document.getElementById('textOfInfo').textContent = "";
   removeAllChildNodes(document.getElementById("liste_population")) ;
@@ -578,12 +585,9 @@ function fermer_modal(){
   modal.classList.remove("is-active");
 }
 
-window.onclick = function(event) {
-  if (event.target == document.getElementById("modal_info")) {
-    var modal = document.getElementById("modal_info");
-    modal.classList.remove("is-active");
-  }
-} 
+
+
+
 
 /*Écran de création de la station*/
 
