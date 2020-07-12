@@ -493,20 +493,13 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
   }
   station_joueur = new Station(nom_station, regime_choisi);
   console.log("on a créé une station! = "+station_joueur);
-
-// ajouter sélection du dirigeant, une fonction peut-être?
-
   station_joueur.dirigeant.gagneUnTitre();
-  var startingNumberOfNobody = (Math.floor(Math.random() * 15)) + 5;
+  var startingNumberOfNobody = (Math.floor(Math.random() * 7)) + 7;
   for (var i = 0; i < startingNumberOfNobody; i++){
     station_joueur.randomNobody.push(new Personnage())
     };
   station_joueur.richesseTotale();
   console.log(station_joueur)
-  console.log(station_joueur.richesse)
-  station_joueur.richesse++
-  console.log(station_joueur.richesse)
-  console.log(station_joueur.randomNobody[0])
   charger_description_station("ecran_creation_station");
 });
 
@@ -591,7 +584,6 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
   document.getElementById("btnInfoPopulationListNobody").addEventListener('click', function (e){
   
     var textInfo = ""
-    console.log(textInfo)
     for (var i = 0; i < station_joueur.randomNobody.length; i++){
       let new_row = document.createElement("tr");
       new_row.id = "personnage"+i;
