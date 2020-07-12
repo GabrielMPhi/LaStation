@@ -319,11 +319,7 @@ class Personnage {
     this._origine = origine
   }
   get mission() {
-<<<<<<< HEAD
-    return this._origine
-=======
     return this._mission
->>>>>>> bernard_modal
   }
   set mission(mission){
     this._mission = mission
@@ -342,7 +338,6 @@ class Personnage {
 }
 
 class Mission {
-<<<<<<< HEAD
   constructor(nature, tour_debut, nobody){
     this.nature_de_la_mission = nature;
     this.tour_debut = tour_debut;
@@ -451,17 +446,10 @@ class Mission {
   }
   set nobody(val){
     this.nobody = val;
-=======
-  constructor(nature, tourDebut){
-    this._natureDeLaMission = nature;
-    this._tourDebut = tourDebut;
-    this._duree = Math.floor(Math.random() *3 + 3);
->>>>>>> bernard_modal
   }
 
 }
 
-<<<<<<< HEAD
 class Tour {
   constructor(){
     this.numero = 1;
@@ -493,8 +481,6 @@ class Tour {
   }
 
 }
-=======
->>>>>>> bernard_modal
 
 /*FONCTIONS CRÉATION DES PERSONNAGES*/
 function choiceGender (){
@@ -754,12 +740,8 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
 function partir_en_mission(nobody, cell_id, button_id){
   console.log(button_id + " "+ cell_id)
   document.getElementById(button_id).remove
-<<<<<<< HEAD
   nobody.mission = new Mission("mission chaotique", tour); 
   station_joueur.nobodies_en_mission.push(nobody); 
-=======
-  station_joueur.nobodiesEnMission.push(nobody); 
->>>>>>> bernard_modal
   let indexPartirEnMission = station_joueur.randomNobody.indexOf(nobody); 
   station_joueur.randomNobody.splice(indexPartirEnMission, 1);
   document.getElementById(cell_id).innerHTML =  nobody.nomComplet() +" est parti en mission sur un coup de tête. Il mourra probablement, ou reviendra avec des ressources et couvert de gloire";
