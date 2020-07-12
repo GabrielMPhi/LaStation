@@ -255,9 +255,10 @@ class Personnage {
     this._prenom = prenom;
     this._nom = nom
     this._moral = parseInt((Math.floor(Math.random() * 10) + 5), 10)
-    this._richesse = parseInt((Math.floor(Math.random() * 10) + 5), 10)
+    this._richesse = parseInt((Math.floor(Math.random() * 100) + 40), 10)
     this._influence = parseInt((Math.floor(Math.random() * 10) + 5), 10)
     this._charisme = parseInt((Math.floor(Math.random() * 10) + 5), 10)
+    this._capaciteCombat = parseInt((Math.floor(Math.random() * 10) + 5), 10)
     this._connaissance = parseInt((Math.floor(Math.random() * 10) + 5), 10)
     this._ideologie = choiceIdeology ();
     this._height = parseInt((Math.floor(Math.random() * 70) + 145), 10);
@@ -313,6 +314,12 @@ class Personnage {
   }
   set charisme(charisme){
     this._charisme = charisme
+  }
+  get capaciteCombat() {
+    return this._capaciteCombat
+  }
+  set capaciteCombat(capaciteCombat){
+    this._capaciteCombat = capaciteCombat
   }
   get connaissance() {
     return this._connaissance
@@ -595,6 +602,7 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
       "<br>", station_joueur.randomNobody[i].height + "cm.",
       "<br>", "Son genre : ", station_joueur.randomNobody[i].genre,
       "<br>", "Son charisme : ", station_joueur.randomNobody[i].charisme,
+      "<br>", "Sa capacité de combat : ", station_joueur.randomNobody[i].capaciteCombat,
       "<br>", "Sa richesse : ", station_joueur.randomNobody[i].richesse, " crédits",
       "<br>", "Son origine : ", station_joueur.randomNobody[i].origine, "<br><br>");
       new_row.appendChild(first_cell); 
@@ -760,13 +768,13 @@ function verifierFinPartie(){
   if (station_joueur.moral <= 5 ) {
     alert("Le moral de la station est assez bas.");
   }
-  if (station_joueur.regime == "Lottocratie" && tour == 2 || tour == 5 || tour == 10){
+  if (station_joueur.regime == "Lottocratie" && (tour == 2 || tour == 5 || tour == 10)){
     alert("Il y a un nouveau tirage au sort pour le gouvernement de la station.")
     var nouveauDirigeantTirageAuSort = station_joueur.randomNobody[Math.floor(Math.random() * station_joueur.randomNobody.length)]
     station_joueur.changementDirigeantStation(nouveauDirigeantTirageAuSort, station_joueur.dirigeant);
     alert(station_joueur.dirigeant.nomComplet() + " est maintenant à la tête de la station.");
   }
-  if (station_joueur.regime == "République" && tour == 2 || tour == 5 || tour == 10){
+  if (station_joueur.regime == "République" && (tour == 2 || tour == 5 || tour == 10)){
   var candidatGagnantElection = station_joueur.electionNormale()
   alert("Il y a une élection. " + candidatGagnantElection.nomComplet() + " a gagné." )
   station_joueur.changementDirigeantStation(candidatGagnantElection, station_joueur.dirigeant);
