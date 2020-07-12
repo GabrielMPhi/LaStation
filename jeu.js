@@ -51,7 +51,6 @@ class Station {
     this._regime = regime;
     this._dirigeant = new Personnage();
     this._capacitePopulation = parseInt((Math.floor(Math.random() * 5) + 20), 10)
-    this._richesse = 10;
     this._moral = 10;
     this._ordre = 5;
     this._chaos = 5;
@@ -93,23 +92,7 @@ class Station {
   set capacitePopulation (capacitePopulation){
     this._capacitePopulation = capacitePopulation;
   }
-  get richesse(){
-    return this._richesse;
-  }
-set richesse(richesse){
-    this._richesse = richesse;
-} 
-//Gabriel: Je l'ai enlevé pour ne pas à affecter la richesse par erreur. 
-//Bernard: Je l'ai remis parce que j'en avais besoin pour les résultats des missions. On peut en jaser si tu veux.
-richesseTotale = function (){
-  console.log(this.randomNobody[1].richesse)
-  var calculTotalRichesse = 1
-  for (var i = 0; i < this.randomNobody.length; i++){
-    calculTotalRichesse = calculTotalRichesse + this.randomNobody[i].richesse
-  };
-  this._richesse = calculTotalRichesse;
-}
-
+ 
   get moral(){
     return this._moral;
   }
@@ -196,12 +179,59 @@ richesseTotale = function (){
   }
 
 
+  electionNormale (){
+    var listeTemporaireCandidatsElection = []
+    var candidatGagnantElection
+    for (var i = 0; i < this.randomNobody.length; i++){
+      if (this.randomNobody[i].charisme >= 7){
+        listeTemporaireCandidatsElection.push(this.randomNobody[i]);
+      }
+    }
+      if (listeTemporaireCandidatsElection == []){
+        listeTemporaireCandidatsElection = this.randomNobody[Math.floor(Math.random() * this.randomNobody.length)]
+      } else {
+    var candidatGagnantElection = listeTemporaireCandidatsElection[Math.floor(Math.random() * listeTemporaireCandidatsElection.length)]
+      }
+    console.log(candidatGagnantElection)
+  return candidatGagnantElection
+  }
+
+  changementDirigeantStation(dirigeantArrivant, dirigeantPartant) {
+    this.randomNobody.push(dirigeantPartant)
+    var dirigeantArrivantIndex = this.randomNobody.indexOf(dirigeantArrivant)
+    this.randomNobody.splice(dirigeantArrivantIndex,1)
+    this.dirigeant = dirigeantArrivant
+    this.dirigeant.titre = dirigeantPartant.titre
+    dirigeantPartant.titre = ""
+  }
+
   population = function (){
     var totalCalculPopulation = this._randomNobody.length
     return totalCalculPopulation
   }
 
+  enrichissement(nombre){
+    for(let i=0; i<nombre; i++){
+      let chanceux = Math.floor(Math.random() * this._randomNobody.length);
+      this._randomNobody[chanceux].richesse++;    
+    }
+  }
 
+  appauvrissement(nombre){
+    for(let i=0; i<nombre; i++){
+      let malchanceux = Math.floor(Math.random() * this._randomNobody.length);
+      this._randomNobody[malchanceux].richesse--;    
+    }
+  }
+
+  richesseTotale(){
+  console.log(this.randomNobody[1].richesse)
+  var calculTotalRichesse = 1
+  for (var i = 0; i < this.randomNobody.length; i++){
+    calculTotalRichesse = calculTotalRichesse + this.randomNobody[i].richesse
+  };
+  return calculTotalRichesse;
+  }
 }
 
 class Section{
@@ -233,9 +263,10 @@ class Personnage {
     this._prenom = prenom;
     this._nom = nom
     this._moral = parseInt((Math.floor(Math.random() * 10) + 5), 10)
-    this._richesse = parseInt((Math.floor(Math.random() * 10) + 5), 10)
+    this._richesse = parseInt((Math.floor(Math.random() * 100) + 40), 10)
     this._influence = parseInt((Math.floor(Math.random() * 10) + 5), 10)
     this._charisme = parseInt((Math.floor(Math.random() * 10) + 5), 10)
+    this._capaciteCombat = parseInt((Math.floor(Math.random() * 10) + 5), 10)
     this._connaissance = parseInt((Math.floor(Math.random() * 10) + 5), 10)
     this._ideologie = choiceIdeology ();
     this._height = parseInt((Math.floor(Math.random() * 70) + 145), 10);
@@ -291,6 +322,12 @@ class Personnage {
   }
   set charisme(charisme){
     this._charisme = charisme
+  }
+  get capaciteCombat() {
+    return this._capaciteCombat
+  }
+  set capaciteCombat(capaciteCombat){
+    this._capaciteCombat = capaciteCombat
   }
   get connaissance() {
     return this._connaissance
@@ -426,10 +463,11 @@ class Mission {
   }
 
   mission_commerciale(){
-    station_joueur.richesse +=2;
+    station_joueur.enrichissement(2);
+    this._nobody.richesse++;
     this._nobody.influence +=2;
-    this._evenement_retour.textOfEvent = this._nobody.nomComplet()+" est revenu de mission. Il a découvert des extraterrestres heureux de commercer avec vous."
-    this._evenement_retour.textEffetsEvenement = "La richesse de la station augmente. L'influence de "+this._nobody.nomComplet() + " augmente d'autant."
+    this._evenement_retour.textOfEvent = this._nobody.nomComplet()+" est revenu de mission. Il a découvert des extraterrestres prospères et heureux de commercer avec vous."
+    this._evenement_retour.textEffetsEvenement = "La richesse de la station augmente grandement. L'influence de "+this._nobody.nomComplet() + " augmente d'autant."
   }
 
   retour_avec_ressources(){
@@ -641,20 +679,13 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
   }
   station_joueur = new Station(nom_station, regime_choisi);
   console.log("on a créé une station! = "+station_joueur);
-
-// ajouter sélection du dirigeant, une fonction peut-être?
-
   station_joueur.dirigeant.gagneUnTitre();
-  var startingNumberOfNobody = (Math.floor(Math.random() * 15)) + 5;
+  var startingNumberOfNobody = (Math.floor(Math.random() * 7)) + 7;
   for (var i = 0; i < startingNumberOfNobody; i++){
     station_joueur.randomNobody.push(new Personnage())
     };
   station_joueur.richesseTotale();
   console.log(station_joueur)
-  console.log(station_joueur.richesse)
-  station_joueur.richesse++
-  console.log(station_joueur.richesse)
-  console.log(station_joueur.randomNobody[0])
   charger_description_station("ecran_creation_station");
 });
 
@@ -668,7 +699,7 @@ function afficherDescription() {
     document.getElementById('dirigeantStationTitre').textContent = station_joueur.dirigeant.titre;
     document.getElementById('consulStation').textContent = station_joueur.dirigeant.nomComplet();
     document.getElementById('consulStation2').textContent = station_joueur.dirigeant.nomComplet();
-    document.getElementById('richesseStationInfo').textContent = station_joueur.richesse;
+    document.getElementById('richesseStationInfo').textContent = station_joueur.richesseTotale();
     document.getElementById('typeGouvernementStationPage').textContent = station_joueur.regime;
     document.getElementById('moralStationInfo').textContent = station_joueur.moral;
     document.getElementById('ordreStationInfo').textContent = station_joueur.ordre;
@@ -751,9 +782,12 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
       new_row.id = "personnage"+i;
       let first_cell = document.createElement("td");
       first_cell.innerHTML = textInfo.concat("<b>", station_joueur.randomNobody[i].titre, " ", station_joueur.randomNobody[i].nomComplet(), "</b> est un random nobody de la station.", 
+      "<br>", "Son titre : ", station_joueur.randomNobody[i].titre,
       "<br>", "Son idéologie : ", station_joueur.randomNobody[i].ideologie,
       "<br>", station_joueur.randomNobody[i].height + "cm.",
       "<br>", "Son genre : ", station_joueur.randomNobody[i].genre,
+      "<br>", "Son charisme : ", station_joueur.randomNobody[i].charisme,
+      "<br>", "Sa capacité de combat : ", station_joueur.randomNobody[i].capaciteCombat,
       "<br>", "Sa richesse : ", station_joueur.randomNobody[i].richesse, " crédits",
       "<br>", "Son origine : ", station_joueur.randomNobody[i].origine, "<br><br>");
       new_row.appendChild(first_cell); 
@@ -827,16 +861,16 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
         station_joueur.chaos++;
       break;      
       case "favoriserPeuple":
-        textOfChoiceInfluence = "Vous tenez de favoriser le peuple."
-        textEffectsOfChoiceInfluence = "Le peuple s'en fou un peu! Mais la richesse et le moral augmente de 1 tandis que vous dépensez 1 d'énergie.";
-        station_joueur.richesse--;
+        textOfChoiceInfluence = "Vous venez de favoriser le peuple."
+        textEffectsOfChoiceInfluence = "Le peuple s'en fout un peu! Mais la richesse et le moral augmente de 1 tandis que vous dépensez 1 d'énergie.";
+        station_joueur.enrichissement(1);
         station_joueur.moral++;
         station_joueur.energie--;
       break;
       case "exileHabitant":
         textOfChoiceInfluence = "Expulsion d'un habitant pour de faux prétextes."
         textEffectsOfChoiceInfluence = station_joueur.dirigeant.nomComplet() + " exile un habitant et confisque sa propriété!"
-        station_joueur.richesse++;
+        station_joueur.dirigeant.richesse++;
         station_joueur.moral--;
         station_joueur.energie++;
       break;
@@ -852,7 +886,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
       case "fete":
         textOfChoiceInfluence = "Vous organisez une fête."  
         textEffectsOfChoiceInfluence = "C'est la fête et la danse!";
-        station_joueur.richesse--
+        station_joueur.appauvrissement(1);
         station_joueur.moral = parseInt(station_joueur.moral + (Math.floor(Math.random() * 4) - 1), 10)
         station_joueur.energie--
       break;
@@ -860,7 +894,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
       textOfChoiceInfluence = "C'est jour de marché sur " + station_joueur.nom  
       textEffectsOfChoiceInfluence = "La station s'enrichit un peu."
     
-      station_joueur.richesse++
+      station_joueur.enrichissement(1);
       station_joueur.moral--
       break;
       }
@@ -915,7 +949,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
 function verifierFinPartie(){
   station_joueur.richesseTotale()
   tour.augmenter();
-  if (station_joueur.richesse <= 0 || station_joueur.moral <= 0 || station_joueur.energie <= 0 || station_joueur.integrite <=0 ) {
+  if (station_joueur.richesseTotale() <= 0 || station_joueur.moral <= 0 || station_joueur.energie <= 0 || station_joueur.integrite <=0 ) {
     alert("Vous avez perdu! " + station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet() + " a guidé la station pendant " + tour.numero + " cycles." );
     location.reload(); 
   }
@@ -931,12 +965,16 @@ function verifierFinPartie(){
   if (station_joueur.moral <= 5 ) {
     alert("Le moral de la station est assez bas.");
   }
-  if (station_joueur.regime == "Lotocratie" && tour.numero == 5 || tour.numero == 10){
+  if (station_joueur.regime == "Lottocratie" && (tour == 2 || tour == 5 || tour == 10)){
     alert("Il y a un nouveau tirage au sort pour le gouvernement de la station.")
-    station_joueur.dirigeant = new Personnage();
-    document.getElementById('consulStation').textContent = station_joueur.dirigeant.nomComplet();
-    document.getElementById('consulStation2').textContent = station_joueur.dirigeant.nomComplet();
+    var nouveauDirigeantTirageAuSort = station_joueur.randomNobody[Math.floor(Math.random() * station_joueur.randomNobody.length)]
+    station_joueur.changementDirigeantStation(nouveauDirigeantTirageAuSort, station_joueur.dirigeant);
     alert(station_joueur.dirigeant.nomComplet() + " est maintenant à la tête de la station.");
+  }
+  if (station_joueur.regime == "République" && (tour == 2 || tour == 5 || tour == 10)){
+  var candidatGagnantElection = station_joueur.electionNormale()
+  alert("Il y a une élection. " + candidatGagnantElection.nomComplet() + " a gagné." )
+  station_joueur.changementDirigeantStation(candidatGagnantElection, station_joueur.dirigeant);
   }
 }
 
@@ -996,7 +1034,7 @@ function evenementFinTour(){
       textDeEvenement = "Commerce avec un marchand Ferengi"
       textDeEvenement2 = "C'est bien enrichissant."
       textEffetsEvenement = "Plus de Gold Pressed Latinum."
-      station_joueur.richesse++
+      station_joueur.enrichissement(1);
       break;
     case "sageVulcain":
       textDeEvenement = "Visite d'un sage savant vulcain."
