@@ -334,13 +334,77 @@ class Mission {
   }
 
   fait_retour_mission(){
-    switch(this.nobody.ideologie){
-      case "Chaotisme": this.mission_chaotique();
+    //annoncer l'événement
+
+    switch(this.nature_de_la_mission){
+      case "mission chaotique": this.resoudre_mission_chaotique();
         break;
       default: break;
     }
   }
   
+  resoudre_mission_chaotique(){
+      var result;
+    switch (Math.floor(Math.random()*10+1)){
+      case 1: result = mort_tragique("de soif.");
+        break;
+      case 2: result = mort_tragique("d'une panne des systèmes de survie.");
+        break;
+      case 3: result = mort_tragique("d'un accident mécanique.");
+        break;
+      case 4: result = mort_tragique("en se suicidant après avoir perdu la raison.");
+        break;
+      case 5: result = mort_tragique("massacré par des extraterrestres.");
+        break;
+      case 6: result = mission_commerciale();
+        break;
+      case 7: result = retour_avec_ressources();
+        break;
+      case 8: result = transformation_philosophique();
+        break;
+      case 9: result = récits_aventuriers();
+        break;
+      case 10: result = retour_chaotique();
+        break;
+        default: break;
+    }
+    //publier 'result' - mais où?
+    
+  }
+
+  transformation_philosophique(){
+    this.nobody.ideologie = choiceIdeology();
+    return this.nobody.nomComplet + " est revenu complètement transformé par son expérience lors de sa misison. Il est devenu "+this.nobody.ideologie;
+  }
+
+  mort_tragique(cause_mort){
+    return "La navette de "+this.nobody.nomComplet+" est revenue sur le pilote automatique. Grâce aux enregitrements, on apprend qu'il est mort "+cause_mort;
+  }
+
+  retour_chaotique(){
+    station_joueur.integrite--;
+    station_joueur.moral--;
+    station_joueur.population--;
+    return this.nobody.nomComplet + "est revenu de mission... accompagné de mercenaire extraterrestres qui sèment le chaos dans la station!"
+  }
+
+  recits_aventuriers(){
+    this.nobody.influenceCulturelle +=3;
+    this.nobody.influence++;
+    this.nobody.charisme++;
+    return this.nobody.nomComplet+ " est revenu de mission. Il n'a rien rapporté d'utile, mais ses récits d'aventures captivent tout le monde";
+  }
+  mission_commerciale(){
+    station_joueur.richesse +=2;
+    this.nobody.influence +=2;
+    return this.nobody.nomComplet+" est revenu de mission. Il a découvert des extraterrestres heureux de commercer avec vous."
+  }
+
+  retour_avec_ressources(){
+    station_joueur.ressources +=2;
+    this.nobody.influence +=1;
+    return this.nobody.nomComplet+" est revenu de mission. Sa navette regorge de minerais rares glanés sur des astéroïdes croisés en chemin."
+  }
   get nature_de_la_mission(){
     return this.nature_de_la_mission;
   }
@@ -614,6 +678,10 @@ function partir_en_mission(nobody, cell_id, button_id){
    
 }
 
+function reintegrer_la_station(nobody){
+  station_joueur.randomNobody.push(nobody);
+  station_joueur.nobodies_en_mission.remove(nobody);
+}
 function afficherChoixEtEvenements() {
   document.getElementById('textOfChoiceInfluence').textContent = textOfChoiceInfluence;
   document.getElementById('textEffectsOfChoiceInfluence').textContent = textEffectsOfChoiceInfluence;
@@ -723,7 +791,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
     return gagnantDebatPhilo
   }
 
-
+////////////ATTENTION AUX MESSAGES!!! IL FAUT LES RÉVISER
 function verifierFinPartie(){
   tour ++
   if (station_joueur.richesse <= 0 || station_joueur.moral <= 0 || station_joueur.energie <= 0 || station_joueur.integrite <=0 ) {
