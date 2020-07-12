@@ -18,9 +18,11 @@ let listeTypesSectionsStation = ["Arboretum", "Bibliothèque"]
 let listOfLawInPlace = [""]
 
 // variables gameplay
-let tour = 1
+let tour;
 var station_joueur;
 var station_ordi;
+var evenements_a_annoncer = [];
+
 
 class Firm {
   
@@ -94,9 +96,11 @@ class Station {
   get richesse(){
     return this._richesse;
   }
-//set richesse(richesse){
-//    this._richesse = richesse;
-//} Je l'ai enlevé pour ne pas à affecter la richesse par erreur. 
+set richesse(richesse){
+    this._richesse = richesse;
+} 
+//Gabriel: Je l'ai enlevé pour ne pas à affecter la richesse par erreur. 
+//Bernard: Je l'ai remis parce que j'en avais besoin pour les résultats des missions. On peut en jaser si tu veux.
 richesseTotale = function (){
   console.log(this.randomNobody[1].richesse)
   var calculTotalRichesse = 1
@@ -334,152 +338,190 @@ class Personnage {
   nomComplet = function (){
     return this._prenom + " " + this._nom
   }
-
 }
 
 class Mission {
   constructor(nature, tour_debut, nobody){
-    this.nature_de_la_mission = nature;
-    this.tour_debut = tour_debut;
-    this.duree = Math.floor(Math.random()*3+3);
-    this.nobody = nobody;
+    this._nature_de_la_mission = nature;
+    this._tour_debut = tour_debut;
+    this._duree = Math.floor(Math.random()*3+3);
+    this._nobody = nobody;
+    this._evenement_retour = new Evenement();
+    tour.observateurs.push(this);
   } 
 
-  changmentTour(numero){
-    if(numero - this.tour_debut <= this.duree){
+  changementTour(numero){
+   // console.log("la mission observe... tour: "+numero+"; tour_debut: "+this._tour_debut+"; durée: "+this._duree);
+    if(numero - this._tour_debut == this._duree){
+      this.resoudre_mission();
       this.fait_retour_mission();
     }
   }
 
   fait_retour_mission(){
-    //annoncer l'événement
-
-    switch(this.nature_de_la_mission){
+    evenements_a_annoncer.push(this._evenement_retour); 
+  }
+  
+  resoudre_mission(){
+    switch(this._nature_de_la_mission){
       case "mission chaotique": this.resoudre_mission_chaotique();
         break;
       default: break;
     }
   }
-  
+
   resoudre_mission_chaotique(){
-      var result;
+      
     switch (Math.floor(Math.random()*10+1)){
-      case 1: result = mort_tragique("de soif.");
+      case 1: this.mort_tragique("de soif.");
         break;
-      case 2: result = mort_tragique("d'une panne des systèmes de survie.");
+      case 2: this.mort_tragique("d'une panne des systèmes de survie.");
         break;
-      case 3: result = mort_tragique("d'un accident mécanique.");
+      case 3: this.mort_tragique("d'un accident mécanique.");
         break;
-      case 4: result = mort_tragique("en se suicidant après avoir perdu la raison.");
+      case 4: this.mort_tragique("en se suicidant après avoir perdu la raison.");
         break;
-      case 5: result = mort_tragique("massacré par des extraterrestres.");
+      case 5: this.mort_tragique("massacré par des extraterrestres.");
         break;
-      case 6: result = mission_commerciale();
+      case 6: this.mission_commerciale();
         break;
-      case 7: result = retour_avec_ressources();
+      case 7: this.retour_avec_ressources();
         break;
-      case 8: result = transformation_philosophique();
+      case 8: this.transformation_philosophique();
         break;
-      case 9: result = récits_aventuriers();
+      case 9: this.recits_aventuriers();
         break;
-      case 10: result = retour_chaotique();
+      case 10: this.retour_chaotique();
         break;
         default: break;
     }
-    //publier 'result' - mais où?
+    
     
   }
 
   transformation_philosophique(){
-    this.nobody.ideologie = choiceIdeology();
-    return this.nobody.nomComplet() + " est revenu complètement transformé par son expérience lors de sa misison. Il est devenu "+this.nobody.ideologie;
+    this._nobody.ideologie = choiceIdeology();
+    this._evenement_retour.textOfEvent = this._nobody.nomComplet() + " est revenu complètement transformé par son expérience lors de sa mission.";
+    this._evenement_retour.textEffetsEvenement = "Son idéologie est maintenant "+this.nobody.ideologie;
   }
 
   mort_tragique(cause_mort){
-    return "La navette de "+this.nobody.nomComplet()+" est revenue sur le pilote automatique. Grâce aux enregitrements, on apprend qu'il est mort "+cause_mort;
+    this._evenement_retour.textOfEvent = "La navette de "+this._nobody.nomComplet()+" est revenue sur le pilote automatique. Grâce aux enregitrements, on apprend qu'il est mort "+cause_mort;
   }
 
   retour_chaotique(){
     station_joueur.integrite--;
     station_joueur.moral--;
-    station_joueur.population--;
-    return this.nobody.nomComplet() + "est revenu de mission... accompagné de mercenaire extraterrestres qui sèment le chaos dans la station!"
+    //station_joueur.population--;
+    this._evenement_retour.textOfEvent =  this._nobody.nomComplet() + "est revenu de mission... accompagné de mercenaire extraterrestres qui sèment le chaos dans la station!"
+    this._evenement_retour.textEffetsEvenement = "L'intégrité de la station est affectée et le moral de la population s'en ressent."; 
   }
 
   recits_aventuriers(){
-    this.nobody.influenceCulturelle +=3;
-    this.nobody.influence++;
-    this.nobody.charisme++;
-    return this.nobody.nomComplet()+ " est revenu de mission. Il n'a rien rapporté d'utile, mais ses récits d'aventures captivent tout le monde";
+    this._nobody.influenceCulturelle +=3;
+    this._nobody.influence++;
+    this._nobody.charisme++;
+    this._evenement_retour.textOfEvent = this._nobody.nomComplet()+ " est revenu de mission. Il n'a rien rapporté d'utile, mais ses récits d'aventures captivent tout le monde";
+    this._evenement_retour.textEffetsEvenement = "Son influence culturelle augmente beaucoup. Son influence et son charisme augmentent aussi."
   }
+
   mission_commerciale(){
     station_joueur.richesse +=2;
-    this.nobody.influence +=2;
-    return this.nobody.nomComplet()+" est revenu de mission. Il a découvert des extraterrestres heureux de commercer avec vous."
+    this._nobody.influence +=2;
+    this._evenement_retour.textOfEvent = this._nobody.nomComplet()+" est revenu de mission. Il a découvert des extraterrestres heureux de commercer avec vous."
+    this._evenement_retour.textEffetsEvenement = "La richesse de la station augmente. L'influence de "+this._nobody.nomComplet() + " augmente d'autant."
   }
 
   retour_avec_ressources(){
     station_joueur.ressources +=2;
-    this.nobody.influence +=1;
-    return this.nobody.nomComplet()+" est revenu de mission. Sa navette regorge de minerais rares glanés sur des astéroïdes croisés en chemin."
+    this._nobody.influence +=1;
+    this._evenement_retour.textOfEvent =  this._nobody.nomComplet()+" est revenu de mission. Sa navette regorge de minerais rares glanés sur des astéroïdes croisés en chemin."
+    this._evenement_retour.textEffetsEvenement = "Les ressources de la station augmentent. L'influence de "+this._nobody.nomComplet()+ "s'accroît un peu.";
   }
   get nature_de_la_mission(){
-    return this.nature_de_la_mission();
+    return this._nature_de_la_mission;
   }
   set nature_de_la_mission(val){
-    this.nature_de_la_mission = val;
+    this._nature_de_la_mission = val;
   }
   get tour_debut(){
-    return this.tour_debut;
+    return this._tour_debut;
   }
   set tour_debut(val){
-    this.tour_debut = val;
+    this._tour_debut = val;
   }
   get duree(){
-    return this.duree;
+    return this._duree;
   }
   set duree(val){
-    this.duree = val;
+    this._duree = val;
   }
   get nobody(){
-    return this. nobody;
+    return this._nobody;
   }
   set nobody(val){
-    this.nobody = val;
+    this._nobody = val;
   }
 
 }
 
 class Tour {
   constructor(){
-    this.numero = 1;
-    this.observateurs = []; 
+    this._numero = 1;
+    this._observateurs = []; 
   }
 
   augmenter = function(){
-    this.numero++
+    this._numero++
     this.signaler();
   }
 
   signaler = function(){
-    this.observateurs.forEach(e => e.changmentTour(this.numero)); 
+    this.observateurs.forEach(e => e.changementTour(this._numero)); 
   }
 
   get numero(){
-    return this.numero;
+    return this._numero;
   }
   set numero(val){
-    this.numero = val;
+    this._numero = val;
   }
 
   get observateurs(){
-    return this.observateurs;
+    return this._observateurs;
   }
 
   set observateurs(val){
-    this.observateurs = val;
+    this._observateurs = val;
   }
 
+}
+
+class Evenement {
+  constructor(){
+    this._textOfEvent = "";
+    this._textOfEvent2 = "";
+    this._textEffetsEvenement = "";
+  }
+
+  get textOfEvent(){
+    return this._textOfEvent;
+  }
+  set textOfEvent(val){
+    this._textOfEvent = val;
+  }
+  get textOfEvent2(){
+    return this._textOfEvent2;
+  }
+  set textOfEvent2(val){
+    this._textOfEvent2 = val;
+  }
+  get textEffetsEvenement(){
+    return this._textEffetsEvenement;
+  }
+  set textEffetsEvenement(val){
+    this._textEffetsEvenement = val;
+  }
 }
 
 /*FONCTIONS CRÉATION DES PERSONNAGES*/
@@ -523,11 +565,11 @@ return persoExisteDeja
 
 /*CRÉATION DE LA PAGE*/
 window.onload = function(){
+  tour = new Tour();
   generer_listeHTML_gouvernements(liste_type_gouv);
 }
 
 function generer_listeHTML_gouvernements(liste){
- 
   var liste_html = document.getElementById("select_type_gouv");
   liste.forEach( opt => {
     var option_html = document.createElement("option");
@@ -619,9 +661,9 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
 
 /*Écran de description de la station*/
 function afficherDescription() {
-    document.getElementById('tourProgressBar').valeur = tour
+    document.getElementById('tourProgressBar').valeur = tour.numero
     document.getElementById('ecranDescriptionStationTitrePrincipal').textContent = "Description de la station " + station_joueur.nom 
-    document.getElementById('tourInfo').textContent = tour;
+    document.getElementById('tourInfo').textContent = tour.numero;
     document.getElementById('nomStationPage').textContent = station_joueur.nom;
     document.getElementById('dirigeantStationTitre').textContent = station_joueur.dirigeant.titre;
     document.getElementById('consulStation').textContent = station_joueur.dirigeant.nomComplet();
@@ -693,7 +735,12 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
     }
   }
 
-
+  function removeChildNodesWithClassName(parent, className){
+    let list_children_to_remove = parent.getElementsByClassName(className);
+    while(list_children_to_remove.length){
+      parent.removeChild(list_children_to_remove[0]);
+    }
+  }
   document.getElementById("btnInfoPopulationListNobody").addEventListener('click', function (e){
   
     var textInfo = ""
@@ -744,8 +791,8 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
 function partir_en_mission(nobody, cell_id, button_id){
   console.log(button_id + " "+ cell_id)
   document.getElementById(button_id).remove
-  nobody.mission = new Mission("mission chaotique", tour); 
-  station_joueur.nobodies_en_mission.push(nobody); 
+  nobody.mission = new Mission("mission chaotique", tour.numero, nobody); 
+  station_joueur.nobodiesEnMission.push(nobody); 
   let indexPartirEnMission = station_joueur.randomNobody.indexOf(nobody); 
   station_joueur.randomNobody.splice(indexPartirEnMission, 1);
   document.getElementById(cell_id).innerHTML =  nobody.nomComplet() +" est parti en mission sur un coup de tête. Il mourra probablement, ou reviendra avec des ressources et couvert de gloire";
@@ -754,7 +801,7 @@ function partir_en_mission(nobody, cell_id, button_id){
 
 function reintegrer_la_station(nobody){
   station_joueur.randomNobody.push(nobody);
-  station_joueur.nobodies_en_mission.remove(nobody);
+  station_joueur.nobodiesEnMission.remove(nobody);
 }
 function afficherChoixEtEvenements() {
   document.getElementById('textOfChoiceInfluence').textContent = textOfChoiceInfluence;
@@ -795,7 +842,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
       break;
       case "festivalPhiloPolitique":
         textOfChoiceInfluence = "Sur l'ensemble des ordinateurs et des réseaux sociaux s'organise un immense festival de la philosophie politique."
-        textEffectsOfChoiceInfluence = "Une grande fête en faveur de la pensée politique et éthique! Un très bon moyen de ganger le jeu."
+        textEffectsOfChoiceInfluence = "Une grande fête en faveur de la pensée politique et éthique! Un très bon moyen de gagner le jeu."
         station_joueur.richesse++;
         station_joueur.moral++;
         station_joueur.energie++;
@@ -865,12 +912,11 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
     return gagnantDebatPhilo
   }
 
-////////////ATTENTION AUX MESSAGES!!! IL FAUT LES RÉVISER
 function verifierFinPartie(){
   station_joueur.richesseTotale()
-  tour ++
+  tour.augmenter();
   if (station_joueur.richesse <= 0 || station_joueur.moral <= 0 || station_joueur.energie <= 0 || station_joueur.integrite <=0 ) {
-    alert("Vous avez perdu! " + station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet() + " a guidé la station pendant " + tour + " cycles." );
+    alert("Vous avez perdu! " + station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet() + " a guidé la station pendant " + tour.numero + " cycles." );
     location.reload(); 
   }
   if (station_joueur.capacitePopulation <= station_joueur.population() ) {
@@ -885,7 +931,7 @@ function verifierFinPartie(){
   if (station_joueur.moral <= 5 ) {
     alert("Le moral de la station est assez bas.");
   }
-  if (station_joueur.regime == "Lotocratie" && tour == 5 || tour == 10){
+  if (station_joueur.regime == "Lotocratie" && tour.numero == 5 || tour.numero == 10){
     alert("Il y a un nouveau tirage au sort pour le gouvernement de la station.")
     station_joueur.dirigeant = new Personnage();
     document.getElementById('consulStation').textContent = station_joueur.dirigeant.nomComplet();
@@ -897,7 +943,8 @@ function verifierFinPartie(){
 // Événements
 
 const btnExitEvent = document.querySelector('#btnExitEvent');
-btnExitEvent.addEventListener('click', () => {
+btnExitEvent.addEventListener('click', () => {  
+  removeChildNodesWithClassName(document.getElementById('body_evenements'), 'ev_provisoire');
   document.getElementById("textofevent2").setAttribute('hidden', 'hidden')
   charger_description_station("ecranChoixEtEvenementsStation");
 });
@@ -972,12 +1019,27 @@ function evenementFinTour(){
       station_joueur.chaos++;
       break;
   }
+
   chargerVersEvenement("ecran_description_station");
   if (textDeEvenement2 != ""){
     document.getElementById("textofevent2").removeAttribute('hidden');
   }
-
+  evenements_a_annoncer.forEach( evenement => {
+    let row_ev = document.createElement('tr');
+    row_ev.className = "ev_provisoire";
+    let cell_event = document.createElement('td'); 
+    cell_event.innerHTML = evenement.textOfEvent;
+    let cell_effects = document.createElement('td');
+    cell_effects.innerHTML = evenement.textEffetsEvenement;
+    row_ev.appendChild(cell_event);
+    row_ev.appendChild(cell_effects);
+    document.getElementById('body_evenements').appendChild(row_ev);
+});
+  evenements_a_annoncer = [];
+  
   document.getElementById('textEffetsEvenement').textContent = textEffetsEvenement
   document.getElementById('textofevent').textContent = textDeEvenement
   document.getElementById('textofevent2').textContent = textDeEvenement2
 }
+
+
