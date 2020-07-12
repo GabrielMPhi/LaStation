@@ -422,6 +422,34 @@ function chargerVersInformation(ecran_de_depart){
   changeScreen(ecran_de_depart, "ecranInformationStation");
 }
 
+//modal
+function ouvrir_modal_information(){
+  var modal = document.getElementById("modal_info");
+  modal.classList.add("is-active")
+
+}
+//fermer le modal
+document.getElementById("modal_background").onclick = function(){
+  fermer_modal();
+}
+
+document.getElementById("btn_modal_close").onclick = function() {
+  fermer_modal();
+}
+function fermer_modal(){
+  document.getElementById('textOfInfo').textContent = "";
+  removeAllChildNodes(document.getElementById("liste_population")) ;
+  var modal = document.getElementById("modal_info");
+  modal.classList.remove("is-active");
+}
+
+window.onclick = function(event) {
+  if (event.target == document.getElementById("modal_info")) {
+    var modal = document.getElementById("modal_info");
+    modal.classList.remove("is-active");
+  }
+} 
+
 /*Écran de création de la station*/
 
 document.getElementById("btn_creation_station").addEventListener('click', function (e){
@@ -476,15 +504,12 @@ function afficherDescription() {
   }
 // BOUTONS INFO
 
-const btnExitInfo = document.querySelector('#btnExitInfo');
-btnExitInfo.addEventListener('click', () => {
-  charger_description_station("ecranInformationStation");
-  removeAllChildNodes(document.getElementById("liste_population"))
-  
-});
 
-document.getElementById("btnInfoRegime").addEventListener('click', function (e){
-  chargerVersInformation("ecran_description_station")
+
+
+
+document.getElementById("btnInfoRegime").addEventListener('click', function (e){ 
+ 
   var textInfo = ""
   switch (station_joueur.regime) {
    case "République": 
@@ -498,26 +523,27 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
    }
 
   document.getElementById('textOfInfo').innerHTML = textInfo
+  ouvrir_modal_information();
 });
 
 
   document.getElementById("btnInfoDirigeant").addEventListener('click', function (e){
-    chargerVersInformation("ecran_description_station")
+  
     var textInfo = station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet() + " est la personne qui dirige la station."+ 
     "<br>" + "Son idéologie : " + station_joueur.dirigeant.ideologie +
     "<br>" + "Sa taille : " + station_joueur.dirigeant.height + " cm." +
     "<br>" + "Son genre : " + station_joueur.dirigeant.genre +
     "<br>" + "Son origine : " + station_joueur.dirigeant.origine
     document.getElementById('textOfInfo').innerHTML = textInfo
-      
+    ouvrir_modal_information();
   });
 
   document.getElementById("btnInfoTour").addEventListener('click', function (e){
-    chargerVersInformation("ecran_description_station")
+   
     var textInfo = "De la perspective d'une intelligence artificelle, le temps passe à la fois rapidement et lentement. Elle peut réagir très rapidement comme considérer les choses dans le temps long." + 
     " " + "À ce titre, l'unité de temps centrale est l'année, le cycle."
     document.getElementById('textOfInfo').textContent = textInfo
-  
+    ouvrir_modal_information();
   });
 
 
@@ -530,7 +556,7 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
 
 
   document.getElementById("btnInfoPopulationListNobody").addEventListener('click', function (e){
-    chargerVersInformation("ecran_description_station")
+  
     var textInfo = ""
     console.log(textInfo)
     for (var i = 0; i < station_joueur.randomNobody.length; i++){
@@ -562,7 +588,7 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
       }
       new_row.appendChild(second_cell);
       document.getElementById("liste_population").appendChild(new_row);
-      
+      ouvrir_modal_information();
     }
   });
 
