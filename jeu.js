@@ -8,6 +8,7 @@ var listIdeology = ["Républicanisme", "Anarchisme", "Autoritarisme", "Ludisme",
 var listeGenre = ["Homme", "Femme", "Fluide", "Homme", "Femme", "Homme", "Femme", "Non-binaire"]
 var listeTitresDirigeant = ["Capitaine", "Commandant", "Consul", "Guide", "Président", "Général", "Professeur", "Dude", "Tsé, lui-là", "Philosophe", "Politicien", "Délégué", "Vendu", "Maître", "WTF?"]
 var listeNomPhilosophe = ["Aristote", "Platon", "Machiavel", "Pettit", "Rousseau", "Hume", "Hobbes", "Spinoza", "Diderot", "Woolstonecraft", "Davis", "Nussbaum", "Anderson"]
+var listOccupation = ["Radio Poubelle", "Biologie", "Médecine", "Astrophysique", "Philosophie", "Histoire", "Littérature", "Leadership", "Sécurité", "Informatique", "Lechage de bottes", "Lobbyisme", "Sociologie", "Making ze mony"]
 
 //variables station
 var liste_type_gouv = ["Lottocratie", "République", "Corporation", "Autocratie", "Monarchie", "Théocratie", "Ploutocratie", "Gabrielocratie", "Épistocratie", "Kakistocratie", "Communisme", "Idiocratie"];
@@ -92,7 +93,7 @@ class Station {
   set capacitePopulation (capacitePopulation){
     this._capacitePopulation = capacitePopulation;
   }
- 
+
   get moral(){
     return this._moral;
   }
@@ -210,26 +211,66 @@ class Station {
     return totalCalculPopulation
   }
 
-  enrichissement(nombre){
+  enrichissementAuHasard(nombre){
     for(let i=0; i<nombre; i++){
       let chanceux = Math.floor(Math.random() * this._randomNobody.length);
       this._randomNobody[chanceux].richesse++;    
     }
   }
 
-  appauvrissement(nombre){
+  appauvrissementAuHasard(nombre){
     for(let i=0; i<nombre; i++){
       let malchanceux = Math.floor(Math.random() * this._randomNobody.length);
       this._randomNobody[malchanceux].richesse--;    
     }
   }
 
+  enrichissementTotal(creditParHabitant){
+    for(let i=0; i< this._randomNobody.length; i++){
+      this._randomNobody[i].richesse = this._randomNobody[i].richesse + creditParHabitant;  
+    }
+  }
+
+  appauvrissementTotal(creditParHabitant){
+    for(let i=0; i< this._randomNobody.length; i++){
+      this._randomNobody[i].richesse = this._randomNobody[i].richesse - creditParHabitant;    
+    }
+  }
+
+  payeEtRevenuPourTous(){
+    for(let i=0; i< this._randomNobody.length; i++){
+      var salaire = 0
+      switch (this._randomNobody[i].occupation){
+        case "Making ze mony": 
+        salaire = 4;
+          break;
+      case "Philosophie": 
+        salaire = 3
+        break;
+      case "Médecine":
+        salaire = 2
+        break;
+      case "Histoire":
+        salaire = -1
+        break;
+      default: 
+      salaire = 1;
+      break;
+    }
+    //à l'avenir, ici un autre switch au cas ou y'a une propriété qui donne du revenu et ce tout s'ajoute à salaire ou à la somme en bas
+    this._dirigeant.richesse = this._dirigeant.richesse + 5;
+    this._randomNobody[i].richesse = this._randomNobody[i].richesse + salaire;  
+  }
+  }
+
+
   richesseTotale(){
   console.log(this.randomNobody[1].richesse)
-  var calculTotalRichesse = 1
+  var calculTotalRichesse = 0
   for (var i = 0; i < this.randomNobody.length; i++){
     calculTotalRichesse = calculTotalRichesse + this.randomNobody[i].richesse
   };
+  calculTotalRichesse = calculTotalRichesse + this._dirigeant.richesse 
   return calculTotalRichesse;
   }
 }
@@ -269,6 +310,7 @@ class Personnage {
     this._capaciteCombat = parseInt((Math.floor(Math.random() * 10) + 5), 10)
     this._connaissance = parseInt((Math.floor(Math.random() * 10) + 5), 10)
     this._ideologie = choiceIdeology ();
+    this._occupation = choiceOccupation()
     this._height = parseInt((Math.floor(Math.random() * 70) + 145), 10);
     this._age = parseInt((Math.floor(Math.random() * 20) + 18), 10)
     this._origine = nomsDeLastation[Math.floor(Math.random() * nomsDeLastation.length)]
@@ -341,6 +383,12 @@ class Personnage {
   set ideologie(ideologie){
     this._ideologie = ideologie
   }
+  get occupation() {
+    return this._occupation
+  }
+  set occupation(occupation){
+    this._occupation = occupation
+  }
   get height() {
     return this._height
   }
@@ -365,7 +413,6 @@ class Personnage {
   set mission(mission){
     this._mission = mission
   }
-
 
   gagneUnTitre = function (){
     var nouveauTitre = listeTitresDirigeant[Math.floor(Math.random() * listeTitresDirigeant.length)]
@@ -449,6 +496,7 @@ class Mission {
     this.reintegrer_la_station(this._nobody);
   }
 
+
   mort_tragique(cause_mort){
     this._evenement_retour.textOfEvent = "La navette de "+this._nobody.nomComplet()+" est revenue sur le pilote automatique. Grâce aux enregitrements, on apprend qu'il est mort "+cause_mort;
   }
@@ -472,7 +520,7 @@ class Mission {
   }
 
   mission_commerciale(){
-    station_joueur.enrichissement(2);
+    station_joueur.enrichissementAuHasard(2);
     this._nobody.richesse++;
     this._nobody.influence +=2;
     this._evenement_retour.textOfEvent = this._nobody.nomComplet()+" est revenu de mission. Il a découvert des extraterrestres prospères et heureux de commercer avec vous."
@@ -583,6 +631,12 @@ function choiceIdeology (){
   var choiceIdeology = listIdeology[Math.floor(Math.random() * listIdeology.length)]
   return choiceIdeology
 }
+
+function choiceOccupation(){
+  var choiceOccupation = listOccupation[Math.floor(Math.random() * listOccupation.length)];
+  return choiceOccupation
+}
+
 
 function choisir_prenom_personnage(genre){
   if (genre == "Homme") {
@@ -729,8 +783,6 @@ function afficherDescription() {
 
 
 
-
-
 document.getElementById("btnInfoRegime").addEventListener('click', function (e){ 
  
   var textInfo = ""
@@ -786,7 +838,6 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
   document.getElementById("btnInfoPopulationListNobody").addEventListener('click', function (e){
   
     var textInfo = ""
-    console.log(textInfo)
     remove_all_children(document.getElementById('liste_population'));
     for (var i = 0; i < station_joueur.randomNobody.length; i++){
       let new_row = document.createElement("tr");
@@ -794,6 +845,7 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
       let first_cell = document.createElement("td");
       first_cell.innerHTML = textInfo.concat("<b>", station_joueur.randomNobody[i].titre, " ", station_joueur.randomNobody[i].nomComplet(), "</b> est un random nobody de la station.", 
       "<br>", "Son titre : ", station_joueur.randomNobody[i].titre,
+      "<br>", "Son occupation : ", station_joueur.randomNobody[i].occupation,
       "<br>", "Son idéologie : ", station_joueur.randomNobody[i].ideologie,
       "<br>", station_joueur.randomNobody[i].height + "cm.",
       "<br>", "Son genre : ", station_joueur.randomNobody[i].genre,
@@ -871,7 +923,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
       case "favoriserPeuple":
         textOfChoiceInfluence = "Vous venez de favoriser le peuple."
         textEffectsOfChoiceInfluence = "Le peuple s'en fout un peu! Mais la richesse et le moral augmente de 1 tandis que vous dépensez 1 d'énergie.";
-        station_joueur.enrichissement(1);
+        station_joueur.enrichissementAuHasard(1);
         station_joueur.moral++;
         station_joueur.energie--;
       break;
@@ -894,7 +946,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
       case "fete":
         textOfChoiceInfluence = "Vous organisez une fête."  
         textEffectsOfChoiceInfluence = "C'est la fête et la danse!";
-        station_joueur.appauvrissement(1);
+        station_joueur.appauvrissementAuHasard(1);
         station_joueur.moral = parseInt(station_joueur.moral + (Math.floor(Math.random() * 4) - 1), 10)
         station_joueur.energie--
       break;
@@ -902,7 +954,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
       textOfChoiceInfluence = "C'est jour de marché sur " + station_joueur.nom  
       textEffectsOfChoiceInfluence = "La station s'enrichit un peu."
     
-      station_joueur.enrichissement(1);
+      station_joueur.enrichissementAuHasard(7);
       station_joueur.moral--
       break;
       }
@@ -956,6 +1008,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
 
 function verifierFinPartie(){
   station_joueur.richesseTotale()
+  station_joueur.payeEtRevenuPourTous()
   tour.augmenter();
   if (station_joueur.richesseTotale() <= 0 || station_joueur.moral <= 0 || station_joueur.energie <= 0 || station_joueur.integrite <=0 ) {
     alert("Vous avez perdu! " + station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet() + " a guidé la station pendant " + tour.numero + " cycles." );
@@ -973,13 +1026,13 @@ function verifierFinPartie(){
   if (station_joueur.moral <= 5 ) {
     alert("Le moral de la station est assez bas.");
   }
-  if (station_joueur.regime == "Lottocratie" && (tour == 2 || tour == 5 || tour == 10)){
+  if (station_joueur.regime == "Lottocratie" && (tour.numero == 2 || tour.numero == 5 || tour.numero == 10)){
     alert("Il y a un nouveau tirage au sort pour le gouvernement de la station.")
     var nouveauDirigeantTirageAuSort = station_joueur.randomNobody[Math.floor(Math.random() * station_joueur.randomNobody.length)]
     station_joueur.changementDirigeantStation(nouveauDirigeantTirageAuSort, station_joueur.dirigeant);
     alert(station_joueur.dirigeant.nomComplet() + " est maintenant à la tête de la station.");
   }
-  if (station_joueur.regime == "République" && (tour == 2 || tour == 5 || tour == 10)){
+  if (station_joueur.regime == "République" && (tour.numero == 2 || tour.numero == 5 || tour.numero == 10)){
   var candidatGagnantElection = station_joueur.electionNormale()
   alert("Il y a une élection. " + candidatGagnantElection.nomComplet() + " a gagné." )
   station_joueur.changementDirigeantStation(candidatGagnantElection, station_joueur.dirigeant);
@@ -1040,9 +1093,12 @@ function evenementFinTour(){
     break;
     case "commerceFerengi":
       textDeEvenement = "Commerce avec un marchand Ferengi"
-      textDeEvenement2 = "C'est bien enrichissant."
-      textEffetsEvenement = "Plus de Gold Pressed Latinum."
-      station_joueur.enrichissement(1);
+      var listOfRulesOfAcquisiton = ["Rules of Acquisition #57 : Good customers are as rare as latinum. Treasure them. " , 
+          "Rules of Acquisition #98 :	Every man has his price. ",
+          "Rules of Acquisition #125 : You can't make a deal if you're dead. "]
+      textDeEvenement2 = "C'est bien enrichissant en Gold Pressed Latinum."
+      textEffetsEvenement = listOfRulesOfAcquisiton[[Math.floor(Math.random() * listOfRulesOfAcquisiton.length)]]
+      station_joueur.enrichissementAuHasard(1);
       break;
     case "sageVulcain":
       textDeEvenement = "Visite d'un sage savant vulcain."
