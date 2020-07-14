@@ -140,4 +140,15 @@ export class Mission {
     }
   
   }
+
+  export function partir_en_mission(nobody, cell_id, button_id){
+    console.log(button_id + " "+ cell_id)
+    document.getElementById(button_id).remove
+    nobody.mission = new Mission("mission chaotique", tour.numero, nobody); 
+    station_joueur.nobodiesEnMission.push(nobody); 
+    let indexPartirEnMission = station_joueur.randomNobody.indexOf(nobody); 
+    station_joueur.randomNobody.splice(indexPartirEnMission, 1);
+    document.getElementById(cell_id).innerHTML =  nobody.nomComplet() +" est parti en mission sur un coup de tête. Il mourra probablement, ou reviendra avec des ressources et couvert de gloire";
+     
+  }
   

@@ -1,8 +1,8 @@
 let http = require('http');
 let url = require('url');
-var fs = require('fs'); 
+let fs = require('fs'); 
 
-let petit_serveur = function (req, res){
+let myServer = function (req, res){
     let q = url.parse(req.url, true);
     //console.log(q); 
     let filename = "."+q.pathname;
@@ -25,6 +25,6 @@ let petit_serveur = function (req, res){
     });    
 }
 
-let server = http.createServer(petit_serveur);
+let server = http.createServer(myServer);
 
 server.listen(8080);

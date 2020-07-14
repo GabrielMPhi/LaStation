@@ -1,56 +1,19 @@
 import { Station, liste_type_gouv, verificationExistencePersonnage } from './model/Station.js';
 import { Personnage } from './model/Personnage.js';
-import { Mission } from './model/Mission.js';
+import { partir_en_mission } from './model/Mission.js';
 import { Tour } from './model/Tour.js';
-
-
+import { removeAllChildNodes, removeChildNodesWithClassName } from './utilitaires/gestion_elements.js';
+import { changeScreen, ouvrir_modal_information, fermer_modal } from './utilitaires/gestion_ecrans.js';
 
 //VARIABLES GLOBALES
 var listeNomPhilosophe = ["Aristote", "Platon", "Machiavel", "Pettit", "Rousseau", "Hume", "Hobbes", "Spinoza", "Diderot", "Woolstonecraft", "Davis", "Nussbaum", "Anderson"]
-
-//variables personnages
-
-//variables station
 
 
 // variables gameplay
 export let tour;
 export var station_joueur;
-var station_ordi;
 export var evenements_a_annoncer = [];
-
-
-class Firm {
-  
-  constructor(nom){
-    this._nom = "East Sector Company";
-  }
-
-
-}
-
-class RegimePolitique {
-
-
-}
-
-class Sector {
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
+var station_ordi;
 
 
 /*CRÉATION DE LA PAGE*/
@@ -70,30 +33,16 @@ function generer_listeHTML_gouvernements(liste){
   })
 }
 
-/* GESTION DES ÉCRANS */
-function changeScreen(ecranDepart, ecranArrivee){
-	document.getElementById(ecranDepart).setAttribute('hidden', 'hidden');
-	document.getElementById(ecranArrivee).removeAttribute('hidden');
-}
-
-function charger_description_station(ecran_de_depart){
+//changement d'écrans
+export function charger_description_station(ecran_de_depart){
   afficherDescription();
   changeScreen(ecran_de_depart, "ecran_description_station");
 }
 
-function chargerVersEvenement(ecran_de_depart){
+export function chargerVersEvenement(ecran_de_depart){
   changeScreen(ecran_de_depart, "ecranChoixEtEvenementsStation");
 }
-
-function chargerVersInformation(ecran_de_depart){
-  changeScreen(ecran_de_depart, "ecranInformationStation");
-}
-
 //modal
-function ouvrir_modal_information(){
-  var modal = document.getElementById("modal_info");
-  modal.classList.add("is-active")
-}
 //fermer le modal
 document.getElementById("modal_background").onclick = function(){
   fermer_modal();
@@ -102,23 +51,6 @@ document.getElementById("modal_background").onclick = function(){
 document.getElementById("btn_modal_close").onclick = function() {
   fermer_modal();
 }
-
-//fonction probablement inutile
-window.onclick = function(event) {
-  if (event.target == document.getElementById("modal_info")) {
-    fermer_modal();
-  }
-} 
-
-function fermer_modal(){
-  document.getElementById('textOfInfo').textContent = "";
-  removeAllChildNodes(document.getElementById("liste_population")) ;
-  var modal = document.getElementById("modal_info");
-  modal.classList.remove("is-active");
-}
-
-
-
 
 
 /*Écran de création de la station*/
@@ -166,11 +98,8 @@ function afficherDescription() {
     document.getElementById('cybersecuriteStationInfo').textContent = station_joueur.cybersecurite;
     document.getElementById('capacitePopulationStationInfo').textContent = station_joueur.capacitePopulation;
   }
+
 // BOUTONS INFO
-
-
-
-
 
 document.getElementById("btnInfoRegime").addEventListener('click', function (e){ 
  
@@ -210,25 +139,11 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
     ouvrir_modal_information();
   });
 
-
-  // utilitaires
-  function removeAllChildNodes(parent) {
-    while (parent.firstChild) {
-      parent.removeChild(parent.firstChild);
-    }
-  }
-
-  function removeChildNodesWithClassName(parent, className){
-    let list_children_to_remove = parent.getElementsByClassName(className);
-    while(list_children_to_remove.length){
-      parent.removeChild(list_children_to_remove[0]);
-    }
-  }
   document.getElementById("btnInfoPopulationListNobody").addEventListener('click', function (e){
   
     var textInfo = ""
     console.log(textInfo)
-    remove_all_children(document.getElementById('liste_population'));
+    removeAllChildNodes(document.getElementById('liste_population'));
     for (var i = 0; i < station_joueur.randomNobody.length; i++){
       let new_row = document.createElement("tr");
       new_row.id = "personnage"+i;
@@ -265,27 +180,7 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
     }
   });
 
-
-  //utilitaires
-  function remove_all_children(parent){
-    while(parent.firstChild){
-      parent.removeChild(parent.firstChild);
-    }
-  }
-
 // ACTIONS ET ÉVÉNEMENTS
-function partir_en_mission(nobody, cell_id, button_id){
-  console.log(button_id + " "+ cell_id)
-  document.getElementById(button_id).remove
-  nobody.mission = new Mission("mission chaotique", tour.numero, nobody); 
-  station_joueur.nobodiesEnMission.push(nobody); 
-  let indexPartirEnMission = station_joueur.randomNobody.indexOf(nobody); 
-  station_joueur.randomNobody.splice(indexPartirEnMission, 1);
-  document.getElementById(cell_id).innerHTML =  nobody.nomComplet() +" est parti en mission sur un coup de tête. Il mourra probablement, ou reviendra avec des ressources et couvert de gloire";
-   
-}
-
-
 function afficherChoixEtEvenements() {
   document.getElementById('textOfChoiceInfluence').textContent = textOfChoiceInfluence;
   document.getElementById('textEffectsOfChoiceInfluence').textContent = textEffectsOfChoiceInfluence;
