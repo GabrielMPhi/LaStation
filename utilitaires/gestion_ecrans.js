@@ -1,3 +1,5 @@
+import { removeAllChildNodes } from './gestion_elements.js';
+
 /* GESTION DES ÉCRANS */
 export function changeScreen(ecranDepart, ecranArrivee){
 	document.getElementById(ecranDepart).setAttribute('hidden', 'hidden');
