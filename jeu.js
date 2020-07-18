@@ -52,7 +52,6 @@ class Station {
     this._regime = regime;
     this._dirigeant = new Personnage();
     this._capacitePopulation = parseInt((Math.floor(Math.random() * 5) + 20), 10)
-    this._moral = 10;
     this._ordre = 5;
     this._chaos = 5;
     this._liberte = 10;
@@ -92,13 +91,6 @@ class Station {
   }
   set capacitePopulation (capacitePopulation){
     this._capacitePopulation = capacitePopulation;
-  }
-
-  get moral(){
-    return this._moral;
-  }
-  set moral(moral){
-    this._moral = moral;
   }
   get ordre(){
     return this._ordre;
@@ -270,10 +262,55 @@ class Station {
           this._randomNobody[i].prestige++
           console.log(this._randomNobody[i].nomComplet() + " dépense ses richesses pour devenir prestigieux.")
         }
+        if (this._randomNobody[i].richesse == 0 && this._randomNobody[i].prestige > 0){
+          var utilisationDuPrestige = Math.floor(Math.random() * 10);
+          this._randomNobody[i].prestige--
+          this._randomNobody[i].richesse = this._randomNobody[i].richesse + utilisationDuPrestige
+          for(let i=0; i<utilisationDuPrestige; i++){
+            let malchanceux = Math.floor(Math.random() * this._randomNobody.length);
+            this._randomNobody[malchanceux].richesse--;    
+          }
+          console.log(this._randomNobody[i].nomComplet() + " perd 1 de prestige et gagne : " + utilisationDuPrestige + " crédits")
+        }
+  }}
 
-  }
+  augmentationMoralAuHasard(nombre){
+    for(let i=0; i<nombre; i++){
+      let chanceux = Math.floor(Math.random() * this._randomNobody.length);
+      this._randomNobody[chanceux].richesse++;    
+    }
   }
 
+  diminutionMoralAuHasard(nombre){
+    for(let i=0; i<nombre; i++){
+      let malchanceux = Math.floor(Math.random() * this._randomNobody.length);
+      this._randomNobody[malchanceux].richesse--;    
+    }
+  }
+
+
+  augmentationMoralTotal(moralParHabitant){
+    for(let i=0; i< this._randomNobody.length; i++){
+      this._randomNobody[i].richesse = this._randomNobody[i].richesse + moralParHabitant;  
+    }
+  }
+
+  diminutionMoralTotal(moralParHabitant){
+    for(let i=0; i< this._randomNobody.length; i++){
+      this._randomNobody[i].richesse = this._randomNobody[i].richesse - moralParHabitant;    
+    }
+  }
+
+
+  moralTotal(){
+    var calculTotalMoral = 0
+    for (var i = 0; i < this._randomNobody.length; i++){
+      calculTotalMoral = calculTotalMoral + this.randomNobody[i].moral
+    };
+    calculTotalMoral = calculTotalMoral + this._dirigeant.moral 
+    calculTotalMoral = (calculTotalMoral /this._randomNobody.length)
+    return parseInt(calculTotalMoral,10);
+    }
 
   richesseTotale(){
   var calculTotalRichesse = 0
@@ -520,7 +557,7 @@ class Mission {
 
   retour_chaotique(){
     station_joueur.integrite--;
-    station_joueur.moral--;
+  // Il faudrait faire diminuer le moral de qqn dans la station  station_joueur.moralTotal();
     station_joueur.chaos++;
     //station_joueur.population--;
     this._evenement_retour.textOfEvent =  this._nobody.nomComplet() + "est revenu de mission... accompagné de mercenaire extraterrestres qui sèment le chaos dans la station!"
@@ -783,7 +820,7 @@ function afficherDescription() {
     document.getElementById('consulStation2').textContent = station_joueur.dirigeant.nomComplet();
     document.getElementById('richesseStationInfo').textContent = station_joueur.richesseTotale();
     document.getElementById('typeGouvernementStationPage').textContent = station_joueur.regime;
-    document.getElementById('moralStationInfo').textContent = station_joueur.moral;
+    document.getElementById('moralStationInfo').textContent = station_joueur.moralTotal();
     document.getElementById('ordreStationInfo').textContent = station_joueur.ordre;
     document.getElementById('chaosStationInfo').textContent = station_joueur.chaos;
     document.getElementById('liberteStationInfo').textContent = station_joueur.liberte;
@@ -868,6 +905,7 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
       "<br>", "Son genre : ", station_joueur.randomNobody[i].genre,
       "<br>", "Son charisme : ", station_joueur.randomNobody[i].charisme,
       "<br>", "Son prestige : ", station_joueur.randomNobody[i].prestige,
+      "<br>", "Son moral : ", station_joueur.randomNobody[i].moral,
       "<br>", "Sa capacité de combat : ", station_joueur.randomNobody[i].capaciteCombat,
       "<br>", "Sa richesse : ", station_joueur.randomNobody[i].richesse, " crédits",
       "<br>", "Son origine : ", station_joueur.randomNobody[i].origine, "<br><br>");
@@ -935,28 +973,28 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
         var debateurPhiloB = station_joueur.dirigeant
         textOfChoiceInfluence = "Il y a un débat philosophique entre " + debateurPhiloA.nomComplet() + " et " + debateurPhiloB.titre + " " + debateurPhiloB.nomComplet() + "!"
         textEffectsOfChoiceInfluence = debatPhilo(debateurPhiloA, debateurPhiloB)
-        station_joueur.moral++;
+        station_joueur.augmentationMoralAuHasard(1);
         station_joueur.chaos++;
       break;      
       case "favoriserPeuple":
         textOfChoiceInfluence = "Vous venez de favoriser le peuple."
         textEffectsOfChoiceInfluence = "Le peuple s'en fout un peu! Mais la richesse et le moral augmente de 1 tandis que vous dépensez 1 d'énergie.";
         station_joueur.enrichissementAuHasard(1);
-        station_joueur.moral++;
+        station_joueur.augmentationMoralAuHasard(1);
         station_joueur.energie--;
       break;
       case "exileHabitant":
         textOfChoiceInfluence = "Expulsion d'un habitant pour de faux prétextes."
         textEffectsOfChoiceInfluence = station_joueur.dirigeant.nomComplet() + " exile un habitant et confisque sa propriété!"
         station_joueur.dirigeant.richesse++;
-        station_joueur.moral--;
+        station_joueur.diminutionMoralAuHasard(1);
         station_joueur.energie++;
       break;
       case "festivalPhiloPolitique":
         textOfChoiceInfluence = "Sur l'ensemble des ordinateurs et des réseaux sociaux s'organise un immense festival de la philosophie politique."
         textEffectsOfChoiceInfluence = "Une grande fête en faveur de la pensée politique et éthique! Un très bon moyen de gagner le jeu."
         station_joueur.richesse++;
-        station_joueur.moral++;
+        station_joueur.augmentationMoralAuHasard(1);
         station_joueur.energie++;
         station_joueur.influenceCulturelle++;
         station_joueur.connaissance++;
@@ -973,7 +1011,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
       textEffectsOfChoiceInfluence = "La station s'enrichit un peu."
     
       station_joueur.enrichissementAuHasard(7);
-      station_joueur.moral--
+      station_joueur.diminutionMoralAuHasard(1);
       break;
       }
 
@@ -1009,13 +1047,10 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
   function debatPhilo(participantA, participantB){
     if (participantA.ideologie == "Républicanisme" && participantB.ideologie != "Républicanisme") {
       var gagnantDebatPhilo = participantA.nomComplet() + " a gagné!"
-      station_joueur.moral++;
     } else if (participantB.ideologie == "Républicanisme" && participantA.ideologie != "Républicanisme"){
       var gagnantDebatPhilo = participantB.nomComplet() + " a gagné!"
-      station_joueur.moral++;
     } else if (participantB.ideologie == "Gabrielisme" && participantA.ideologie != "Gabrielisme" && participantA.ideologie != "Républicanisme" ){
       var gagnantDebatPhilo = participantB.nomComplet() + " a gagné!"
-      station_joueur.moral++;
     } else {
       gagnantDebatPhilo = "Il n'y a pas de gagnant. Il n'y a que de la confusion, du chaos et de l'étrangeté. " + 
       listeNomPhilosophe[Math.floor(Math.random() * listeNomPhilosophe.length)] + " a été mobilisé dans la discussion." 
@@ -1028,20 +1063,22 @@ function verifierFinPartie(){
   station_joueur.payeEtRevenuPourTous();
   station_joueur.rechercheDePrestige();
   tour.augmenter();
-  if (station_joueur.richesseTotale() <= 0 || station_joueur.moral <= 0 || station_joueur.energie <= 0 || station_joueur.integrite <=0 ) {
-    alert("Vous avez perdu! " + station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet() + " a guidé la station pendant " + tour.numero + " cycles." );
+  console.log(station_joueur.moralTotal() + " de moral!")
+  if (station_joueur.richesseTotale() <= 0 || station_joueur.moralTotal() <= 0 || station_joueur.energie <= 0 || station_joueur.integrite <=0 ) {
+    alert("Vous avez perdu! " + station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet() + " a guidé la station pendant " + tour.numero + 
+    " cycles. Il vous restait " + station_joueur.moralTotal() + " de moral, " + station_joueur.energie + " d'énergie et " + station_joueur.integrite + " d'intégrité.");
     location.reload(); 
   }
   if (station_joueur.capacitePopulation <= station_joueur.population() ) {
     alert("Le moral descend, car une part de la population n'a pas accès à du logement.");
-    station_joueur.moral--;
+    station_joueur.augmentationMoralAuHasard(1);
   }
   if (station_joueur.ressources <= station_joueur.population() ) {
     alert("Le moral descend, car la station n'a pas assez de ressource pour satisfaire la population.");
     station_joueur.ressources--;
-    station_joueur.moral++;
+    station_joueur.augmentationMoralAuHasard(1);
   }
-  if (station_joueur.moral <= 5 ) {
+  if (station_joueur.moralTotal() <= 5 ) {
     alert("Le moral de la station est assez bas.");
   }
   if (station_joueur.regime == "Lottocratie" && (tour.numero == 2 || tour.numero == 5 || tour.numero == 10)){
@@ -1135,7 +1172,7 @@ function evenementFinTour(){
       var debateurPhiloB = station_joueur.dirigeant
       textDeEvenement = "Il y a un débat philosophique entre " + debateurPhiloA.nomComplet() + " et " + debateurPhiloB.titre + " " + debateurPhiloB.nomComplet() + "!"
       textEffetsEvenement = debatPhilo(debateurPhiloA,debateurPhiloB)
-      station_joueur.moral++;
+      station_joueur.augmentationMoralAuHasard(1);
       station_joueur.chaos++;
       break;
   }
