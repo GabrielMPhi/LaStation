@@ -263,9 +263,19 @@ class Station {
   }
   }
 
+  rechercheDePrestige(){
+    for(let i=0; i< this._randomNobody.length; i++){
+        if (this._randomNobody[i].richesse >= parseInt((this.richesseTotale()/this._randomNobody.length),10)){
+          this._randomNobody[i].richesse = parseInt((this._randomNobody[i].richesse / 2),10)
+          this._randomNobody[i].prestige++
+          console.log(this._randomNobody[i].nomComplet() + " dépense ses richesses pour devenir prestigieux.")
+        }
+
+  }
+  }
+
 
   richesseTotale(){
-  console.log(this.randomNobody[1].richesse)
   var calculTotalRichesse = 0
   for (var i = 0; i < this.randomNobody.length; i++){
     calculTotalRichesse = calculTotalRichesse + this.randomNobody[i].richesse
@@ -306,6 +316,7 @@ class Personnage {
     this._moral = parseInt((Math.floor(Math.random() * 10) + 5), 10)
     this._richesse = parseInt((Math.floor(Math.random() * 100) + 40), 10)
     this._influence = parseInt((Math.floor(Math.random() * 10) + 5), 10)
+    this._prestige = 0
     this._charisme = parseInt((Math.floor(Math.random() * 10) + 5), 10)
     this._capaciteCombat = parseInt((Math.floor(Math.random() * 10) + 5), 10)
     this._connaissance = parseInt((Math.floor(Math.random() * 10) + 5), 10)
@@ -358,7 +369,13 @@ class Personnage {
   }
   set influence(influence){
     this._influence = influence
-  }  
+  } 
+  get prestige() {
+    return this._prestige
+  }
+  set prestige(prestige){
+    this._prestige = prestige
+  } 
   get charisme() {
     return this._charisme
   }
@@ -850,6 +867,7 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
       "<br>", station_joueur.randomNobody[i].height + "cm.",
       "<br>", "Son genre : ", station_joueur.randomNobody[i].genre,
       "<br>", "Son charisme : ", station_joueur.randomNobody[i].charisme,
+      "<br>", "Son prestige : ", station_joueur.randomNobody[i].prestige,
       "<br>", "Sa capacité de combat : ", station_joueur.randomNobody[i].capaciteCombat,
       "<br>", "Sa richesse : ", station_joueur.randomNobody[i].richesse, " crédits",
       "<br>", "Son origine : ", station_joueur.randomNobody[i].origine, "<br><br>");
@@ -981,7 +999,6 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
     } 
 
 
-  console.log(e)
   afficherChoixEtEvenements()
   afficherDescription();
   evenementFinTour()
@@ -1007,8 +1024,9 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
   }
 
 function verifierFinPartie(){
-  station_joueur.richesseTotale()
-  station_joueur.payeEtRevenuPourTous()
+  station_joueur.richesseTotale();
+  station_joueur.payeEtRevenuPourTous();
+  station_joueur.rechercheDePrestige();
   tour.augmenter();
   if (station_joueur.richesseTotale() <= 0 || station_joueur.moral <= 0 || station_joueur.energie <= 0 || station_joueur.integrite <=0 ) {
     alert("Vous avez perdu! " + station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet() + " a guidé la station pendant " + tour.numero + " cycles." );
