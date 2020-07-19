@@ -260,15 +260,17 @@ class Station {
         if (this._randomNobody[i].richesse >= parseInt((this.richesseTotale()/this._randomNobody.length),10)){
           this._randomNobody[i].richesse = parseInt((this._randomNobody[i].richesse / 2),10)
           this._randomNobody[i].prestige++
+          this._randomNobody[i].moral++
           console.log(this._randomNobody[i].nomComplet() + " dépense ses richesses pour devenir prestigieux.")
         }
         if (this._randomNobody[i].richesse == 0 && this._randomNobody[i].prestige > 0){
-          var utilisationDuPrestige = Math.floor(Math.random() * 10);
+          var utilisationDuPrestige = Math.floor(Math.random() * 100);
           this._randomNobody[i].prestige--
           this._randomNobody[i].richesse = this._randomNobody[i].richesse + utilisationDuPrestige
           for(let i=0; i<utilisationDuPrestige; i++){
             let malchanceux = Math.floor(Math.random() * this._randomNobody.length);
-            this._randomNobody[malchanceux].richesse--;    
+            this._randomNobody[malchanceux].richesse--;
+            this._randomNobody[malchanceux].moral--;    
           }
           console.log(this._randomNobody[i].nomComplet() + " perd 1 de prestige et gagne : " + utilisationDuPrestige + " crédits")
         }
@@ -307,8 +309,14 @@ class Station {
           if (this._randomNobody[i].richesse > 10){
             this._randomNobody[i].richesse = parseInt((this._randomNobody[i].richesse / 2),10)
             this._randomNobody[i].moral++
+            console.log(this._randomNobody[i].nomComplet() + " perd de l'argent pour regagner du moral")
+          } else if(this._randomNobody[i].prestige >= 1) {
+            this._randomNobody[i].prestige--
+            this._randomNobody[i].moral++
+            console.log(this._randomNobody[i].nomComplet() + " perd du prestige pour regagner du moral")
           } else {
-            let indexPersonneQuiPart = station_joueur.randomNobody.indexOf(i); 
+            console.log(this._randomNobody[i].nomComplet() + " devrait partir de la Station")
+            let indexPersonneQuiPart = station_joueur.randomNobody.indexOf(station_joueur.randomNobody[i]); 
             this._randomNobody.splice(indexPersonneQuiPart, 1);
           }
         }
@@ -332,7 +340,22 @@ class Station {
   calculTotalRichesse = calculTotalRichesse + this._dirigeant.richesse 
   return calculTotalRichesse;
   }
+
+  verifierRichesse(){
+    for(let i=0; i< this._randomNobody.length; i++){
+      if (this._randomNobody[i].richesse <= 0){
+        this._randomNobody[i].richesse = 1
+        this._randomNobody[i].moral--
+        console.log(this._randomNobody[i].nomComplet() + " perd de du moral, car il n'a plus d'argent")
+      }
+    }
+  }
+
+
+
 }
+
+
 
 class Section{
 
@@ -872,6 +895,7 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
   
     var textInfo = station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet() + " est la personne qui dirige la station."+ 
     "<br>" + "Son idéologie : " + station_joueur.dirigeant.ideologie +
+    "<br>" + "Sa richesse : " + station_joueur.dirigeant.richesse +
     "<br>" + "Sa taille : " + station_joueur.dirigeant.height + " cm." +
     "<br>" + "Son genre : " + station_joueur.dirigeant.genre +
     "<br>" + "Son origine : " + station_joueur.dirigeant.origine
@@ -1014,7 +1038,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
       case "fete":
         textOfChoiceInfluence = "Vous organisez une fête."  
         textEffectsOfChoiceInfluence = "C'est la fête et la danse!";
-        station_joueur.appauvrissementAuHasard(1);
+        station_joueur.appauvrissementAuHasard(50);
         station_joueur.moral = parseInt(station_joueur.moral + (Math.floor(Math.random() * 4) - 1), 10)
         station_joueur.energie--
       break;
@@ -1022,7 +1046,8 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
       textOfChoiceInfluence = "C'est jour de marché sur " + station_joueur.nom  
       textEffectsOfChoiceInfluence = "La station s'enrichit un peu."
     
-      station_joueur.enrichissementAuHasard(7);
+      station_joueur.enrichissementAuHasard(100);
+      station_joueur.appauvrissementAuHasard(100);
       station_joueur.diminutionMoralAuHasard(1);
       break;
       }
@@ -1044,16 +1069,28 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
   case "pause":
     textOfChoice = "Une pause bien méritée pour recharger les batteries et faire les mises-à-jour.";
     textEffectsOfChoice1 = "La station emmagazine de l'énergie."
-    station_joueur.energie = station_joueur.energie + 4;
+    station_joueur.energie = station_joueur.energie + 50;
+    finDuTour();
     break;
     } 
 
 
-  afficherChoixEtEvenements()
-  afficherDescription();
-  evenementFinTour()
-  verifierFinPartie();
+    finDuTour();
   })
+
+  function finDuTour(){
+    afficherChoixEtEvenements()
+    afficherDescription();
+    evenementFinTour();
+    station_joueur.richesseTotale();
+    station_joueur.payeEtRevenuPourTous();
+    station_joueur.rechercheDePrestige();
+    station_joueur.effetDuMoralFinDuTour();
+    station_joueur.verifierRichesse()
+    station_joueur.appauvrissementAuHasard(3);
+    tour.augmenter();
+    verifierFinPartie();
+  }
 
 
   function debatPhilo(participantA, participantB){
@@ -1071,11 +1108,6 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
   }
 
 function verifierFinPartie(){
-  station_joueur.richesseTotale();
-  station_joueur.payeEtRevenuPourTous();
-  station_joueur.rechercheDePrestige();
-  station_joueur.effetDuMoralFinDuTour();
-  tour.augmenter();
   console.log(station_joueur.moralTotal() + " de moral!")
   if (station_joueur.richesseTotale() <= 0 || station_joueur.moralTotal() <= 0 || station_joueur.energie <= 0 || station_joueur.integrite <=0 ) {
     alert("Vous avez perdu! " + station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet() + " a guidé la station pendant " + tour.numero + 
@@ -1094,7 +1126,7 @@ function verifierFinPartie(){
   if (station_joueur.moralTotal() <= 5 ) {
     alert("Le moral de la station est assez bas.");
   }
-  if (station_joueur.regime == "Lottocratie" && (tour.numero == 2 || tour.numero == 5 || tour.numero == 10)){
+  if (station_joueur.regime == "Lottocratie" && (tour.numero == 2 || tour.numero == 5 || tour.numero == 10 || tour.numero == 42 || tour.numero == 100)){
     alert("Il y a un nouveau tirage au sort pour le gouvernement de la station.")
     var nouveauDirigeantTirageAuSort = station_joueur.randomNobody[Math.floor(Math.random() * station_joueur.randomNobody.length)]
     station_joueur.changementDirigeantStation(nouveauDirigeantTirageAuSort, station_joueur.dirigeant);

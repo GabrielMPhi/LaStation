@@ -1,4 +1,4 @@
-# Cite
+# Station
 
 Cité, est un jeu en JavaScript et en HTML que conçu en collaborant avec BerDuc pour pratiquer la programmation. À ce titre, les fonctions sont en constant développement et chaque nouvelle chose est un moyen pour moi de mettre en pratique une nouvelle chose que j'apprends.
 
