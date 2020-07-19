@@ -301,6 +301,18 @@ class Station {
     }
   }
 
+  effetDuMoralFinDuTour(){
+    for(let i=0; i< this._randomNobody.length; i++){
+        if (this._randomNobody[i].moral <= 0){
+          if (this._randomNobody[i].richesse > 10){
+            this._randomNobody[i].richesse = parseInt((this._randomNobody[i].richesse / 2),10)
+            this._randomNobody[i].moral++
+          } else {
+            let indexPersonneQuiPart = station_joueur.randomNobody.indexOf(i); 
+            this._randomNobody.splice(indexPersonneQuiPart, 1);
+          }
+        }
+  }}
 
   moralTotal(){
     var calculTotalMoral = 0
@@ -1062,6 +1074,7 @@ function verifierFinPartie(){
   station_joueur.richesseTotale();
   station_joueur.payeEtRevenuPourTous();
   station_joueur.rechercheDePrestige();
+  station_joueur.effetDuMoralFinDuTour();
   tour.augmenter();
   console.log(station_joueur.moralTotal() + " de moral!")
   if (station_joueur.richesseTotale() <= 0 || station_joueur.moralTotal() <= 0 || station_joueur.energie <= 0 || station_joueur.integrite <=0 ) {
