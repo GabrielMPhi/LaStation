@@ -6,7 +6,7 @@ var prenomsPersonnagesTotal = [].concat(prenomsPersonnagesHomme, prenomsPersonna
 var momsFamillePersonnages = ["Monette", "Ducharme", "Carel", "Dax", "Rideout", "Delorme", "Picard", "Sisko", "Janeway", "Pratte", "Séguin", "Gagné", "Turpin", "Bouras", "De Rivia", "Côté", "Gingras"]
 var listIdeology = ["Républicanisme", "Anarchisme", "Autoritarisme", "Ludisme", "Gabrielisme", "Scientisme", "Féminisme", "Turpinisme", "Chaotisme", "Monarchisme", "Bernardisme", "Socialisme", "Libéralisme", "Capitalisme", "Conspirationisme", "Rawlsisme", "Anarco-capitalisme", "Lavalisme", "Municipalisme", "Vedge", "Apathie"]
 var listeGenre = ["Homme", "Femme", "Fluide", "Homme", "Femme", "Homme", "Femme", "Non-binaire"]
-var listeTitresDirigeant = ["Capitaine", "Commandant", "Consul", "Guide", "Président", "Général", "Professeur", "Dude", "Tsé, lui-là", "Philosophe", "Politicien", "Délégué", "Vendu", "Maître", "WTF?"]
+var listeTitresDirigeant = ["Capitaine", "Commandant", "Consul", "Guide", "Président", "Général", "Professeur", "Dude", "Tsé, lui-là", "Philosophe", "Politicien", "Délégué", "Vendu", "Maître"]
 var listeNomPhilosophe = ["Aristote", "Platon", "Machiavel", "Pettit", "Rousseau", "Hume", "Hobbes", "Spinoza", "Diderot", "Woolstonecraft", "Davis", "Nussbaum", "Anderson"]
 var listOccupation = ["Radio Poubelle", "Biologie", "Médecine", "Astrophysique", "Philosophie", "Histoire", "Littérature", "Leadership", "Sécurité", "Informatique", "Lechage de bottes", "Lobbyisme", "Sociologie", "Making ze mony"]
 
@@ -249,9 +249,10 @@ class Station {
       salaire = 1;
       break;
     }
+
     //à l'avenir, ici un autre switch au cas ou y'a une propriété qui donne du revenu et ce tout s'ajoute à salaire ou à la somme en bas
     this._dirigeant.richesse = this._dirigeant.richesse + 5;
-    this._randomNobody[i].richesse = this._randomNobody[i].richesse + salaire;  
+    this._randomNobody[i].richesse = this._randomNobody[i].richesse + this._randomNobody[i].prestige + salaire;  
   }
   }
 
@@ -1150,7 +1151,7 @@ btnExitEvent.addEventListener('click', () => {
 
 
 function evenementFinTour(){
-  var evenementsList = ["visiteur", "rien", "debatphilo", "commerceFerengi", "sageVulcain"]
+  var evenementsList = ["visiteur", "rien", "debatphilo", "commerceFerengi", "sageVulcain", "petiteCriseFinanciereRessources"]
   var evenementQuiArrive = evenementsList[Math.floor(Math.random() * evenementsList.length)]
   var textEffetsEvenement = ""
   var textDeEvenement = ""
@@ -1189,7 +1190,6 @@ function evenementFinTour(){
       } else {
         textEffetsEvenement = "Rien de spécial. " + visiteurNobody.nomComplet() + " retourne sur son chemin."
       }
-      
     break;
     case "commerceFerengi":
       textDeEvenement = "Commerce avec un marchand Ferengi"
@@ -1198,7 +1198,8 @@ function evenementFinTour(){
           "Rules of Acquisition #125 : You can't make a deal if you're dead. "]
       textDeEvenement2 = "C'est bien enrichissant en Gold Pressed Latinum."
       textEffetsEvenement = listOfRulesOfAcquisiton[[Math.floor(Math.random() * listOfRulesOfAcquisiton.length)]]
-      station_joueur.enrichissementAuHasard(1);
+      station_joueur.enrichissementAuHasard(100);
+      station_joueur.appauvrissementAuHasard(114);
       break;
     case "sageVulcain":
       textDeEvenement = "Visite d'un sage savant vulcain."
@@ -1219,6 +1220,12 @@ function evenementFinTour(){
       textEffetsEvenement = debatPhilo(debateurPhiloA,debateurPhiloB)
       station_joueur.augmentationMoralAuHasard(1);
       station_joueur.chaos++;
+      break;
+      case "petiteCriseFinanciereRessources":
+        var perteDuAPetiteCriseFinanciereRessources = [Math.floor(Math.random() * 214)]
+        station_joueur.appauvrissementAuHasard(perteDuAPetiteCriseFinanciereRessources);
+        textDeEvenement2 = "Il y a une petite crise des ressources dans le secteur voisin."
+        textEffetsEvenement = "Il y a une pette globale de " + perteDuAPetiteCriseFinanciereRessources + " crédits."
       break;
   }
 
