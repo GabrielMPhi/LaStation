@@ -1,7 +1,7 @@
 //VARIABLES GLOBALES
 //variables personnages
 var prenomsPersonnagesHomme = ["Bernard", "Martin", "Gabriel", "Mathieu", "Arthur", "Thomas", "Christian", "Simon", "Geralt", "Alexandre", "Étienne", "François"]
-var prenomsPersonnagesFemme = ["Catherine", "Florence", "Sophia", "Morgane", "Rieke", "Julia", "Linda", "Christina", "Anne-Sophie", "Anne-Marie", "Marie-Pier", "Marie", "Anne", "Anna", "Rapunzel", "Éloise"]
+var prenomsPersonnagesFemme = ["Catherine", "Florence", "Sophia", "Morgane", "Rieke", "Julia", "Linda", "Christina", "Anne-Sophie", "Anne-Marie", "Marie-Pier", "Marie", "Anne", "Anzhe", "Anna", "Rapunzel", "Éloise"]
 var prenomsPersonnagesTotal = [].concat(prenomsPersonnagesHomme, prenomsPersonnagesFemme);
 var momsFamillePersonnages = ["Monette", "Ducharme", "Carel", "Dax", "Rideout", "Delorme", "Picard", "Sisko", "Janeway", "Pratte", "Séguin", "Gagné", "Turpin", "Bouras", "De Rivia", "Côté", "Gingras"]
 var listIdeology = ["Républicanisme", "Anarchisme", "Autoritarisme", "Ludisme", "Gabrielisme", "Scientisme", "Féminisme", "Turpinisme", "Chaotisme", "Monarchisme", "Bernardisme", "Socialisme", "Libéralisme", "Capitalisme", "Conspirationisme", "Rawlsisme", "Anarco-capitalisme", "Lavalisme", "Municipalisme", "Vedge", "Apathie"]
@@ -13,10 +13,14 @@ var listOccupation = ["Radio Poubelle", "Biologie", "Médecine", "Astrophysique"
 //variables station
 var liste_type_gouv = ["Lottocratie", "République", "Corporation", "Autocratie", "Monarchie", "Théocratie", "Ploutocratie", "Gabrielocratie", "Épistocratie", "Kakistocratie", "Communisme", "Idiocratie"];
 let nomsDeLastation = ["Montréal", "Laval", "Candiac", "Paris", "Montpellier", "DS9", "DS7", "Terre", "Ahuntsic", "Villeray", "Saturne", "Jupiter", "Lune", "Europe", "Le lointain"]
-let nomsDeSecteursListe = [""]
 let ressourcesTypeList = ["Gold Pressed Latinum", "Livres de philo", "Deuterium", "Awesomeness"]
 let listeTypesSectionsStation = ["Arboretum", "Bibliothèque"]
 let listOfLawInPlace = [""]
+
+// variables secteur
+
+let nomsDeSecteursListe = ["Terra"]
+let ressourceSecteurListe = ["Métaux communs", "Métaux précieux", "Gaz"]
 
 // variables gameplay
 let tour;
@@ -31,15 +35,32 @@ class Firm {
     this._nom = "East Sector Company";
   }
 
+}
+
+class Ressource {
+  
+  constructor(nom){
+    this._nom = nom;
+    this._valeur = 1;
+  }
 
 }
 
-class RegimePolitique {
-
-
-}
 
 class Sector {
+  constructor(){
+    this._nom = nomsDeSecteursListe[Math.floor(Math.random() * nomsDeSecteursListe.length)];
+    this._ressources = new Ressource(ressourceSecteurListe[Math.floor(Math.random() * ressourceSecteurListe.length)]);
+
+  }
+
+  get nom() {
+    return this._nom
+  }
+  set nom(nom){
+    this._nom = nom
+  }
+
 
 
 }
