@@ -272,7 +272,8 @@ class Station {
     }
 
     //à l'avenir, ici un autre switch au cas ou y'a une propriété qui donne du revenu et ce tout s'ajoute à salaire ou à la somme en bas
-    this._dirigeant.richesse = this._dirigeant.richesse + 5;
+    this._dirigeant.richesse = this._dirigeant.richesse + 5 + this._dirigeant.corruption;
+    this.appauvrissementAuHasard(this._dirigeant.corruption)
     this._randomNobody[i].richesse = this._randomNobody[i].richesse + this._randomNobody[i].prestige + salaire;  
   }
   }
@@ -372,6 +373,18 @@ class Station {
       }
     }
   }
+
+    personnageCorruption(personnageCorrupteur){
+    if (personnageCorrupteur.richesse >= 100){
+      personnageCorrupteur.richesse = personnageCorrupteur.richesse - 100
+      this._dirigeant.richesse = this._dirigeant.richesse + 100
+      this._dirigeant.corruption++
+      personnageCorrupteur.corruption++
+      personnageCorrupteur.prestige++
+    }
+  }
+
+
 
 
 
@@ -925,6 +938,7 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
     var textInfo = station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet() + " est la personne qui dirige la station."+ 
     "<br>" + "Son idéologie : " + station_joueur.dirigeant.ideologie +
     "<br>" + "Sa richesse : " + station_joueur.dirigeant.richesse +
+    "<br>" + "Sa corruption : " + station_joueur.dirigeant.corruption +
     "<br>" + "Sa taille : " + station_joueur.dirigeant.height + " cm." +
     "<br>" + "Son genre : " + station_joueur.dirigeant.genre +
     "<br>" + "Son origine : " + station_joueur.dirigeant.origine
@@ -1100,6 +1114,24 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
     textEffectsOfChoice1 = "La station emmagazine de l'énergie."
     station_joueur.energie = station_joueur.energie + 50;
     finDuTour();
+    finDuTour();
+    finDuTour();
+    finDuTour();
+    finDuTour();
+    finDuTour();
+    finDuTour();
+    finDuTour();
+    finDuTour();
+    finDuTour();
+    finDuTour();
+    finDuTour();
+    finDuTour();
+    finDuTour();
+    finDuTour();
+    finDuTour();
+    finDuTour();
+    finDuTour();
+    finDuTour();
     break;
     } 
 
@@ -1242,20 +1274,23 @@ function evenementFinTour(){
       textEffetsEvenement = "Rien de spécial."
       break;
     case "tentativeCorruption":
+      console.log("TENTATIVE CORRUPTION DE QQN")
+      let listeEvenementCorruption = []
+      let personnageCorrupteur
       for (var i = 0; i < station_joueur.randomNobody.length; i++){
-        let listeEvenementCorruption = []
-        if (station_joueur.randomNobody[i].ideologie == "Anarco-capitalisme"){
+        if (station_joueur.randomNobody[i].ideologie == "Anarco-capitalisme" || station_joueur.randomNobody[i].richesse >= 200){
           listeEvenementCorruption.push(station_joueur.randomNobody[i])
         }
       }
+      console.log(listeEvenementCorruption)
+      if (listeEvenementCorruption == undefined || listeEvenementCorruption.length == 0){
+      textDeEvenement = "Il n'y a pas de tentative de corruption."
+      } else {
       let personnageCorrupteur = listeEvenementCorruption[Math.floor(Math.random() * listeEvenementCorruption.length)]
-      if (personnageCorrupteur.richesse >= 20){
-        personnageCorrupteur.richesse = personnageCorrupteur.richesse - 20
-        station_joueur.dirigeant.richesse = station_joueur.dirigeant.richesse + 20
-        station_joueur.dirigeant.corruption++
-        personnageCorrupteur.corruption++
-        personnageCorrupteur.prestige++
-      }
+      station_joueur.personnageCorruption(personnageCorrupteur)
+      textDeEvenement = "Il y a une tentative de corruption."
+    }
+      textEffetsEvenement = "Personne ne sait."
       break;
     case "debatphilo":
       var debateurPhiloA = station_joueur.randomNobody[Math.floor(Math.random() * station_joueur.randomNobody.length)]
