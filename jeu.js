@@ -888,7 +888,7 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
 
 /*Écran de description de la station*/
 function afficherDescription() {
-    document.getElementById('tourProgressBar').valeur = tour.numero
+    document.getElementById('tourProgressBar').value = tour.numero
     document.getElementById('ecranDescriptionStationTitrePrincipal').textContent = "Description de la station " + station_joueur.nom 
     document.getElementById('tourInfo').textContent = tour.numero;
     document.getElementById('nomStationPage').textContent = station_joueur.nom;
@@ -1198,6 +1198,23 @@ function verifierFinPartie(){
   alert("Il y a une élection. " + candidatGagnantElection.nomComplet() + " a gagné." )
   station_joueur.changementDirigeantStation(candidatGagnantElection, station_joueur.dirigeant);
   }
+  if (station_joueur.chaos > station_joueur.ordre){
+    let listeCorruptionChaosMoinsOrdre = []
+    let personnageCorrupteur
+    for (var i = 0; i < station_joueur.randomNobody.length; i++){
+      if (station_joueur.randomNobody[i].richesse >= 100){
+        listeCorruptionChaosMoinsOrdre.push(station_joueur.randomNobody[i])
+      }
+    }
+    console.log(listeCorruptionChaosMoinsOrdre)
+    console.log("Corruption à cause du chaos")
+    if (listeCorruptionChaosMoinsOrdre == undefined || listeCorruptionChaosMoinsOrdre.length == 0){
+    textDeEvenement = "Il n'y a pas de tentative de corruption."
+    } else {
+    personnageCorrupteur = listeCorruptionChaosMoinsOrdre[Math.floor(Math.random() * listeCorruptionChaosMoinsOrdre.length)]
+    station_joueur.personnageCorruption(personnageCorrupteur)
+  }
+  }
 }
 
 // Événements
@@ -1286,7 +1303,7 @@ function evenementFinTour(){
       if (listeEvenementCorruption == undefined || listeEvenementCorruption.length == 0){
       textDeEvenement = "Il n'y a pas de tentative de corruption."
       } else {
-      let personnageCorrupteur = listeEvenementCorruption[Math.floor(Math.random() * listeEvenementCorruption.length)]
+      personnageCorrupteur = listeEvenementCorruption[Math.floor(Math.random() * listeEvenementCorruption.length)]
       station_joueur.personnageCorruption(personnageCorrupteur)
       textDeEvenement = "Il y a une tentative de corruption."
     }
