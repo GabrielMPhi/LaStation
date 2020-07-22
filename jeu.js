@@ -415,6 +415,7 @@ class Personnage {
     this._capaciteCombat = parseInt((Math.floor(Math.random() * 10) + 5), 10)
     this._connaissance = parseInt((Math.floor(Math.random() * 10) + 5), 10)
     this._ideologie = choiceIdeology ();
+    this._corruption = 0;
     this._occupation = choiceOccupation()
     this._height = parseInt((Math.floor(Math.random() * 70) + 145), 10);
     this._age = parseInt((Math.floor(Math.random() * 20) + 18), 10)
@@ -493,6 +494,12 @@ class Personnage {
   }
   set ideologie(ideologie){
     this._ideologie = ideologie
+  }
+  get corruption() {
+    return this._corruption
+  }
+  set corruption(corruption){
+    this._corruption = corruption
   }
   get occupation() {
     return this._occupation
@@ -1172,7 +1179,7 @@ btnExitEvent.addEventListener('click', () => {
 
 
 function evenementFinTour(){
-  var evenementsList = ["visiteur", "rien", "debatphilo", "commerceFerengi", "sageVulcain", "petiteCriseFinanciereRessources"]
+  var evenementsList = ["visiteur", "rien", "debatphilo", "commerceFerengi", "sageVulcain", "petiteCriseFinanciereRessources", "tentativeCorruption"]
   var evenementQuiArrive = evenementsList[Math.floor(Math.random() * evenementsList.length)]
   var textEffetsEvenement = ""
   var textDeEvenement = ""
@@ -1233,6 +1240,22 @@ function evenementFinTour(){
       textDeEvenement = station_joueur.randomNobody[0].nomComplet() + " se tourne les pouces. Il y a une romance entre " + station_joueur.randomNobody[0].nomComplet() + " et " + station_joueur.randomNobody[1].nomComplet() + "."
       textDeEvenement2 = "C'est bien plaisant."
       textEffetsEvenement = "Rien de spécial."
+      break;
+    case "tentativeCorruption":
+      for (var i = 0; i < station_joueur.randomNobody.length; i++){
+        let listeEvenementCorruption = []
+        if (station_joueur.randomNobody[i].ideologie == "Anarco-capitalisme"){
+          listeEvenementCorruption.push(station_joueur.randomNobody[i])
+        }
+      }
+      let personnageCorrupteur = listeEvenementCorruption[Math.floor(Math.random() * listeEvenementCorruption.length)]
+      if (personnageCorrupteur.richesse >= 20){
+        personnageCorrupteur.richesse = personnageCorrupteur.richesse - 20
+        station_joueur.dirigeant.richesse = station_joueur.dirigeant.richesse + 20
+        station_joueur.dirigeant.corruption++
+        personnageCorrupteur.corruption++
+        personnageCorrupteur.prestige++
+      }
       break;
     case "debatphilo":
       var debateurPhiloA = station_joueur.randomNobody[Math.floor(Math.random() * station_joueur.randomNobody.length)]
