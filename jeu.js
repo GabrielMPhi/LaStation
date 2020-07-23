@@ -376,8 +376,8 @@ class Station {
 
     personnageCorruption(personnageCorrupteur){
     if (personnageCorrupteur.richesse >= 100){
-      personnageCorrupteur.richesse = personnageCorrupteur.richesse - 100
-      this._dirigeant.richesse = this._dirigeant.richesse + 100
+      personnageCorrupteur.richesse = personnageCorrupteur.richesse - 75
+      this._dirigeant.richesse = this._dirigeant.richesse + 50
       this._dirigeant.corruption++
       personnageCorrupteur.corruption++
       personnageCorrupteur.prestige++
@@ -422,10 +422,10 @@ class Station {
           listeCorruptionChaosMoinsOrdre.push(this._randomNobody[i])
         }
       }
-      console.log(listeCorruptionChaosMoinsOrdre)
-      console.log("Corruption à cause du chaos")
       if (listeCorruptionChaosMoinsOrdre == undefined || listeCorruptionChaosMoinsOrdre.length == 0){
       } else {
+      console.log(listeCorruptionChaosMoinsOrdre)
+      console.log("Corruption à cause du chaos")
       personnageCorrupteur = listeCorruptionChaosMoinsOrdre[Math.floor(Math.random() * listeCorruptionChaosMoinsOrdre.length)]
       this.personnageCorruption(personnageCorrupteur)
     }
@@ -1160,22 +1160,6 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
     textOfChoice = "Une pause bien méritée pour recharger les batteries et faire les mises-à-jour.";
     textEffectsOfChoice1 = "La station emmagazine de l'énergie."
     station_joueur.energie = station_joueur.energie + 50;
-    finDuTour();
-    finDuTour();
-    finDuTour();
-    finDuTour();
-    finDuTour();
-    finDuTour();
-    finDuTour();
-    finDuTour();
-    finDuTour();
-    finDuTour();
-    finDuTour();
-    finDuTour();
-    finDuTour();
-    finDuTour();
-    finDuTour();
-    finDuTour();
     finDuTour();
     finDuTour();
     finDuTour();
