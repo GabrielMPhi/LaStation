@@ -6,7 +6,7 @@ var prenomsPersonnagesTotal = [].concat(prenomsPersonnagesHomme, prenomsPersonna
 var momsFamillePersonnages = ["Monette", "Ducharme", "Carel", "Dax", "Rideout", "Delorme", "Picard", "Sisko", "Janeway", "Pratte", "Séguin", "Gagné", "Turpin", "Bouras", "De Rivia", "Côté", "Gingras"]
 var listIdeology = ["Républicanisme", "Anarchisme", "Autoritarisme", "Ludisme", "Gabrielisme", "Scientisme", "Féminisme", "Turpinisme", "Chaotisme", "Monarchisme", "Bernardisme", "Socialisme", "Libéralisme", "Capitalisme", "Conspirationisme", "Rawlsisme", "Anarco-capitalisme", "Lavalisme", "Municipalisme", "Vedge", "Apathie"]
 var listeGenre = ["Homme", "Femme", "Fluide", "Homme", "Femme", "Homme", "Femme", "Non-binaire"]
-var listeTitresDirigeant = ["Capitaine", "Commandant", "Consul", "Guide", "Président", "Général", "Professeur", "Dude", "Tsé, lui-là", "Philosophe", "Politicien", "Délégué", "Vendu", "Maître"]
+var listeTitresDirigeant = ["Capitaine", "Commandant", "Consul", "Guide", "Président", "Général", "Professeur", "Dude", "Tsé, lui-là", "Philosophe", "Politicien", "Délégué", "Maître"]
 var listeNomPhilosophe = ["Aristote", "Platon", "Machiavel", "Pettit", "Rousseau", "Hume", "Hobbes", "Spinoza", "Diderot", "Woolstonecraft", "Davis", "Nussbaum", "Anderson"]
 var listOccupation = ["Radio Poubelle", "Biologie", "Médecine", "Astrophysique", "Philosophie", "Histoire", "Littérature", "Leadership", "Sécurité", "Informatique", "Lechage de bottes", "Lobbyisme", "Sociologie", "Making ze mony"]
 
@@ -72,7 +72,7 @@ class Station {
     this._nom = nom;
     this._regime = regime;
     this._dirigeant = new Personnage();
-    this._capacitePopulation = parseInt((Math.floor(Math.random() * 5) + 20), 10)
+    this._capacitePopulation = parseInt((Math.floor(Math.random() * 10) + 20), 10)
     this._ordre = 5;
     this._chaos = 5;
     this._liberte = 10;
@@ -384,7 +384,53 @@ class Station {
     }
   }
 
-
+  verifierFinPartie(){
+    console.log(this.moralTotal() + " de moral!")
+    if (this.richesseTotale() <= 0 || this.moralTotal() <= 0 || this._energie <= 0 || this._integrite <=0 ) {
+      alert("Vous avez perdu! " + this._dirigeant.titre + " " + this._dirigeant.nomComplet() + " a guidé la station pendant " + tour.numero + 
+      " cycles. Il vous restait " + this.moralTotal() + " de moral, " + this._energie + " d'énergie et " + this._integrite + " d'intégrité.");
+      location.reload(); 
+    }
+    if (this._capacitePopulation <= this.population() ) {
+      alert("Le moral descend, car une part de la population n'a pas accès à du logement.");
+      this.augmentationMoralAuHasard(1);
+    }
+    if (this._ressources <= this.population() ) {
+      alert("Le moral descend, car la station n'a pas assez de ressource pour satisfaire la population.");
+      this._ressources--;
+      this.augmentationMoralAuHasard(1);
+    }
+    if (this.moralTotal() <= 5 ) {
+      alert("Le moral de la station est assez bas.");
+    }
+    if (this._regime == "Lottocratie" && (tour.numero == 2 || tour.numero == 5 || tour.numero == 10 || tour.numero == 42 || tour.numero == 100)){
+      alert("Il y a un nouveau tirage au sort pour le gouvernement de la station.")
+      var nouveauDirigeantTirageAuSort = this._randomNobody[Math.floor(Math.random() * this._randomNobody.length)]
+      this.changementDirigeantStation(nouveauDirigeantTirageAuSort, this._dirigeant);
+      alert(this._dirigeant.nomComplet() + " est maintenant à la tête de la station.");
+    }
+    if (this._regime == "République" && (tour.numero == 2 || tour.numero == 5 || tour.numero == 10)){
+    var candidatGagnantElection = this.electionNormale()
+    alert("Il y a une élection. " + candidatGagnantElection.nomComplet() + " a gagné." )
+    this.changementDirigeantStation(candidatGagnantElection, this._dirigeant);
+    }
+    if (this._chaos > this._ordre){
+      let listeCorruptionChaosMoinsOrdre = []
+      let personnageCorrupteur
+      for (var i = 0; i < this._randomNobody.length; i++){
+        if (this._randomNobody[i].richesse >= 100){
+          listeCorruptionChaosMoinsOrdre.push(this._randomNobody[i])
+        }
+      }
+      console.log(listeCorruptionChaosMoinsOrdre)
+      console.log("Corruption à cause du chaos")
+      if (listeCorruptionChaosMoinsOrdre == undefined || listeCorruptionChaosMoinsOrdre.length == 0){
+      } else {
+      personnageCorrupteur = listeCorruptionChaosMoinsOrdre[Math.floor(Math.random() * listeCorruptionChaosMoinsOrdre.length)]
+      this.personnageCorruption(personnageCorrupteur)
+    }
+    }
+  }
 
 
 
@@ -876,7 +922,7 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
   station_joueur = new Station(nom_station, regime_choisi);
   console.log("on a créé une station! = "+station_joueur);
   station_joueur.dirigeant.gagneUnTitre();
-  var startingNumberOfNobody = (Math.floor(Math.random() * 7)) + 7;
+  var startingNumberOfNobody = (Math.floor(Math.random() * 14)) + 14;
   for (var i = 0; i < startingNumberOfNobody; i++){
     station_joueur.randomNobody.push(new Personnage())
     };
@@ -937,7 +983,7 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
   
     var textInfo = station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet() + " est la personne qui dirige la station."+ 
     "<br>" + "Son idéologie : " + station_joueur.dirigeant.ideologie +
-    "<br>" + "Sa richesse : " + station_joueur.dirigeant.richesse +
+    "<br>" + "Sa richesse : " + station_joueur.dirigeant.richesse + " crédits." +
     "<br>" + "Sa corruption : " + station_joueur.dirigeant.corruption +
     "<br>" + "Sa taille : " + station_joueur.dirigeant.height + " cm." +
     "<br>" + "Son genre : " + station_joueur.dirigeant.genre +
@@ -987,6 +1033,7 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
       "<br>", "Son moral : ", station_joueur.randomNobody[i].moral,
       "<br>", "Sa capacité de combat : ", station_joueur.randomNobody[i].capaciteCombat,
       "<br>", "Sa richesse : ", station_joueur.randomNobody[i].richesse, " crédits",
+      "<br>", "Sa corruption : ", station_joueur.randomNobody[i].corruption,
       "<br>", "Son origine : ", station_joueur.randomNobody[i].origine, "<br><br>");
       new_row.appendChild(first_cell); 
       let second_cell = document.createElement("td");
@@ -1088,7 +1135,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
     case "commerce":
       textOfChoiceInfluence = "C'est jour de marché sur " + station_joueur.nom  
       textEffectsOfChoiceInfluence = "La station s'enrichit un peu."
-    
+      station_joueur.ressources = station_joueur.ressources + 5
       station_joueur.enrichissementAuHasard(100);
       station_joueur.appauvrissementAuHasard(100);
       station_joueur.diminutionMoralAuHasard(1);
@@ -1150,7 +1197,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
     station_joueur.verifierRichesse()
     station_joueur.appauvrissementAuHasard(3);
     tour.augmenter();
-    verifierFinPartie();
+    station_joueur.verifierFinPartie();
   }
 
 
@@ -1167,55 +1214,6 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
     }
     return gagnantDebatPhilo
   }
-
-function verifierFinPartie(){
-  console.log(station_joueur.moralTotal() + " de moral!")
-  if (station_joueur.richesseTotale() <= 0 || station_joueur.moralTotal() <= 0 || station_joueur.energie <= 0 || station_joueur.integrite <=0 ) {
-    alert("Vous avez perdu! " + station_joueur.dirigeant.titre + " " + station_joueur.dirigeant.nomComplet() + " a guidé la station pendant " + tour.numero + 
-    " cycles. Il vous restait " + station_joueur.moralTotal() + " de moral, " + station_joueur.energie + " d'énergie et " + station_joueur.integrite + " d'intégrité.");
-    location.reload(); 
-  }
-  if (station_joueur.capacitePopulation <= station_joueur.population() ) {
-    alert("Le moral descend, car une part de la population n'a pas accès à du logement.");
-    station_joueur.augmentationMoralAuHasard(1);
-  }
-  if (station_joueur.ressources <= station_joueur.population() ) {
-    alert("Le moral descend, car la station n'a pas assez de ressource pour satisfaire la population.");
-    station_joueur.ressources--;
-    station_joueur.augmentationMoralAuHasard(1);
-  }
-  if (station_joueur.moralTotal() <= 5 ) {
-    alert("Le moral de la station est assez bas.");
-  }
-  if (station_joueur.regime == "Lottocratie" && (tour.numero == 2 || tour.numero == 5 || tour.numero == 10 || tour.numero == 42 || tour.numero == 100)){
-    alert("Il y a un nouveau tirage au sort pour le gouvernement de la station.")
-    var nouveauDirigeantTirageAuSort = station_joueur.randomNobody[Math.floor(Math.random() * station_joueur.randomNobody.length)]
-    station_joueur.changementDirigeantStation(nouveauDirigeantTirageAuSort, station_joueur.dirigeant);
-    alert(station_joueur.dirigeant.nomComplet() + " est maintenant à la tête de la station.");
-  }
-  if (station_joueur.regime == "République" && (tour.numero == 2 || tour.numero == 5 || tour.numero == 10)){
-  var candidatGagnantElection = station_joueur.electionNormale()
-  alert("Il y a une élection. " + candidatGagnantElection.nomComplet() + " a gagné." )
-  station_joueur.changementDirigeantStation(candidatGagnantElection, station_joueur.dirigeant);
-  }
-  if (station_joueur.chaos > station_joueur.ordre){
-    let listeCorruptionChaosMoinsOrdre = []
-    let personnageCorrupteur
-    for (var i = 0; i < station_joueur.randomNobody.length; i++){
-      if (station_joueur.randomNobody[i].richesse >= 100){
-        listeCorruptionChaosMoinsOrdre.push(station_joueur.randomNobody[i])
-      }
-    }
-    console.log(listeCorruptionChaosMoinsOrdre)
-    console.log("Corruption à cause du chaos")
-    if (listeCorruptionChaosMoinsOrdre == undefined || listeCorruptionChaosMoinsOrdre.length == 0){
-    textDeEvenement = "Il n'y a pas de tentative de corruption."
-    } else {
-    personnageCorrupteur = listeCorruptionChaosMoinsOrdre[Math.floor(Math.random() * listeCorruptionChaosMoinsOrdre.length)]
-    station_joueur.personnageCorruption(personnageCorrupteur)
-  }
-  }
-}
 
 // Événements
 

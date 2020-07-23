@@ -10,5 +10,5 @@ Le jeu est inspiré de nombreuses sources : Europa Universalis IV, Victoria 2, S
 
 ## Features
 
-- Un début de semblant de simulation d'interaction économique entre les habitants de la station.
+- Un début de semblant de simulation d'interaction économique entre les habitants de la station. Pour le moment, le prestige et la corruption des individus ont un effet sur la richesse des personnages et de la station en général.
 - Quelques actions possible pour intéragir avec les habitations et la station.
