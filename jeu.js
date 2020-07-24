@@ -386,6 +386,10 @@ class Station {
 
   verifierFinPartie(){
     console.log(this.moralTotal() + " de moral!")
+    if (tour.numero == 100){
+      alert("Fin de la partie. Vous avez gagné!")
+      location.reload();
+    }
     if (this.richesseTotale() <= 0 || this.moralTotal() <= 0 || this._energie <= 0 || this._integrite <=0 ) {
       alert("Vous avez perdu! " + this._dirigeant.titre + " " + this._dirigeant.nomComplet() + " a guidé la station pendant " + tour.numero + 
       " cycles. Il vous restait " + this.moralTotal() + " de moral, " + this._energie + " d'énergie et " + this._integrite + " d'intégrité.");
@@ -400,16 +404,16 @@ class Station {
       this._ressources--;
       this.augmentationMoralAuHasard(1);
     }
-    if (this.moralTotal() <= 5 ) {
+    if (this.moralTotal() <= 1 ) {
       alert("Le moral de la station est assez bas.");
     }
-    if (this._regime == "Lottocratie" && (tour.numero == 2 || tour.numero == 5 || tour.numero == 10 || tour.numero == 42 || tour.numero == 100)){
+    if (this._regime == "Lottocratie" && (tour.numero == 5 || tour.numero == 10 || tour.numero == 15 || tour.numero == 20 ||tour.numero == 42 || tour.numero == 100)){
       alert("Il y a un nouveau tirage au sort pour le gouvernement de la station.")
       var nouveauDirigeantTirageAuSort = this._randomNobody[Math.floor(Math.random() * this._randomNobody.length)]
       this.changementDirigeantStation(nouveauDirigeantTirageAuSort, this._dirigeant);
       alert(this._dirigeant.nomComplet() + " est maintenant à la tête de la station.");
     }
-    if (this._regime == "République" && (tour.numero == 2 || tour.numero == 5 || tour.numero == 10)){
+    if (this._regime == "République" && (tour.numero == 5 || tour.numero == 10 || tour.numero == 15 || tour.numero == 20 ||tour.numero == 42 || tour.numero == 100)){
     var candidatGagnantElection = this.electionNormale()
     alert("Il y a une élection. " + candidatGagnantElection.nomComplet() + " a gagné." )
     this.changementDirigeantStation(candidatGagnantElection, this._dirigeant);
@@ -430,8 +434,11 @@ class Station {
       this.personnageCorruption(personnageCorrupteur)
     }
     }
-  }
 
+
+
+
+  }
 
 
 }
