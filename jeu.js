@@ -434,7 +434,11 @@ class Station {
       this.personnageCorruption(personnageCorrupteur)
     }
     }
-
+      if ((this._dirigeant.leadership - this._dirigeant.corruption) < (this._chaos - this._ordre)){
+        this._chaos++
+      } else {
+        this._energie++
+      }
 
 
 
@@ -480,6 +484,7 @@ class Personnage {
     this._charisme = parseInt((Math.floor(Math.random() * 10) + 5), 10)
     this._capaciteCombat = parseInt((Math.floor(Math.random() * 10) + 5), 10)
     this._connaissance = parseInt((Math.floor(Math.random() * 10) + 5), 10)
+    this._leadership = parseInt((Math.floor(Math.random() * 10) + 5), 10)
     this._ideologie = choiceIdeology ();
     this._corruption = 0;
     this._occupation = choiceOccupation()
@@ -554,6 +559,12 @@ class Personnage {
   }
   set connaissance(connaissance){
     this._connaissance = connaissance
+  }
+  get leadership() {
+    return this._leadership
+  }
+  set leadership(leadership){
+    this._leadership = leadership
   }
   get ideologie() {
     return this._ideologie
@@ -1036,6 +1047,7 @@ document.getElementById("btnInfoRegime").addEventListener('click', function (e){
       "<br>", station_joueur.randomNobody[i].height + "cm.",
       "<br>", "Son genre : ", station_joueur.randomNobody[i].genre,
       "<br>", "Son charisme : ", station_joueur.randomNobody[i].charisme,
+      "<br>", "Son leadership : ", station_joueur.randomNobody[i].leadership,
       "<br>", "Son prestige : ", station_joueur.randomNobody[i].prestige,
       "<br>", "Son moral : ", station_joueur.randomNobody[i].moral,
       "<br>", "Sa capacité de combat : ", station_joueur.randomNobody[i].capaciteCombat,
@@ -1147,6 +1159,12 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
       station_joueur.appauvrissementAuHasard(100);
       station_joueur.diminutionMoralAuHasard(1);
       break;
+    case "confinement":
+      station_joueur.chaos--
+      station_joueur.ordre++
+      station_joueur.liberte--
+      break;
+
       }
 
 /// Choix énergie  
