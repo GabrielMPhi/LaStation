@@ -290,11 +290,6 @@ class Station {
           var utilisationDuPrestige = Math.floor(Math.random() * 100);
           this._randomNobody[i].prestige--
           this._randomNobody[i].richesse = this._randomNobody[i].richesse + utilisationDuPrestige
-          for(let i=0; i<utilisationDuPrestige; i++){
-            let malchanceux = Math.floor(Math.random() * this._randomNobody.length);
-            this._randomNobody[malchanceux].richesse--;
-            this._randomNobody[malchanceux].moral--;    
-          }
           console.log(this._randomNobody[i].nomComplet() + " perd 1 de prestige et gagne : " + utilisationDuPrestige + " crédits")
         }
   }}
@@ -446,8 +441,11 @@ class Station {
 
 
 }
-
-
+// let intervalElection = 5
+// let momentElection 
+// momentElection = tour.nomero % intervalElection
+// if (momentElection == 0)
+ 
 
 class Section{
 
@@ -627,7 +625,7 @@ class Mission {
     this._nobody = nobody;
     this._evenement_retour = new Evenement();
     tour.observateurs.push(this);
-  } 
+  }
 
   changementTour(numero){
    // console.log("la mission observe... tour: "+numero+"; tour_debut: "+this._tour_debut+"; durée: "+this._duree);
