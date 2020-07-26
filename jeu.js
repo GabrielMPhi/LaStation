@@ -380,7 +380,8 @@ class Station {
   }
 
   verifierFinPartie(){
-    console.log(this.moralTotal() + " de moral!")
+      let intervalElection = 5
+      let momentElection = tour.numero % intervalElection
     if (tour.numero == 100){
       alert("Fin de la partie. Vous avez gagné!")
       location.reload();
@@ -402,13 +403,13 @@ class Station {
     if (this.moralTotal() <= 1 ) {
       alert("Le moral de la station est assez bas.");
     }
-    if (this._regime == "Lottocratie" && (tour.numero == 5 || tour.numero == 10 || tour.numero == 15 || tour.numero == 20 ||tour.numero == 42 || tour.numero == 100)){
+    if (this._regime == "Lottocratie" && momentElection == 0){
       alert("Il y a un nouveau tirage au sort pour le gouvernement de la station.")
       var nouveauDirigeantTirageAuSort = this._randomNobody[Math.floor(Math.random() * this._randomNobody.length)]
       this.changementDirigeantStation(nouveauDirigeantTirageAuSort, this._dirigeant);
       alert(this._dirigeant.nomComplet() + " est maintenant à la tête de la station.");
     }
-    if (this._regime == "République" && (tour.numero == 5 || tour.numero == 10 || tour.numero == 15 || tour.numero == 20 ||tour.numero == 42 || tour.numero == 100)){
+    if (this._regime == "République" && momentElection == 0){
     var candidatGagnantElection = this.electionNormale()
     alert("Il y a une élection. " + candidatGagnantElection.nomComplet() + " a gagné." )
     this.changementDirigeantStation(candidatGagnantElection, this._dirigeant);
@@ -434,17 +435,13 @@ class Station {
       } else {
         this._energie++
       }
-
+//      document.getElementById('textOfInfo').innerHTML = textInfo
+ //     ouvrir_modal_information();
 
 
   }
 
-
 }
-// let intervalElection = 5
-// let momentElection 
-// momentElection = tour.nomero % intervalElection
-// if (momentElection == 0)
  
 
 class Section{
@@ -900,6 +897,7 @@ function ouvrir_modal_information(){
   var modal = document.getElementById("modal_info");
   modal.classList.add("is-active")
 }
+
 //fermer le modal
 document.getElementById("modal_background").onclick = function(){
   fermer_modal();
@@ -909,21 +907,12 @@ document.getElementById("btn_modal_close").onclick = function() {
   fermer_modal();
 }
 
-//fonction probablement inutile
-window.onclick = function(event) {
-  if (event.target == document.getElementById("modal_info")) {
-    fermer_modal();
-  }
-} 
-
 function fermer_modal(){
   document.getElementById('textOfInfo').textContent = "";
   removeAllChildNodes(document.getElementById("liste_population")) ;
   var modal = document.getElementById("modal_info");
   modal.classList.remove("is-active");
 }
-
-
 
 
 
