@@ -1,272 +1,440 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/bulmaswatch/darkly/bulmaswatch.min.css"
+    />
+    <style></style>
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://unpkg.com/bulmaswatch/darkly/bulmaswatch.min.css">
-    <style>
-
-    </style>
-</head>
-
-<body>
-
+  <body>
     <!-- **********ECRAN DESCRIPTION DE LA station*************-->
     <section class="section">
-        <div id="ecran_description_station" hidden>
+      <div id="ecran_description_station" hidden>
+        <header>
+          <h1 class="title" id="ecranDescriptionStationTitrePrincipal">
+            Description de la station
+          </h1>
+        </header>
+        <progress
+          class="progress is-info"
+          id="tourProgressBar"
+          value="1"
+          max="100"
+          >45%</progress
+        >
+        <table class="table is-bordered is-hoverable">
+          <tr>
+            <td><span>Décision pour le cycle</span></td>
+            <td>
+              <input
+                class="button is-success"
+                type="button"
+                id="btnActionChoix"
+                value="Envoyer"
+              />
+            </td>
+          </tr>
+        </table>
+        <!-- modal -->
+        <div id="modal_info" class="modal">
+          <div class="modal-background" id="modal_background"></div>
+          <div class="modal-content">
             <header>
-                <h1 class="title" id="ecranDescriptionStationTitrePrincipal">Description de la station</h1>
+              <h1 class="title">Demande d'information sur la station</h1>
             </header>
-            <progress class="progress is-info" id="tourProgressBar" value="1" max="100">45%</progress>
             <table class="table is-bordered is-hoverable">
+              <thead>
                 <tr>
-                    <td><span>Décision pour le cycle</span></td>
-                    <td><input class="button is-success" type="button" id="btnActionChoix" value="Envoyer"></td>
+                  <th>Description</th>
+                  <th>Effets</th>
                 </tr>
+                <td>
+                  <span class="paragraph" id="textOfInfo"
+                    >Le texte de l'info</span
+                  >
+                </td>
+              </thead>
+              <tbody id="liste_population"></tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="2">
+                    <button
+                      id="btn_modal_close"
+                      class="modal-close is-large"
+                      aria-label="close"
+                    ></button>
+                  </td>
+                </tr>
+              </tfoot>
             </table>
-            <!-- modal -->
-            <div id="modal_info" class=modal>
-                <div class="modal-background" id="modal_background"></div>
-                <div class="modal-content">
-                    <header>
-                        <h1 class="title">Demande d'information sur la station</h1>
-                    </header>
-                    <table class="table is-bordered is-hoverable">
-                        <thead>
-                            <tr>
-                                <th>Description</th>
-                                <th>Effets</th>
-                            </tr>
-                            <td><span class="paragraph" id="textOfInfo">Le texte de l'info</span></td>
-                        </thead>
-                        <tbody id="liste_population">
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="2"><button id="btn_modal_close" class="modal-close is-large"
-                                        aria-label="close"></button></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-            <!-- fin modal -->
-            <table class="table is-bordered is-hoverable">
-                <thead>
-                    <h2 class="subtitle">L'intérieur de la station</h2>
-                </thead>
-                <tr>
-                    <td>Nom de la station:</td>
-                    <td><span class="paragraph" id="nomStationPage">Insérer le nom de la station ici</span></td>
-                </tr>
-                <tr>
-                    <td>Régime:</td>
-                    <td><span class="paragraph" id="typeGouvernementStationPage">Insérer le type de gouvernement</span>
-                    </td>
-                    <td><input class="button is-small" type="button" id="btnInfoRegime" value="Information"> </td>
-                    <!-- Pourquoi mettre une valeur "Information" -->
-                </tr>
-                <tr>
-                    <td>Dirigeant:</td>
-                    <td><span class="paragraph" id="dirigeantStationTitre"></span><span> </span><b><span
-                                class="paragraph" id="consulStation">Insérer le nom du gouverneur</span></b></td>
-                    <td><input class="button is-small" type="button" id="btnInfoDirigeant" value="Information"> </td>
-                </tr>
-                <tr>
-                    <td>Tour:</td>
-                    <td><span class="paragraph" id="tourInfo">Numéro du tour</span></td>
-                    <td><input class="button is-small" type="button" id="btnInfoTour" value="Information"> </td>
-                </tr>
-                <tr>
-                    <td>Population de la station & capacité:</td>
-                    <td><span class="paragraph" id="populationStationInfo">Population de la station / </span><span
-                            class="paragraph"> / </span><span class="paragraph"
-                            id="capacitePopulationStationInfo">Capacité de la Station</span></td>
-                    <td><input class="button is-small" type="button" id="btnInfoPopulationListNobody"
-                            value="Information"> </td>
-                </tr>
-                <tr>
-                    <td>Richesse totale des habitants:</td>
-                    <td><span class="paragraph" id="richesseStationInfo">Richesse de la station</span><span>
-                            crédits.</span></td>
-                </tr>
-                <tr>
-                    <td>Moral des habitants:</td>
-                    <td><span class="paragraph" id="moralStationInfo">Énergie de la station</span></td>
-                </tr>
-                <tr>
-                    <td>Ordre & Chaos de la station :</td>
-                    <td><span class="paragraph" id="ordreStationInfo">Ordre de la station / </span><span
-                            class="paragraph"> / </span><span class="paragraph" id="chaosStationInfo">Chaos de la
-                            Station </span></td>
-                </tr>
-                <tr>
-                    <td>Liberté dans la station :</td>
-                    <td><span class="paragraph" id="liberteStationInfo">Liberté dans la station / </span></td>
-                </tr>
-                <tr>
-                    <td>Sécurité dans la station :</td>
-                    <td><span class="paragraph" id="securiteStationInfo">Sécurité dans la station / </span></td>
-                </tr>
-                <tr>
-                    <td><span class="paragraph">Influencer </span><span class="paragraph" id="consulStation2">Insérer le
-                            nom du dirigeant</span></td>
-                    <td>
-                        <form action="#" id="formchoix">
-                            <div class="select">
-                                <select name="actionChoixInfluence" id="actionChoixInfluence">
-                                    <option value="organiserDebatPhilo">Organiser un débat philosophique!</option>
-                                    <option value="favoriserPeuple">Favoriser le peuple!</option>
-                                    <option value="exileHabitant">Engendrer du conflit!</option>
-                                    <option value="festivalPhiloPolitique">Festival de la philosophie!</option>
-                                    <option value="fete">Faire la fête!</option>
-                                    <option value="commerce">Faire du commerce!</option>
-                                </select>
-                            </div>
-                        </form>
-                    </td>
-                </tr>
-
-            </table>
-            <table class="table is-bordered is-hoverable">
-                <h2 class="subtitle">L'intelligence Artificielle gouvernante</h2>
-
-                <tr>
-                    <td>Énergie de la station:</td>
-                    <td><span class="paragraph" id="energieStationInfo">Énergie de la station</span></td>
-                </tr>
-                <tr>
-                    <td>Connaissance dans la base de donnée de la station:</td>
-                    <td><span class="paragraph" id="connaissanceDataBaseInfo">Connaissance dans la base de donnée de la
-                            station</span></td>
-                </tr>
-                <tr>
-                    <td>Ressources de la station:</td>
-                    <td><span class="paragraph" id="ressourcesStationInfo">Ressources de la station</span></td>
-                </tr>
-                <tr>
-                    <td>Intégrité de la station:</td>
-                    <td><span class="paragraph" id="integriteStationInfo">Intégrité de la station</span></td>
-                </tr>
-                <tr>
-                    <td>Cybersécurité de la station:</td>
-                    <td><span class="paragraph" id="cybersecuriteStationInfo">Cybersécurité de la station</span></td>
-                </tr>
-                <tr>
-                    <td>Concentrer l'énergie pour :</td>
-                    <td>
-                        <form action="#" id="formchoix">
-                            <div class="select">
-                                <select name="actionChoix" id="actionChoix">
-                                    <option value="calculs">Faire des calculs!</option>
-                                    <option value="ameliorerIntegrite">Améliorer l'intégrité!</option>
-                                    <option value="pause">Se mettre en pause!</option>
-                                </select>
-                            </div>
-                        </form>
-                    </td>
-                </tr>
-            </table>
-            <a class="button is-small">
-                <span class="icon is-small">
-                    <i class="fab fa-github"></i>
-                </span>
-                <span>Un jeu créé par Gabriel Monette avec l'aide de BerDuc</span>
-            </a>
+          </div>
         </div>
-    </section>
+        <!-- fin modal -->
+        <table class="table is-bordered is-hoverable">
+          <thead>
+            <h2 class="subtitle">L'intérieur de la station</h2>
+          </thead>
+          <tr>
+            <td>Nom de la station:</td>
+            <td>
+              <span class="paragraph" id="nomStationPage"
+                >Insérer le nom de la station ici</span
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>Régime:</td>
+            <td>
+              <span class="paragraph" id="typeGouvernementStationPage"
+                >Insérer le type de gouvernement</span
+              >
+            </td>
+            <td>
+              <input
+                class="button is-small"
+                type="button"
+                id="btnInfoRegime"
+                value="Information"
+              />
+            </td>
+            <!-- Pourquoi mettre une valeur "Information" -->
+          </tr>
+          <tr>
+            <td>Dirigeant:</td>
+            <td>
+              <span class="paragraph" id="dirigeantStationTitre"></span
+              ><span> </span
+              ><b
+                ><span class="paragraph" id="consulStation"
+                  >Insérer le nom du gouverneur</span
+                ></b
+              >
+            </td>
+            <td>
+              <input
+                class="button is-small"
+                type="button"
+                id="btnInfoDirigeant"
+                value="Information"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>Tour:</td>
+            <td><span class="paragraph" id="tourInfo">Numéro du tour</span></td>
+            <td>
+              <input
+                class="button is-small"
+                type="button"
+                id="btnInfoTour"
+                value="Information"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>Population de la station & capacité:</td>
+            <td>
+              <span class="paragraph" id="populationStationInfo"
+                >Population de la station / </span
+              ><span class="paragraph"> / </span
+              ><span class="paragraph" id="capacitePopulationStationInfo"
+                >Capacité de la Station</span
+              >
+            </td>
+            <td>
+              <input
+                class="button is-small"
+                type="button"
+                id="btnInfoPopulationListNobody"
+                value="Information"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>Richesse totale des habitants:</td>
+            <td>
+              <span class="paragraph" id="richesseStationInfo"
+                >Richesse de la station</span
+              ><span> crédits.</span>
+            </td>
+          </tr>
+          <tr>
+            <td>Moral des habitants:</td>
+            <td>
+              <span class="paragraph" id="moralStationInfo"
+                >Énergie de la station</span
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>Ordre & Chaos de la station :</td>
+            <td>
+              <span class="paragraph" id="ordreStationInfo"
+                >Ordre de la station / </span
+              ><span class="paragraph"> / </span
+              ><span class="paragraph" id="chaosStationInfo"
+                >Chaos de la Station
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td>Liberté dans la station :</td>
+            <td>
+              <span class="paragraph" id="liberteStationInfo"
+                >Liberté dans la station /
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td>Sécurité dans la station :</td>
+            <td>
+              <span class="paragraph" id="securiteStationInfo"
+                >Sécurité dans la station /
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="paragraph">Influencer </span
+              ><span class="paragraph" id="consulStation2"
+                >Insérer le nom du dirigeant</span
+              >
+            </td>
+            <td>
+              <form action="#" id="formchoix">
+                <div class="select">
+                  <select name="actionChoixInfluence" id="actionChoixInfluence">
+                    <option value="organiserDebatPhilo"
+                      >Organiser un débat philosophique!</option
+                    >
+                    <option value="favoriserPeuple"
+                      >Favoriser le peuple!</option
+                    >
+                    <option value="exileHabitant">Engendrer du conflit!</option>
+                    <option value="festivalPhiloPolitique"
+                      >Festival de la philosophie!</option
+                    >
+                    <option value="fete">Faire la fête!</option>
+                    <option value="commerce">Faire du commerce!</option>
+                  </select>
+                </div>
+              </form>
+            </td>
+          </tr>
+        </table>
+        <table class="table is-bordered is-hoverable">
+          <h2 class="subtitle">L'intelligence Artificielle gouvernante</h2>
 
+          <tr>
+            <td>Énergie de la station:</td>
+            <td>
+              <span class="paragraph" id="energieStationInfo"
+                >Énergie de la station</span
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>Connaissance dans la base de donnée de la station:</td>
+            <td>
+              <span class="paragraph" id="connaissanceDataBaseInfo"
+                >Connaissance dans la base de donnée de la station</span
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>Ressources de la station:</td>
+            <td>
+              <span class="paragraph" id="ressourcesStationInfo"
+                >Ressources de la station</span
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>Intégrité de la station:</td>
+            <td>
+              <span class="paragraph" id="integriteStationInfo"
+                >Intégrité de la station</span
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>Cybersécurité de la station:</td>
+            <td>
+              <span class="paragraph" id="cybersecuriteStationInfo"
+                >Cybersécurité de la station</span
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>Concentrer l'énergie pour :</td>
+            <td>
+              <form action="#" id="formchoix">
+                <div class="select">
+                  <select name="actionChoix" id="actionChoix">
+                    <option value="calculs">Faire des calculs!</option>
+                    <option value="ameliorerIntegrite"
+                      >Améliorer l'intégrité!</option
+                    >
+                    <option value="pause">Se mettre en pause!</option>
+                  </select>
+                </div>
+              </form>
+            </td>
+          </tr>
+        </table>
+        <a class="button is-small">
+          <span class="icon is-small">
+            <i class="fab fa-github"></i>
+          </span>
+          <span>Un jeu créé par Gabriel Monette avec l'aide de BerDuc</span>
+        </a>
+      </div>
+    </section>
 
     <!-- **********ECRAN CRÉATION DE LA STATION*************-->
     <section class="section">
-        <div id="ecran_creation_station">
-            <h1 class="title">Choisissez les valeurs de votre station</h1>
-            <span class="box">Station est un jeu où vous incarnez l'intelligence artificielle qui guide une station
-                spatiale au fin fond de l'Univers.
-                Vous avez contrôle sur les systèmes de la station, son énergie autant que les réseaux de communications
-                entre les habitations.
-                Vous pouvez autoriser les départs et les arrivées. Le ou la dirigeante de la station est aussi très
-                connecté à vos systèmes.
-                Conséquemment, vous pouvez aisément l'influencer à prendre des décision.
-                Pour commencer, il faut choisir le nom et le type d'organisation structurant la communauté spatiale.
-            </span>
-            <progress class="progress is-small is-info" max="100">60%</progress>
+      <div id="ecran_creation_station">
+        <h1 class="title">Choisissez les valeurs de votre station</h1>
+        <span class="box"
+          >Station est un jeu où vous incarnez l'intelligence artificielle qui
+          guide une station spatiale au fin fond de l'Univers. Vous avez
+          contrôle sur les systèmes de la station, son énergie autant que les
+          réseaux de communications entre les habitations. Vous pouvez autoriser
+          les départs et les arrivées. Le ou la dirigeante de la station est
+          aussi très connecté à vos systèmes. Conséquemment, vous pouvez
+          aisément l'influencer à prendre des décision. Pour commencer, il faut
+          choisir le nom et le type d'organisation structurant la communauté
+          spatiale.
+        </span>
+        <progress class="progress is-small is-info" max="100">60%</progress>
 
-            <form id="form_creation_station">
-                <div class="columns">
-                    <div class="column is-3">
-                        Entrez le nom de votre station: <input class="input" type="text" placeholder="Nom de la station"
-                            id="txt_nom_station"><br><br>
-                    </div>
-                </div>
-                Choisissez le type de gouvernement: <br>
-                <div class="select">
-                    <select id="select_type_gouv"></select>
-                </div>
-                <br><br>
-                <input class="button is-success" type="button" id="btn_creation_station" value="Créer la station">
-            </form>
-            <a class="button is-small">
-                <span class="icon is-small">
-                    <i class="fab fa-github"></i>
-                </span>
-                <span>Un jeu créé par Gabriel Monette avec l'aide précieuse de BerDuc</span>
-            </a>
-        </div>
+        <form id="form_creation_station">
+          <div class="columns">
+            <div class="column is-3">
+              Entrez le nom de votre station:
+              <input
+                class="input"
+                type="text"
+                placeholder="Nom de la station"
+                id="txt_nom_station"
+              /><br /><br />
+            </div>
+          </div>
+          Choisissez le type de gouvernement: <br />
+          <div class="select">
+            <select id="select_type_gouv"></select>
+          </div>
+          <br /><br />
+          <input
+            class="button is-success"
+            type="button"
+            id="btn_creation_station"
+            value="Créer la station"
+          />
+        </form>
+        <a class="button is-small">
+          <span class="icon is-small">
+            <i class="fab fa-github"></i>
+          </span>
+          <span
+            >Un jeu créé par Gabriel Monette avec l'aide précieuse de
+            BerDuc</span
+          >
+        </a>
+      </div>
     </section>
 
     <!-- **********ECRAN RÉSULTATS DES CHOIX & ÉVÉNEMENTS*************-->
     <section class="section">
-        <div id="ecranChoixEtEvenementsStation" hidden>
-            <header>
-                <h1 class="title">Description des événements</h1>
-                <h2 class="subtitle">Résultats des choix</h2>
-            </header>
-            <table class="table is-bordered is-hoverable">
-                <thead>
-                    <tr>
-                        <th>Description</th>
-                        <th>Effets</th>
-                    </tr>
-                </thead>
-                <tr>
-                    <td><span class="paragraph" id="textOfChoiceInfluence">Le texte du choix d'influence</span></td>
-                    <td><span class="paragraph" id="textEffectsOfChoiceInfluence">Effets des choix d'influence</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="paragraph" id="textOfChoice">Le texte du choix</span></td>
-                    <td><span class="paragraph" id="textEffectsOfChoice1">Effets des choix</span></td>
-                </tr>
-            </table>
-            <header>
-                <h2 class="subtitle">Événements et effets</h2>
-
-            </header>
-            <table class="table is-bordered is-hoverable">
-                <thead>
-                    <tr>
-                        <th>Description</th>
-                        <th>Effets</th>
-                    </tr>
-                </thead>
-                <tbody id="body_evenements">
-                    <tr>
-                        <td><span class="paragraph" id="textofevent">Le texte de l'événement</span> <span
-                                class="paragraph" id="textofevent2" hidden>Le texte de l'événement</span></td>
-                        <td><span class="paragraph" id="textEffetsEvenement">Les événements du cycle</span></td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="2"><button id="btnExitEvent">Revenir à la station</button></td>
-                    </tr>
-                </tfoot>
-
-            </table>
-        </div>
+      <div id="ecranChoixEtEvenementsStation" hidden>
+        <header>
+          <h1 class="title">Description des événements</h1>
+          <h2 class="subtitle">Résultats des choix</h2>
+        </header>
+        <table class="table is-bordered is-hoverable">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Effets</th>
+            </tr>
+          </thead>
+          <tr>
+            <td>
+              <span class="paragraph" id="textOfChoiceInfluence"
+                >Le texte du choix d'influence</span
+              >
+            </td>
+            <td>
+              <span class="paragraph" id="textEffectsOfChoiceInfluence"
+                >Effets des choix d'influence</span
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="paragraph" id="textOfChoice">Le texte du choix</span>
+            </td>
+            <td>
+              <span class="paragraph" id="textEffectsOfChoice1"
+                >Effets des choix</span
+              >
+            </td>
+          </tr>
+        </table>
+        <header>
+          <h2 class="subtitle">Événements et effets</h2>
+        </header>
+        <table class="table is-bordered is-hoverable">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Effets</th>
+            </tr>
+          </thead>
+          <tbody id="body_evenements">
+            <tr>
+              <td>
+                <span class="paragraph" id="textofevent"
+                  >Le texte de l'événement</span
+                >
+                <span class="paragraph" id="textofevent2" hidden
+                  >Le texte de l'événement</span
+                >
+              </td>
+              <td>
+                <span class="paragraph" id="textEffetsEvenement"
+                  >Les événements du cycle</span
+                >
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2">
+                <button id="btnExitEvent">Revenir à la station</button>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
     </section>
-    <script type="text/javascript" src="jeu.js"> </script>
-</body>
-
+    <script type="text/javascript" src="jeu.js"></script>
+    <script type="text/javascript" src="ressources.js"></script>
+    <script type="text/javascript" src="model/station.js"></script>
+    <script type="text/javascript" src="model/personnage.js"></script>
+    <script type="text/javascript" src="ecran/descriptionStation.js"></script>
+    <script type="text/javascript" src="model/tour.js"></script>
+    <script type="text/javascript" src="ecran/ecranEvenements.js"></script>
+    <script type="text/javascript" src="ecran/descriptionStation.js"></script>
+    <script type="text/javascript" src="ecran/creationStation.js"></script>
+    <script type="text/javascript" src="ecran/gestionEcran.js"></script>
+    <script type="text/javascript" src="partie/creation.js"></script>
+    <script type="text/javascript" src="partie/finPartie.js"></script>
+    <script type="text/javascript" src="brouillons.js"></script>
+    <script type="text/javascript" src="utilitaires.js"></script>
+    <script type="text/javascript" src="model/mission.js"></script>
+  </body>
 </html>
