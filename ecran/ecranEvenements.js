@@ -27,10 +27,10 @@ function afficherChoixEtEvenements() {
   
   // Événements
   
-  const btnExitEvent = document.querySelector('#btnExitEvent');
-  btnExitEvent.addEventListener('click', () => {  
-    removeChildNodesWithClassName(document.getElementById('body_evenements'), 'ev_provisoire');
-    document.getElementById("textofevent2").setAttribute('hidden', 'hidden')
-    charger_description_station("ecranChoixEtEvenementsStation");
-  });
+//  const btnExitEvent = document.querySelector('#btnExitModalEvent');
+//  btnExitEvent.addEventListener('click', () => {  
+ //   removeChildNodesWithClassName(document.getElementById('body_evenements'), 'ev_provisoire');
+  //  document.getElementById("textofevent2").setAttribute('hidden', 'hidden')
+ //   charger_description_station("ecranChoixEtEvenementsStation");
+  //});
   

@@ -347,7 +347,68 @@
       </div>
     </section>
 
-    <!-- **********ECRAN RÉSULTATS DES CHOIX & ÉVÉNEMENTS*************-->
+    <!-- modal choix evenements-->
+    <div id="modal_tour_evenements" class="modal">
+      <div class="modal-background" id="modal_background_tour_evenement"></div>
+      <div class="modal-content">
+        <header>
+          <h1 class="title">Description des événements & choix</h1>
+          <h2 class="subtitle">Résultats des choix</h2>
+        </header>
+        <table class="table is-bordered is-hoverable">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Effets</th>
+            </tr>
+          </thead>
+          <tr>
+            <td>
+              <span class="paragraph" id="textOfChoiceInfluence"
+                >Le texte du choix d'influence</span
+              >
+            </td>
+            <td>
+              <span class="paragraph" id="textEffectsOfChoiceInfluence"
+                >Effets des choix d'influence</span
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="paragraph" id="textOfChoice">Le texte du choix</span>
+            </td>
+            <td>
+              <span class="paragraph" id="textEffectsOfChoice1"
+                >Effets des choix</span
+              >
+            </td>
+          </tr>
+        </table>
+        <header>
+          <h2 class="subtitle">Événements et effets</h2>
+        </header>
+        <table class="table is-bordered is-hoverable">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Effets</th>
+            </tr>
+          </thead>
+          <tbody id="body_evenements"></tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2">
+                <button id="btnExitModalEvent">Revenir à la station</button>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+    <!-- fin modal -->
+
+    <!-- **********ECRAN RÉSULTATS DES CHOIX & ÉVÉNEMENTS*************
     <section class="section">
       <div id="ecranChoixEtEvenementsStation" hidden>
         <header>
@@ -420,15 +481,15 @@
           </tfoot>
         </table>
       </div>
-    </section>
+    </section>-->
     <script type="text/javascript" src="jeu.js"></script>
     <script type="text/javascript" src="ressources.js"></script>
     <script type="text/javascript" src="model/station.js"></script>
     <script type="text/javascript" src="model/personnage.js"></script>
+    <script type="text/javascript" src="model/evenement.js"></script>
     <script type="text/javascript" src="ecran/descriptionStation.js"></script>
     <script type="text/javascript" src="model/tour.js"></script>
     <script type="text/javascript" src="ecran/ecranEvenements.js"></script>
-    <script type="text/javascript" src="ecran/descriptionStation.js"></script>
     <script type="text/javascript" src="ecran/creationStation.js"></script>
     <script type="text/javascript" src="ecran/gestionEcran.js"></script>
     <script type="text/javascript" src="partie/creation.js"></script>

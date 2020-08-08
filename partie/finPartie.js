@@ -1,4 +1,5 @@
 function finDuTour(){
+    console.log("finDuTour"); 
     afficherChoixEtEvenements()
     afficherDescription();
     evenementFinTour();
@@ -15,46 +16,18 @@ function finDuTour(){
 
   
 function evenementFinTour(){
-    var evenementsList = ["visiteur", "rien", "debatphilo", "commerceFerengi", "sageVulcain", "petiteCriseFinanciereRessources", "tentativeCorruption"]
+    console.log("evenementFinTour"); 
+    var evenementsList = ["visiteur"]
+
+    //var evenementsList = ["visiteur", "rien", "debatphilo", "commerceFerengi", "sageVulcain", "petiteCriseFinanciereRessources", "tentativeCorruption"]
     var evenementQuiArrive = evenementsList[Math.floor(Math.random() * evenementsList.length)]
     var textEffetsEvenement = ""
     var textDeEvenement = ""
     var textDeEvenement2 = ""
     switch(evenementQuiArrive){
       case "visiteur":
-        console.log("VISITE DUN VISITEUR");
-        var visiteurNobody = new Personnage ();
-        var visiteurExisteDeja = false
-        visiteurExisteDeja = verificationExistencePersonnage(visiteurNobody);
-        if (visiteurExisteDeja == true){
-          console.log("visiteur existe deja")
-          visiteurNobody = new Personnage ();
-        }
-        var textDeEvenement = "La station a la visite de " + visiteurNobody.nomComplet() + "."
-        if (visiteurNobody.genre == "femme" && visiteurNobody.nom == "Côté" && visiteurNobody.prenom == "Catherine"){
-          visiteurNobody.height = visiteurNobody.height + 15
-          textDeEvenement2 = visiteurNobody.nomComplet() + " va joindre " + station_joueur.nom + "."
-          textEffetsEvenement = visiteurNobody.nomComplet() + " devient menbre de la station!"
-          station_joueur.randomNobody.push(visiteurNobody) 
-          // Est-ce qu'il faudrait créer une autre variable pour s'assurer que si un autre visiteurNobody visite, il s'ajoute et n'écrase pas l'ancien?
-          break;
-  
-        } else if (visiteurNobody.nomComplet() == "Bernard Ducharme"){
-          textDeEvenement2 = visiteurNobody.nomComplet() + " va joindre " + station_joueur.nom + "."
-          textEffetsEvenement = visiteurNobody.nomComplet() + " devient menbre de la station!"
-          station_joueur.connaissance = station_joueur.connaissance + 3
-          station_joueur.randomNobody.push(visiteurNobody) 
-          // Est-ce qu'il faudrait créer une autre variable pour s'assurer que si un autre visiteurNobody visite, il s'ajoute et n'écrase pas l'ancien?
-        } else if (visiteurNobody.nomComplet() == "Gabriel Monette"){
-          textDeEvenement2 = visiteurNobody.nomComplet() + " va joindre " + station_joueur.nom + "."
-          textEffetsEvenement = visiteurNobody.nomComplet() + " devient menbre de la station!"
-          station_joueur.connaissance = station_joueur.connaissance + 3
-          station_joueur.randomNobody.push(visiteurNobody) 
-          // Est-ce qu'il faudrait créer une autre variable pour s'assurer que si un autre visiteurNobody visite, il s'ajoute et n'écrase pas l'ancien?
-        } else {
-          textEffetsEvenement = "Rien de spécial. " + visiteurNobody.nomComplet() + " retourne sur son chemin."
-        }
-      break;
+        evenement_visiteur();
+        break;
       case "commerceFerengi":
         textDeEvenement = "Commerce avec un marchand Ferengi"
         var listOfRulesOfAcquisiton = ["Rules of Acquisition #57 : Good customers are as rare as latinum. Treasure them. " , 
@@ -112,10 +85,13 @@ function evenementFinTour(){
         break;
     }
   
-    chargerVersEvenement("ecran_description_station");
+   // chargerVersEvenement("ecran_description_station");
+   ouvrir_modal_choix_evenements();
+
     if (textDeEvenement2 != ""){
       document.getElementById("textofevent2").removeAttribute('hidden');
     }
+
     evenements_a_annoncer.forEach( evenement => {
       let row_ev = document.createElement('tr');
       row_ev.className = "ev_provisoire";
@@ -128,8 +104,42 @@ function evenementFinTour(){
       document.getElementById('body_evenements').appendChild(row_ev);
   });
     evenements_a_annoncer = [];
-    
-    document.getElementById('textEffetsEvenement').textContent = textEffetsEvenement
-    document.getElementById('textofevent').textContent = textDeEvenement
-    document.getElementById('textofevent2').textContent = textDeEvenement2
+
+  }
+
+  function evenement_visiteur(){    
+      console.log("VISITE DUN VISITEUR");
+      var visiteurNobody = new Personnage ();
+      var visiteurExisteDeja = false
+      var evenement_visiteur = new Evenement();
+      visiteurExisteDeja = verificationExistencePersonnage(visiteurNobody);
+      if (visiteurExisteDeja == true){
+        console.log("visiteur existe deja")
+        visiteurNobody = new Personnage ();
+      }
+      evenement_visiteur._textOfEvent = "La station a la visite de " + visiteurNobody.nomComplet() + "."
+      if (visiteurNobody.genre == "femme" && visiteurNobody.nom == "Côté" && visiteurNobody.prenom == "Catherine"){
+        visiteurNobody.height = visiteurNobody.height + 15
+        evenement_visiteur.textOfEvent2 = visiteurNobody.nomComplet() + " va joindre " + station_joueur.nom + "."
+        evenement_visiteur._textEffetsEvenement = visiteurNobody.nomComplet() + " devient menbre de la station!"
+        station_joueur.randomNobody.push(visiteurNobody) 
+        // Est-ce qu'il faudrait créer une autre variable pour s'assurer que si un autre visiteurNobody visite, il s'ajoute et n'écrase pas l'ancien?
+
+      } else if (visiteurNobody.nomComplet() == "Bernard Ducharme"){
+        evenement_visiteur.textOfEvent2 = visiteurNobody.nomComplet() + " va joindre " + station_joueur.nom + "."
+        textEffetsEvenement = visiteurNobody.nomComplet() + " devient menbre de la station!"
+        station_joueur.connaissance = station_joueur.connaissance + 3
+        station_joueur.randomNobody.push(visiteurNobody) 
+        // Est-ce qu'il faudrait créer une autre variable pour s'assurer que si un autre visiteurNobody visite, il s'ajoute et n'écrase pas l'ancien?
+      } else if (visiteurNobody.nomComplet() == "Gabriel Monette"){
+        evenement_visiteur.textOfEvent2 = visiteurNobody.nomComplet() + " va joindre " + station_joueur.nom + "."
+        evenement_visiteur._textEffetsEvenement = visiteurNobody.nomComplet() + " devient menbre de la station!"
+        station_joueur.connaissance = station_joueur.connaissance + 3
+        station_joueur.randomNobody.push(visiteurNobody) 
+        // Est-ce qu'il faudrait créer une autre variable pour s'assurer que si un autre visiteurNobody visite, il s'ajoute et n'écrase pas l'ancien?
+      } else {
+        evenement_visiteur._textEffetsEvenement = "Rien de spécial. " + visiteurNobody.nomComplet() + " retourne sur son chemin."
+      }
+
+      evenements_a_annoncer.push(evenement_visiteur); 
   }

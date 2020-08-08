@@ -24,7 +24,12 @@ function ouvrir_modal_information(){
   modal.classList.add("is-active")
 }
 
-//fermer le modal
+function ouvrir_modal_choix_evenements(){
+  var modal = document.getElementById("modal_tour_evenements");
+  modal.classList.add("is-active")
+}
+
+//fermer le modal info
 document.getElementById("modal_background").onclick = function(){
   fermer_modal();
 }
@@ -40,3 +45,21 @@ function fermer_modal(){
   modal.classList.remove("is-active");
 }
 
+//fermer le modal choix evenement
+document.getElementById("modal_background_tour_evenement").onclick = function(){
+  fermer_modal_choix_evenements();
+}
+
+document.getElementById("btnExitModalEvent").onclick = function() {
+  fermer_modal_choix_evenements();
+}
+
+function fermer_modal_choix_evenements(){
+  document.getElementById('textOfChoiceInfluence').textContent = "";
+  document.getElementById('textEffectsOfChoiceInfluence').textContent = "";
+  document.getElementById('textOfChoice').textContent = "";
+  document.getElementById('textEffectsOfChoice1').textContent = "";
+  removeAllChildNodes(document.getElementById("body_evenements")) ;
+  var modal = document.getElementById("modal_tour_evenements");
+  modal.classList.remove("is-active");
+}

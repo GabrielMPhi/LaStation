@@ -110,6 +110,7 @@ function afficherDescription() {
 
   
 document.querySelector('#btnActionChoix').addEventListener('click', function (e){
+    console.log("click btnActionChoix"); 
     var choix = document.querySelector('#actionChoix').selectedOptions[0].value
     var choixInfluence = document.querySelector('#actionChoixInfluence').selectedOptions[0].value
     console.log(choix)
@@ -189,9 +190,9 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
       textOfChoice = "Une pause bien méritée pour recharger les batteries et faire les mises-à-jour.";
       textEffectsOfChoice1 = "La station emmagazine de l'énergie."
       station_joueur.energie = station_joueur.energie + 50;
+      console.log("UNE PETITE PAUSE, donc 2 tour passent")
       finDuTour();
-      finDuTour();
-      finDuTour();
+      
       break;
       } 
   
