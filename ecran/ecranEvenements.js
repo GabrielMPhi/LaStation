@@ -9,7 +9,7 @@ function afficherChoixEtEvenements() {
     document.getElementById('textEffectsOfChoice1').textContent = textEffectsOfChoice1;
   }
   
-    
+  
   
     function debatPhilo(participantA, participantB){
       if (participantA.ideologie == "Républicanisme" && participantB.ideologie != "Républicanisme") {
@@ -24,13 +24,4 @@ function afficherChoixEtEvenements() {
       }
       return gagnantDebatPhilo
     }
-  
-  // Événements
-  
-//  const btnExitEvent = document.querySelector('#btnExitModalEvent');
-//  btnExitEvent.addEventListener('click', () => {  
- //   removeChildNodesWithClassName(document.getElementById('body_evenements'), 'ev_provisoire');
-  //  document.getElementById("textofevent2").setAttribute('hidden', 'hidden')
- //   charger_description_station("ecranChoixEtEvenementsStation");
-  //});
   

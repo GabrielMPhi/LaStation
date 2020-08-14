@@ -315,18 +315,31 @@ class Station {
         let intervalElection = 5
         let momentElection = tour.numero % intervalElection
       if (tour.numero == 100){
-        alert("Fin de la partie. Vous avez gagné!")
+        let annonceFinDePartie = new Evenement ();
+        annonceFinDePartie._textOfEvent = "Fin de la partie. Vous avez gagné!"
+        annonceFinDePartie._textEffetsEvenement = "Redémarage de la station!"
+        evenements_a_annoncer.push(annonceFinDePartie);
       }
       if (this.richesseTotale() <= 0 || this.moralTotal() <= 0 || this._energie <= 0 || this._integrite <=0 ) {
         alert("Vous avez perdu! " + this._dirigeant.titre + " " + this._dirigeant.nomComplet() + " a guidé la station pendant " + tour.numero + 
         " cycles. Il vous restait " + this.moralTotal() + " de moral, " + this._energie + " d'énergie et " + this._integrite + " d'intégrité.");
       }
       if (this._capacitePopulation <= this.population() ) {
-        alert("Le moral descend, car une part de la population n'a pas accès à du logement.");
+        console.log("RESSOURCE PAS ASSEZ DE PLASSSS")
+        let annonceCapacitePopulationAtteint = new Evenement ();
+        annonceCapacitePopulationAtteint._textOfEvent = "Le moral descend, car une part de la population n'a pas accès à du logement.";
+        annonceCapacitePopulationAtteint._textEffetsEvenement = "Diminution de morale à une personne au hasard."
         this.augmentationMoralAuHasard(1);
+        evenements_a_annoncer.push(annonceCapacitePopulationAtteint);
       }
       if (this._ressources <= this.population() ) {
-        alert("Le moral descend, car la station n'a pas assez de ressource pour satisfaire la population.");
+        console.log("RESSOURCE ALERTTTTTT!!!!")
+        let annonceRessourceInsuffisante = new Evenement();
+        annonceRessourceInsuffisante._textOfEvent = "Le moral descend, car la station n'a pas assez de ressource pour satisfaire la population.";
+        annonceRessourceInsuffisante._textEffetsEvenement = "Diminution des ressources et diminution du moral."
+
+        evenements_a_annoncer.push(annonceRessourceInsuffisante);
+        console.log(evenements_a_annoncer)
         this._ressources--;
         this.augmentationMoralAuHasard(1);
       }
@@ -365,8 +378,6 @@ class Station {
         } else {
           this._energie++
         }
-  //      document.getElementById('textOfInfo').innerHTML = textInfo
-   //     ouvrir_modal_information();
   
   
     }
