@@ -325,7 +325,6 @@ class Station {
         " cycles. Il vous restait " + this.moralTotal() + " de moral, " + this._energie + " d'énergie et " + this._integrite + " d'intégrité.");
       }
       if (this._capacitePopulation <= this.population() ) {
-        console.log("RESSOURCE PAS ASSEZ DE PLASSSS")
         let annonceCapacitePopulationAtteint = new Evenement ();
         annonceCapacitePopulationAtteint._textOfEvent = "Le moral descend, car une part de la population n'a pas accès à du logement.";
         annonceCapacitePopulationAtteint._textEffetsEvenement = "Diminution de morale à une personne au hasard."
@@ -333,28 +332,35 @@ class Station {
         evenements_a_annoncer.push(annonceCapacitePopulationAtteint);
       }
       if (this._ressources <= this.population() ) {
-        console.log("RESSOURCE ALERTTTTTT!!!!")
         let annonceRessourceInsuffisante = new Evenement();
         annonceRessourceInsuffisante._textOfEvent = "Le moral descend, car la station n'a pas assez de ressource pour satisfaire la population.";
         annonceRessourceInsuffisante._textEffetsEvenement = "Diminution des ressources et diminution du moral."
 
         evenements_a_annoncer.push(annonceRessourceInsuffisante);
-        console.log(evenements_a_annoncer)
         this._ressources--;
         this.augmentationMoralAuHasard(1);
       }
       if (this.moralTotal() <= 1 ) {
-        alert("Le moral de la station est assez bas.");
+        let annonceMoralBas = new Evenement();
+        annonceMoralBas._textOfEvent = "Le moral de la station est assez bas.";
+        annonceMoralBas._textEffetsEvenement = "Le moral de la station est assez bas."
+        evenements_a_annoncer.push(annonceMoralBas);
       }
       if (this._regime == "Lottocratie" && momentElection == 0){
-        alert("Il y a un nouveau tirage au sort pour le gouvernement de la station.")
+        let annonceDirigeantTirageAuSort = new Evenement();
         var nouveauDirigeantTirageAuSort = this._randomNobody[Math.floor(Math.random() * this._randomNobody.length)]
         this.changementDirigeantStation(nouveauDirigeantTirageAuSort, this._dirigeant);
-        alert(this._dirigeant.nomComplet() + " est maintenant à la tête de la station.");
+        annonceDirigeantTirageAuSort._textOfEvent = "Il y a un nouveau tirage au sort pour le gouvernement de la station.";
+        annonceDirigeantTirageAuSort._textEffetsEvenement = this._dirigeant.nomComplet() + " est maintenant à la tête de la station."
+        evenements_a_annoncer.push(annonceDirigeantTirageAuSort);
       }
       if (this._regime == "République" && momentElection == 0){
       var candidatGagnantElection = this.electionNormale()
-      alert("Il y a une élection. " + candidatGagnantElection.nomComplet() + " a gagné." )
+
+        let annonceRepubliqueElection = new Evenement();
+        annonceRepubliqueElection._textOfEvent = "Il y a une élection. "
+        annonceRepubliqueElection._textEffetsEvenement = candidatGagnantElection.nomComplet() + " a gagné."
+        evenements_a_annoncer.push(annonceRepubliqueElection);
       this.changementDirigeantStation(candidatGagnantElection, this._dirigeant);
       }
       if (this._chaos > this._ordre){
