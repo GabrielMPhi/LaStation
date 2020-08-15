@@ -2,7 +2,7 @@ class Station {
 
     constructor(nom, regime){
       this._nom = nom;
-      this._regime = regime;
+      this._regime = this.creerGouvernement(regime);
       this._dirigeant = new Personnage();
       this._capacitePopulation = parseInt((Math.floor(Math.random() * 10) + 20), 10)
       this._ordre = 5;
@@ -124,6 +124,49 @@ class Station {
       this._nobodiesEnMission = nobodiesEnMission
     }
   
+    creerGouvernement(regime_choisi){
+      switch(regime_choisi){
+        
+      case "Lottocratie":
+        return new Lottocratie();
+        break
+      case "République":
+        return new Republique();
+      break;
+      case  "Autocratie":
+        return new Autocratie();
+      break;
+      case "Corporation": 
+      return new Corporation();
+      break;
+      case "Monarchie" :
+        return new Monarchie();
+      break;
+      case "Théocratie":  
+        return new Theocratie();
+      break;
+      case "Ploutocratie": 
+      return new Ploutocratie();
+      break;
+      case "Gabrielocratie":
+        return new Gabrielocratie();
+      break;
+      case "Épistocratie": 
+        return new Epistocratie();
+      break; 
+      case "Kakistocratie" :
+        return new Kakistocratie();
+      break;  
+      case "Communisme" :
+        return new Communisme();
+      break;  
+      case "Idiocratie": 
+        return new Idiocratie();
+      break;
+      }
+  
+    }
+  
   
     electionNormale (){
       var listeTemporaireCandidatsElection = []
@@ -144,10 +187,13 @@ class Station {
   
     changementDirigeantStation(dirigeantArrivant, dirigeantPartant) {
       this.randomNobody.push(dirigeantPartant)
-      var dirigeantArrivantIndex = this.randomNobody.indexOf(dirigeantArrivant)
+      let dirigeantArrivantIndex = this.randomNobody.indexOf(dirigeantArrivant)
       this.randomNobody.splice(dirigeantArrivantIndex,1)
       this.dirigeant = dirigeantArrivant
       this.dirigeant.titre = dirigeantPartant.titre
+      if(this.dirigeant.corruption > this.regime.corruption){
+        this.regime.corruption++;
+      }
       dirigeantPartant.titre = ""
     }
   
@@ -312,8 +358,6 @@ class Station {
     }
   
     verifierFinPartie(){
-        let intervalElection = 5
-        let momentElection = tour.numero % intervalElection
       if (tour.numero == 100){
         let annonceFinDePartie = new Evenement ();
         annonceFinDePartie._textOfEvent = "Fin de la partie. Vous avez gagné!"
@@ -345,14 +389,6 @@ class Station {
         annonceMoralBas._textOfEvent = "Le moral de la station est assez bas.";
         annonceMoralBas._textEffetsEvenement = "Le moral de la station est assez bas."
         evenements_a_annoncer.push(annonceMoralBas);
-      }
-      if (this._regime == "Lottocratie" && momentElection == 0){
-        let annonceDirigeantTirageAuSort = new Evenement();
-        var nouveauDirigeantTirageAuSort = this._randomNobody[Math.floor(Math.random() * this._randomNobody.length)]
-        this.changementDirigeantStation(nouveauDirigeantTirageAuSort, this._dirigeant);
-        annonceDirigeantTirageAuSort._textOfEvent = "Il y a un nouveau tirage au sort pour le gouvernement de la station.";
-        annonceDirigeantTirageAuSort._textEffetsEvenement = this._dirigeant.nomComplet() + " est maintenant à la tête de la station."
-        evenements_a_annoncer.push(annonceDirigeantTirageAuSort);
       }
       if (this._regime == "République" && momentElection == 0){
       var candidatGagnantElection = this.electionNormale()

@@ -9,7 +9,7 @@ function afficherDescription() {
     document.getElementById('consulStation').textContent = station_joueur.dirigeant.nomComplet();
     document.getElementById('consulStation2').textContent = station_joueur.dirigeant.nomComplet();
     document.getElementById('richesseStationInfo').textContent = station_joueur.richesseTotale();
-    document.getElementById('typeGouvernementStationPage').textContent = station_joueur.regime;
+    document.getElementById('typeGouvernementStationPage').textContent = station_joueur.regime.type;
     document.getElementById('moralStationInfo').textContent = station_joueur.moralTotal();
     document.getElementById('ordreStationInfo').textContent = station_joueur.ordre;
     document.getElementById('chaosStationInfo').textContent = station_joueur.chaos;

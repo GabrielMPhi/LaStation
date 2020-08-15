@@ -59,6 +59,8 @@ function fermer_modal_choix_evenements(){
   document.getElementById('textEffectsOfChoiceInfluence').textContent = "";
   document.getElementById('textOfChoice').textContent = "";
   document.getElementById('textEffectsOfChoice1').textContent = "";
+  document.getElementById('consulStation').textContent = station_joueur.dirigeant.nomComplet();
+  document.getElementById('consulStation2').textContent = station_joueur.dirigeant.nomComplet();
   removeAllChildNodes(document.getElementById("body_evenements")) ;
   var modal = document.getElementById("modal_tour_evenements");
   modal.classList.remove("is-active");
