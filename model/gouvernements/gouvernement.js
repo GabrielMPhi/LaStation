@@ -44,9 +44,6 @@ class Gouvernement {
 
     }
 
-
-
-
     choisirDirigeant(){
         
     }

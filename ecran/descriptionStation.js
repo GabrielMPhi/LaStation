@@ -97,10 +97,10 @@ function afficherDescription() {
         button.class= "button is-small is-warning";
         button.value= "partir en mission";
         button.addEventListener("click", () => {
-          partir_en_mission(aventurier, second_cell.id, button.id); 
+          partir_en_mission_chaotique(aventurier, second_cell.id, button.id); 
         }); 
         second_cell.appendChild(button); 
-      //  second_cell.innerHTML = "<input type='button' class='button is-small is-danger' value='partir en mission' onclick='partir_en_mission("+aventurier+")'><br>";
+      //  second_cell.innerHTML = "<input type='button' class='button is-small is-danger' value='partir en mission' onclick='partir_en_mission_chaotique("+aventurier+")'><br>";
       }
       new_row.appendChild(second_cell);
       document.getElementById("liste_population").appendChild(new_row);
@@ -163,6 +163,12 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
         station_joueur.enrichissementAuHasard(100);
         station_joueur.appauvrissementAuHasard(100);
         station_joueur.diminutionMoralAuHasard(1);
+        break;
+        case "mission_commerciale":
+          textOfChoiceInfluence = "Une mission commerciale quitte " + station_joueur.nom + "."  
+         textEffectsOfChoiceInfluence = "Nous verrons les résultats au retour."
+          nobody_en_mission = station_joueur.randomNobody[Math.floor(Math.random() * station_joueur.randomNobody.length)]
+          creerMission(nobody_en_mission, "mission commerciale");
         break;
       case "confinement":
         station_joueur.chaos--

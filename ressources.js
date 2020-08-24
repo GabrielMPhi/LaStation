@@ -11,7 +11,7 @@ var listeNomPhilosophe = ["Aristote", "Platon", "Machiavel", "Pettit", "Rousseau
 var listOccupation = ["Radio Poubelle", "Biologie", "Médecine", "Astrophysique", "Philosophie", "Histoire", "Littérature", "Leadership", "Sécurité", "Informatique", "Lechage de bottes", "Lobbyisme", "Sociologie", "Making ze mony"]
 
 //variables station
-var liste_type_gouv = ["Lottocratie", "République", "Corporation", "Autocratie", "Monarchie", "Théocratie", "Ploutocratie", "Gabrielocratie", "Épistocratie", "Kakistocratie", "Communisme", "Idiocratie"];
+var liste_type_gouv = ["Lottocratie", "République", "Corporation", "Monarchie", "Théocratie", "Ploutocratie", "Épistocratie", "Kakistocratie", "Communisme", "Idiocratie"];
 let nomsDeLastation = ["Montréal", "Laval", "Candiac", "Paris", "Montpellier", "DS9", "DS7", "Terre", "Ahuntsic", "Villeray", "Saturne", "Jupiter", "Lune", "Europe", "Le lointain"]
 let ressourcesTypeList = ["Gold Pressed Latinum", "Livres de philo", "Deuterium", "Awesomeness"]
 let listeTypesSectionsStation = ["Arboretum", "Bibliothèque"]

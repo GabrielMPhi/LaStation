@@ -24,6 +24,8 @@ class Mission {
       switch(this._nature_de_la_mission){
         case "mission chaotique": this.resoudre_mission_chaotique();
           break;
+        case "mission commerciale": this.resoudre_mission_commerciale();
+        break;
         default: break;
       }
     }
@@ -41,7 +43,7 @@ class Mission {
           break;
         case 5: this.mort_tragique("massacré par des extraterrestres.");
           break;
-        case 6: this.mission_commerciale();
+        case 6: this.mission_commerciale(2);
           break;
         case 7: this.retour_avec_ressources();
           break;
@@ -56,7 +58,30 @@ class Mission {
       
       
     }
-  
+
+
+    resoudre_mission_commerciale(){
+  //    var liste_type_gouv = ["Lottocratie", "République", "Corporation", "Autocratie", "Monarchie", "Théocratie", "Ploutocratie", "Gabrielocratie", "Épistocratie", "Kakistocratie", "Communisme", "Idiocratie"];
+  let bonusPrestige = this.nobody.prestige
+  let bonusCharisme = this.nobody.charisme 
+  let investissement;
+
+
+      switch(station_joueur.regime){
+      case "Lottocratie":
+        investissement = parseInt((Math.floor(Math.random() * 14) + 1), 10)
+        station_joueur.appauvrissementAuHasard(investissement);
+      break;
+      case "République":
+        investissement = parseInt((Math.floor(Math.random() * 5) + 1), 10)
+        station_joueur.dirigeant.richesse = station_joueur.dirigeant.richesse - investissement;
+      default: break;
+    }
+    
+    let succes_de_la_mission =  parseInt(Math.round((investissement + bonusCharisme + bonusPrestige )/5) ,10) ;
+    this.mission_commerciale(succes_de_la_mission);
+    }
+
     reintegrer_la_station(nobody){
       station_joueur.randomNobody.push(nobody);
       let indexReintegration = station_joueur.nobodiesEnMission.indexOf(nobody); 
@@ -93,12 +118,12 @@ class Mission {
       this.reintegrer_la_station(this._nobody);
     }
   
-    mission_commerciale(){
-      station_joueur.enrichissementAuHasard(2);
+    mission_commerciale(succes = 2){
+      station_joueur.enrichissementAuHasard(succes);
       this._nobody.richesse++;
-      this._nobody.influence +=2;
+      this._nobody.influence +=succes;
       this._evenement_retour.textOfEvent = this._nobody.nomComplet()+" est revenu de mission. Il a découvert des extraterrestres prospères et heureux de commercer avec vous."
-      this._evenement_retour.textEffetsEvenement = "La richesse de la station augmente grandement. L'influence de "+this._nobody.nomComplet() + " augmente d'autant."
+      this._evenement_retour.textEffetsEvenement = "La richesse de la station augmente. L'influence de "+ this._nobody.nomComplet() + " augmente d'autant."
       this.reintegrer_la_station(this._nobody);
     }
   
@@ -135,15 +160,16 @@ class Mission {
     }
   
   }
-  
-
-  function partir_en_mission(nobody, cell_id, button_id){
-    console.log(button_id + " "+ cell_id)
-    document.getElementById(button_id).remove
-    nobody.mission = new Mission("mission chaotique", tour.numero, nobody); 
+  function creerMission(nobody, type_mission){
+    nobody.mission = new Mission(type_mission, tour.numero, nobody); 
     station_joueur.nobodiesEnMission.push(nobody); 
     let indexPartirEnMission = station_joueur.randomNobody.indexOf(nobody); 
     station_joueur.randomNobody.splice(indexPartirEnMission, 1);
+  }
+
+  function partir_en_mission_chaotique(nobody, cell_id, button_id){
+    document.getElementById(button_id).remove
+    creer_mission(nobody, type_mission); 
     document.getElementById(cell_id).innerHTML =  nobody.nomComplet() +" est parti en mission sur un coup de tête. Il mourra probablement, ou reviendra avec des ressources et couvert de gloire";
      
   }

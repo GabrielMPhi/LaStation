@@ -68,7 +68,7 @@ class Ploutocratie extends Gouvernement {
 class Gabrielocratie extends Gouvernement {
     
     constructor(){
-        super("gabrielocratie", -2); 
+        super("gabrielocratie"); 
     
     }
 

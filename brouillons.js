@@ -1,12 +1,4 @@
 
-class Firm {
-  
-    constructor(nom){
-      this._nom = "East Sector Company";
-    }
-  
-  }
-  
   class Ressource {
     
     constructor(nom){
