@@ -18,6 +18,7 @@ class Station {
       this._sections = new Section();
       this._randomNobody = [];
       this._nobodiesEnMission = [];
+      this._historiqueRichesse = [];
   
     }
   
@@ -122,6 +123,12 @@ class Station {
     }
     set nobodiesEnMission(nobodiesEnMission){
       this._nobodiesEnMission = nobodiesEnMission
+    }
+    get historiqueRichesse() {
+      return this._historiqueRichesse
+    }
+    set historiqueRichesse(historiqueRichesse) {
+      this._historiqueRichesse = historiqueRichesse
     }
   
     creerGouvernement(regime_choisi){
@@ -357,6 +364,13 @@ class Station {
       }
     }
   
+    mise_a_jour_historique_richesse_station (){
+      this.historiqueRichesse.push(parseFloat(this.richesseTotale()))
+      console.log(this.historiqueRichesse)
+    }
+
+
+
     verifierFinPartie(){
       if (tour.numero == 100){
         let annonceFinDePartie = new Evenement ();

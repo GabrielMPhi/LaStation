@@ -8,6 +8,7 @@ function afficherDescription() {
     document.getElementById('dirigeantStationTitre').textContent = station_joueur.dirigeant.titre;
     document.getElementById('consulStation').textContent = station_joueur.dirigeant.nomComplet();
     document.getElementById('consulStation2').textContent = station_joueur.dirigeant.nomComplet();
+    document.getElementById('richessePrecedenteStationInfo').textContent = station_joueur.historiqueRichesse[(tour.numero-2)];
     document.getElementById('richesseStationInfo').textContent = station_joueur.richesseTotale();
     document.getElementById('typeGouvernementStationPage').textContent = station_joueur.regime.type;
     document.getElementById('moralStationInfo').textContent = station_joueur.moralTotal();
@@ -41,6 +42,35 @@ function afficherDescription() {
     document.getElementById('textOfInfo').innerHTML = textInfo
     ouvrir_modal_information();
   });
+
+  document.getElementById("btnInfoGraphRichesse").addEventListener('click', function (e){ 
+ 
+    let textOfInfo = "Ok, il n'y a rien ici encore, mais je veux trouver un moyen de faire apparaitre un graphique avec l'historique de la richesse via Chart.js"
+    
+  //  var canvasChartRichesseStation = document.createElement('canvas');
+  //  canvasChartRichesseStation.id = "chartRichesseStation"
+ //   canvasChartRichesseStation.width = 100
+  //  canvasChartRichesseStation.height = 100
+
+  //  let ctx = document.getElementById("chartRichesseStation").getContext('2d');
+ //   let chartRichesseStation = new Chart(ctx, ­{
+ //       type: 'line',
+ //       data: {
+  //        labels: ['Richesse de la station'],
+  //        datasets: [{
+  //            label: '# of Votes',
+  //            data: [station_joueur.historiqueRichesse],
+  //        }]
+  //    },
+ //   })
+        
+   // document.getElementById('textOfInfo').innerHTML = canvasChartRichesseStation
+
+        
+    document.getElementById('textOfInfo').innerHTML = textOfInfo
+    ouvrir_modal_information();
+  });
+
 
   document.getElementById("btnInfoDirigeant").addEventListener('click', function (e){
   
