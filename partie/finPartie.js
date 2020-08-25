@@ -9,7 +9,8 @@ function finDuTour(){
     station_joueur.effetDuMoralFinDuTour();
     station_joueur.verifierRichesse()
     station_joueur.appauvrissementAuHasard(3);
-    tour.augmenter();
     station_joueur.verifierFinPartie();
     evenementFinTour();    
+    tour.augmenter();
+    afficherDescription();
   }

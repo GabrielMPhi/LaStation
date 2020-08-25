@@ -369,6 +369,24 @@ class Station {
       console.log(this.historiqueRichesse)
     }
 
+    afficherChangementRichesseStation (){
+      let premierSpam = "";
+      let chamgementRichesseStation = parseInt((this.richesseTotale() - this.historiqueRichesse[(tour.numero-2)]), 10)
+      if (chamgementRichesseStation == null || chamgementRichesseStation == undefined || isNaN(chamgementRichesseStation)){
+        return "Trop loin dans le passé!"
+      }
+      if (chamgementRichesseStation == 0){
+        premierSpam = "<span class='has-text-warning'>"
+      } else if (chamgementRichesseStation > 0){
+        premierSpam = "<span class='has-text-success'>"
+      } else {
+        premierSpam = "<span class='has-text-danger'>"
+      } 
+      let changementRichesseAAfficher = "( " + premierSpam + chamgementRichesseStation + "</span>" + ")"
+      return changementRichesseAAfficher
+    }
+
+
 
 
     verifierFinPartie(){

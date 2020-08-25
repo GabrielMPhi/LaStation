@@ -9,6 +9,7 @@ function afficherDescription() {
     document.getElementById('consulStation').textContent = station_joueur.dirigeant.nomComplet();
     document.getElementById('consulStation2').textContent = station_joueur.dirigeant.nomComplet();
     document.getElementById('richessePrecedenteStationInfo').textContent = station_joueur.historiqueRichesse[(tour.numero-2)];
+    document.getElementById('changementRichessePrecedenteStationInfo').innerHTML = station_joueur.afficherChangementRichesseStation();
     document.getElementById('richesseStationInfo').textContent = station_joueur.richesseTotale();
     document.getElementById('typeGouvernementStationPage').textContent = station_joueur.regime.type;
     document.getElementById('moralStationInfo').textContent = station_joueur.moralTotal();
