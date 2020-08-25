@@ -1,7 +1,6 @@
 class Gouvernement {
 
     constructor(type, corruption = 0){
-        console.log("constructeur gouvernement. "+type); 
         this._type = type;
         this._corruption = corruption;
         this._intervalElection = 5
