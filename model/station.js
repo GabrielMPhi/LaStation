@@ -398,6 +398,35 @@ class Station {
 
 
     verifierFinPartie(){
+      if (station_joueur.randomNobody.length <=2){
+        let genreNouveauDansStation = choiceGender ();
+        let nouveauChaotiqueArriveStationVide = new Personnage (
+          genreNouveauDansStation,
+          choisir_prenom_personnage(genreNouveauDansStation),
+          momsFamillePersonnages[Math.floor(Math.random() * momsFamillePersonnages.length)],
+          "",
+          parseInt((Math.floor(Math.random() * 10) + 5), 10),
+          parseInt((Math.floor(Math.random() * 100) + 40), 10),
+          parseInt((Math.floor(Math.random() * 10) + 5), 10),
+          0,
+          parseInt((Math.floor(Math.random() * 10) + 5), 10),
+          parseInt((Math.floor(Math.random() * 10) + 5), 10),
+          parseInt((Math.floor(Math.random() * 10) + 5), 10),
+          parseInt((Math.floor(Math.random() * 10) + 5), 10),
+          "Chaotisme",
+          0,
+          choiceOccupation(),
+          parseInt((Math.floor(Math.random() * 70) + 145), 10),
+          parseInt((Math.floor(Math.random() * 20) + 18), 10),
+          nomsDeLastation[Math.floor(Math.random() * nomsDeLastation.length)],
+        )
+        station_joueur.randomNobody.push(nouveauChaotiqueArriveStationVide)
+        let EvenementNouveauChaotiqueArriveStationVide = new Evenement ();
+        EvenementNouveauChaotiqueArriveStationVide._textOfEvent = nouveauChaotiqueArriveStationVide.nomComplet() + " arrive à la station qui est quasiment vide."
+        EvenementNouveauChaotiqueArriveStationVide._textEffetsEvenement = nouveauChaotiqueArriveStationVide.nomComplet() + " profite de la station vide!"
+        evenements_a_annoncer.push(EvenementNouveauChaotiqueArriveStationVide);
+
+      }
       if (tour.numero == 100){
         let annonceFinDePartie = new Evenement ();
         annonceFinDePartie._textOfEvent = "Fin de la partie. Vous avez gagné!"

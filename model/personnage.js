@@ -1,28 +1,48 @@
 class Personnage {
 
-    constructor(){
-      var genre = choiceGender ();
-      var prenom = choisir_prenom_personnage(genre);
-      var nom = momsFamillePersonnages[Math.floor(Math.random() * momsFamillePersonnages.length)]
+    constructor(
+      genre = choiceGender (),
+      prenom = choisir_prenom_personnage(genre),
+      nom = momsFamillePersonnages[Math.floor(Math.random() * momsFamillePersonnages.length)],
+      titre = "",
+      moral = parseInt((Math.floor(Math.random() * 10) + 5), 10),
+      richesse = parseInt((Math.floor(Math.random() * 100) + 40), 10),
+      influence = parseInt((Math.floor(Math.random() * 10) + 5), 10),
+      prestige = 0,
+      charisme = parseInt((Math.floor(Math.random() * 10) + 5), 10),
+      capaciteCombat = parseInt((Math.floor(Math.random() * 10) + 5), 10),
+      connaissance = parseInt((Math.floor(Math.random() * 10) + 5), 10),
+      leadership = parseInt((Math.floor(Math.random() * 10) + 5), 10),
+      ideologie = choiceIdeology (),
+      corruption = 0,
+      occupation = choiceOccupation(),
+      height = parseInt((Math.floor(Math.random() * 70) + 145), 10),
+      age = parseInt((Math.floor(Math.random() * 20) + 18), 10),
+      origine = nomsDeLastation[Math.floor(Math.random() * nomsDeLastation.length)],
+
+    ){
+     // var genre = choiceGender ();
+    //  var prenom = choisir_prenom_personnage(genre);
+     // var nom = momsFamillePersonnages[Math.floor(Math.random() * momsFamillePersonnages.length)]
       
       this._genre = genre;
-      this._titre = "";
       this._prenom = prenom;
-      this._nom = nom
-      this._moral = parseInt((Math.floor(Math.random() * 10) + 5), 10)
-      this._richesse = parseInt((Math.floor(Math.random() * 100) + 40), 10)
-      this._influence = parseInt((Math.floor(Math.random() * 10) + 5), 10)
-      this._prestige = 0
-      this._charisme = parseInt((Math.floor(Math.random() * 10) + 5), 10)
-      this._capaciteCombat = parseInt((Math.floor(Math.random() * 10) + 5), 10)
-      this._connaissance = parseInt((Math.floor(Math.random() * 10) + 5), 10)
-      this._leadership = parseInt((Math.floor(Math.random() * 10) + 5), 10)
-      this._ideologie = choiceIdeology ();
-      this._corruption = 0;
-      this._occupation = choiceOccupation()
-      this._height = parseInt((Math.floor(Math.random() * 70) + 145), 10);
-      this._age = parseInt((Math.floor(Math.random() * 20) + 18), 10)
-      this._origine = nomsDeLastation[Math.floor(Math.random() * nomsDeLastation.length)]
+      this._nom = nom;
+      this._titre = titre;
+      this._moral = moral;
+      this._richesse = richesse;
+      this._influence = influence;
+      this._prestige = prestige;
+      this._charisme = charisme;
+      this._capaciteCombat = capaciteCombat;
+      this._connaissance = connaissance;
+      this._leadership = leadership;
+      this._ideologie = ideologie;
+      this._corruption = corruption;
+      this._occupation = occupation;
+      this._height = height;
+      this._age = age;
+      this._origine = origine;
       this._mission = "";
     }
   
@@ -150,3 +170,48 @@ class Personnage {
       return this._prenom + " " + this._nom
     }
   }
+
+
+  /*FONCTIONS CRÉATION DES PERSONNAGES*/
+function choiceGender (){
+  var choixGenre = listeGenre[Math.floor(Math.random() * listeGenre.length)]
+  return choixGenre
+}
+
+function choiceIdeology (){
+  var choiceIdeology = listIdeology[Math.floor(Math.random() * listIdeology.length)]
+  return choiceIdeology
+}
+
+function choiceOccupation(){
+  var choiceOccupation = listOccupation[Math.floor(Math.random() * listOccupation.length)];
+  return choiceOccupation
+}
+
+
+function choisir_prenom_personnage(genre){
+  if (genre == "Homme") {
+    var prenomPersonnageFinal = prenomsPersonnagesHomme[Math.floor(Math.random() * prenomsPersonnagesHomme.length)]
+  } else if (genre == "Femme"){
+    var prenomPersonnageFinal = prenomsPersonnagesFemme[Math.floor(Math.random() * prenomsPersonnagesFemme.length)]
+  } else {
+    var prenomPersonnageFinal = prenomsPersonnagesTotal[Math.floor(Math.random() * prenomsPersonnagesTotal.length)]
+  }
+  return prenomPersonnageFinal
+}
+
+// FUNCTION vérification si un personnage existe
+
+function verificationExistencePersonnage(nomComplet){
+  for (var i = 0; i < station_joueur.randomNobody.length; i++){
+    var persoExisteDeja = false
+    if (nomComplet.nom == station_joueur.randomNobody[i].nom && nomComplet.prenom == station_joueur.randomNobody[i].prenom){
+      persoExisteDeja = true
+      break; 
+    } else {
+      persoExisteDeja = false
+    }
+}
+return persoExisteDeja
+}
+
