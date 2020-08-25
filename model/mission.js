@@ -86,7 +86,7 @@ class Mission {
       station_joueur.randomNobody.push(nobody);
       console.log(station_joueur.randomNobody)
       let indexReintegration = station_joueur.nobodiesEnMission.indexOf(nobody); 
-      station_joueur.randomNobody.splice(indexReintegration, 1);
+      station_joueur.nobodiesEnMission.splice(indexReintegration, 1);
     }
     
     transformation_philosophique(){
