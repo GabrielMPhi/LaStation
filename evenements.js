@@ -129,6 +129,10 @@ function evenement_sage_vulcain() {
 }
 function evenement_rien() {
   let evenementRien = new Evenement();
+  if (station_joueur.randomNobody.length <= 1){
+    evenementRien._textOfEvent = "Il ne se passe vraiment rien."
+
+  }else {
   evenementRien._textOfEvent =
     station_joueur.randomNobody[0].nomComplet() +
     " se tourne les pouces. Il y a une romance entre " +
@@ -136,7 +140,7 @@ function evenement_rien() {
     " et " +
     station_joueur.randomNobody[1].nomComplet() +
     "." +
-    " C'est bien plaisant.";
+    " C'est bien plaisant.";}
   evenementRien._textEffetsEvenement = "Rien de spécial.";
   evenements_a_annoncer.push(evenementRien);
 }

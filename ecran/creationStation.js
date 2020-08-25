@@ -9,7 +9,7 @@ document.getElementById("btn_creation_station").addEventListener('click', functi
     station_joueur = new Station(nom_station, regime_choisi)
     console.log("on a créé une station! = " + station_joueur.nom);
     station_joueur.dirigeant.gagneUnTitre();
-    var startingNumberOfNobody = (Math.floor(Math.random() * 7)) + 7;
+    var startingNumberOfNobody = (Math.floor(Math.random() * 1)) + 3;
     for (var i = 0; i < startingNumberOfNobody; i++){
       station_joueur.randomNobody.push(new Personnage())
       };

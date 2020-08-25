@@ -21,6 +21,7 @@ function afficherDescription() {
     document.getElementById('connaissanceDataBaseInfo').textContent = station_joueur.connaissance;
     document.getElementById('ressourcesStationInfo').textContent = station_joueur.ressources;
     document.getElementById('populationStationInfo').textContent = station_joueur.population();
+    document.getElementById('populationEnMission').textContent = station_joueur.nombreNobodyEnMission();
     document.getElementById('integriteStationInfo').textContent = station_joueur.integrite;
     document.getElementById('cybersecuriteStationInfo').textContent = station_joueur.cybersecurite;
     document.getElementById('capacitePopulationStationInfo').textContent = station_joueur.capacitePopulation;
@@ -200,6 +201,10 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
           textOfChoiceInfluence = "Une mission commerciale quitte " + station_joueur.nom + "."  
          textEffectsOfChoiceInfluence = "Nous verrons les résultats au retour."
           nobody_en_mission = station_joueur.randomNobody[Math.floor(Math.random() * station_joueur.randomNobody.length)]
+          let nobody_en_mission_commerciale_evenement = new Evenement ();
+          nobody_en_mission_commerciale_evenement._textOfEvent = nobody_en_mission.nomComplet() + " part en mission commerciale!"
+          nobody_en_mission_commerciale_evenement._textEffetsEvenement = "Il reviendra avec des richesses!"
+          evenements_a_annoncer.push(nobody_en_mission_commerciale_evenement);
           creerMission(nobody_en_mission, "mission commerciale");
         break;
       case "confinement":

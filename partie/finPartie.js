@@ -1,5 +1,4 @@
 function finDuTour(){
-    station_joueur.mise_a_jour_historique_richesse_station()
     afficherChoixEtEvenements();
     station_joueur.payeEtRevenuPourTous();
     station_joueur.rechercheDePrestige();

@@ -209,6 +209,14 @@ class Station {
       return totalCalculPopulation
     }
   
+    nombreNobodyEnMission(){
+      let nobody_en_mission = this.nobodiesEnMission.length
+      if (nobody_en_mission == null || nobody_en_mission == undefined || isNaN(nobody_en_mission)){
+        nobody_en_mission = "Personne en mission"
+      }
+      return nobody_en_mission
+    }
+
     enrichissementAuHasard(nombre){
       for(let i=0; i<nombre; i++){
         let chanceux = Math.floor(Math.random() * this._randomNobody.length);
@@ -265,7 +273,7 @@ class Station {
   
     rechercheDePrestige(){
       for(let i=0; i< this._randomNobody.length; i++){
-          if (this._randomNobody[i].richesse >= parseInt((this.richesseTotale()/this._randomNobody.length),10)){
+          if (this._randomNobody[i].richesse >= parseInt(((this.richesseTotale()*1.5)/(this._randomNobody.length)+1),10)){
             this._randomNobody[i].richesse = parseInt((this._randomNobody[i].richesse / 2),10)
             this._randomNobody[i].prestige++
             this._randomNobody[i].moral++

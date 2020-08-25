@@ -66,10 +66,9 @@ class Mission {
   let bonusCharisme = this.nobody.charisme 
   let investissement;
 
-
       switch(station_joueur.regime){
       case "Lottocratie":
-        investissement = parseInt((Math.floor(Math.random() * 14) + 1), 10)
+        investissement = parseInt((Math.floor(Math.random() * 140) - 20), 10)
         station_joueur.appauvrissementAuHasard(investissement);
       break;
       case "République":
@@ -78,12 +77,14 @@ class Mission {
       default: break;
     }
     
-    let succes_de_la_mission =  parseInt(Math.round((investissement + bonusCharisme + bonusPrestige )/5) ,10) ;
+    let succes_de_la_mission =  parseInt(Math.round((investissement + bonusCharisme + bonusPrestige )) ,10) ;
     this.mission_commerciale(succes_de_la_mission);
     }
 
     reintegrer_la_station(nobody){
+      console.log(nobody.nomComplet() + " revient de mission")
       station_joueur.randomNobody.push(nobody);
+      console.log(station_joueur.randomNobody)
       let indexReintegration = station_joueur.nobodiesEnMission.indexOf(nobody); 
       station_joueur.randomNobody.splice(indexReintegration, 1);
     }
@@ -118,7 +119,7 @@ class Mission {
       this.reintegrer_la_station(this._nobody);
     }
   
-    mission_commerciale(succes = 2){
+    mission_commerciale(succes = 20){
       station_joueur.enrichissementAuHasard(succes);
       this._nobody.richesse++;
       this._nobody.influence +=succes;
