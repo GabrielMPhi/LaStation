@@ -144,6 +144,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
     console.log("click btnActionChoix"); 
     var choix = document.querySelector('#actionChoix').selectedOptions[0].value
     var choixInfluence = document.querySelector('#actionChoixInfluence').selectedOptions[0].value
+    station_joueur.mise_a_jour_historique_richesse_station()
     console.log(choix)
     
     /// choix influence
@@ -160,7 +161,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
         case "favoriserPeuple":
           textOfChoiceInfluence = "Vous venez de favoriser le peuple."
           textEffectsOfChoiceInfluence = "Le peuple s'en fout un peu! Mais la richesse et le moral augmente de 1 tandis que vous dépensez 1 d'énergie.";
-          station_joueur.enrichissementAuHasard(1);
+          station_joueur.enrichissementAuHasard(10);
           station_joueur.augmentationMoralAuHasard(1);
           station_joueur.energie--;
         break;
@@ -213,6 +214,7 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
     switch(choix) {
     case "calculs":
       station_joueur.energie--
+      station_joueur.connaissance++
       textOfChoice = "Les ordinateurs de " + station_joueur.nom + " s'occupent à faire des calculs importants et insipides." 
       textEffectsOfChoice1 = "La station développe de nouvelles connaissances."
       break;
@@ -229,11 +231,8 @@ document.querySelector('#btnActionChoix').addEventListener('click', function (e)
       station_joueur.energie = station_joueur.energie + 50;
       console.log("UNE PETITE PAUSE, donc 2 tour passent")
       finDuTour();
-      
       break;
       } 
-  
-  
       finDuTour();
     })
   

@@ -282,27 +282,27 @@ class Station {
     augmentationMoralAuHasard(nombre){
       for(let i=0; i<nombre; i++){
         let chanceux = Math.floor(Math.random() * this._randomNobody.length);
-        this._randomNobody[chanceux].richesse++;    
+        this._randomNobody[chanceux].moral++;    
       }
     }
   
     diminutionMoralAuHasard(nombre){
       for(let i=0; i<nombre; i++){
         let malchanceux = Math.floor(Math.random() * this._randomNobody.length);
-        this._randomNobody[malchanceux].richesse--;    
+        this._randomNobody[malchanceux].moral--;    
       }
     }
   
   
     augmentationMoralTotal(moralParHabitant){
       for(let i=0; i< this._randomNobody.length; i++){
-        this._randomNobody[i].richesse = this._randomNobody[i].richesse + moralParHabitant;  
+        this._randomNobody[i].moral = this._randomNobody[i].moral + moralParHabitant;  
       }
     }
   
     diminutionMoralTotal(moralParHabitant){
       for(let i=0; i< this._randomNobody.length; i++){
-        this._randomNobody[i].richesse = this._randomNobody[i].richesse - moralParHabitant;    
+        this._randomNobody[i].moral = this._randomNobody[i].moral - moralParHabitant;    
       }
     }
   
@@ -365,7 +365,7 @@ class Station {
     }
   
     mise_a_jour_historique_richesse_station (){
-      this.historiqueRichesse.push(parseFloat(this.richesseTotale()))
+      this.historiqueRichesse.push(this.richesseTotale())
       console.log(this.historiqueRichesse)
     }
 
@@ -373,7 +373,7 @@ class Station {
       let premierSpam = "";
       let chamgementRichesseStation = parseInt((this.richesseTotale() - this.historiqueRichesse[(tour.numero-2)]), 10)
       if (chamgementRichesseStation == null || chamgementRichesseStation == undefined || isNaN(chamgementRichesseStation)){
-        return "Trop loin dans le passé!"
+        return "Trop loin dans le passé! "
       }
       if (chamgementRichesseStation == 0){
         premierSpam = "<span class='has-text-warning'>"
