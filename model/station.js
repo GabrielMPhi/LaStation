@@ -343,6 +343,16 @@ class Station {
       return parseInt(calculTotalMoral,10);
       }
   
+      prestigeTotal(){
+        var calculTotalPrestige = 0
+        for (var i = 0; i < this.randomNobody.length; i++){
+          calculTotalPrestige = calculTotalPrestige + this.randomNobody[i].prestige
+        };
+        calculTotalPrestige = calculTotalPrestige + this._dirigeant.prestige 
+        return calculTotalPrestige;
+        }
+
+
     richesseTotale(){
     var calculTotalRichesse = 0
     for (var i = 0; i < this.randomNobody.length; i++){
