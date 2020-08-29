@@ -446,6 +446,7 @@ class Station {
       if (this.richesseTotale() <= 0 || this.moralTotal() <= 0 || this._energie <= 0 || this._integrite <=0 ) {
         alert("Vous avez perdu! " + this._dirigeant.titre + " " + this._dirigeant.nomComplet() + " a guidé la station pendant " + tour.numero + 
         " cycles. Il vous restait " + this.moralTotal() + " de moral, " + this._energie + " d'énergie et " + this._integrite + " d'intégrité.");
+        location.reload()
       }
       if (this._capacitePopulation <= this.population() ) {
         let annonceCapacitePopulationAtteint = new Evenement ();
