@@ -442,6 +442,7 @@ class Station {
         annonceFinDePartie._textOfEvent = "Fin de la partie. Vous avez gagné!"
         annonceFinDePartie._textEffetsEvenement = "Redémarage de la station!"
         evenements_a_annoncer.push(annonceFinDePartie);
+        location.reload()
       }
       if (this.richesseTotale() <= 0 || this.moralTotal() <= 0 || this._energie <= 0 || this._integrite <=0 ) {
         alert("Vous avez perdu! " + this._dirigeant.titre + " " + this._dirigeant.nomComplet() + " a guidé la station pendant " + tour.numero + 
